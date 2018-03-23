@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClCompile Include="src\Building.cpp" />
+    <ClCompile Include="src\Street.cpp" />
+    <ClInclude Include="src\Building.h" />
+    <ClInclude Include="src\DrunkCity.h" />
+    <ClInclude Include="src\Enemy.h" />
     <ClInclude Include="src\Camera.h" />
+    <ClCompile Include="src\DrunkCity.cpp" />
+    <ClCompile Include="src\Enemy.cpp" />
     <ClCompile Include="src\Geometry.cpp" />
     <ClInclude Include="src\Geometry.h" />
     <ClInclude Include="src\INIReader.h" />
@@ -12,6 +19,7 @@
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\Utils.h" />
+    <ClInclude Include="src\Street.h" />
   </ItemGroup>
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">

@@ -400,9 +400,8 @@ GeometryData Geometry::createConeGeometry(unsigned int segments, float radius, f
 		data.indices.push_back(i == segments - 1 ? 2 : 2 + (i + 1) * 2);
 
 		//side face
-		
-		data.indices.push_back(2 + i * 2);
 		data.indices.push_back(i == segments - 1 ? 2 : 2 + (i + 1) * 2);
+		data.indices.push_back(2 + i * 2);	
 		data.indices.push_back(1);
 		
 	}
