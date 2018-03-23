@@ -12,8 +12,9 @@ class DrunkCity
 private:
 	Geometry worldModel;
 	Street highway;
-	std::list<Enemy> enemiesAlive;
+	Enemy *enemiesAlive;
 	std::list<Building> buildings;
+	int alive;
 	
 public:
 	DrunkCity();
@@ -24,6 +25,6 @@ public:
 	DrunkCity& operator=(DrunkCity&&) = default;
 
 	void draw();
-	void addEnemy();
+	void addEnemy(std::shared_ptr<Material> material);
 };
 

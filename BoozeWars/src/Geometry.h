@@ -47,6 +47,7 @@ protected:
 	std::vector<std::unique_ptr<Geometry>> _children;
 
 public:
+
 	Geometry(glm::mat4 modelMatrix, GeometryData& data, std::shared_ptr<Material> material);
 	Geometry(glm::mat4 modelMatrix = glm::mat4(1.0f));
 
