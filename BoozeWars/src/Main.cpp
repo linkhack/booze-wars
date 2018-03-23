@@ -19,6 +19,8 @@
 
 #include "Texture.h"
 
+#include "DrunkCity.h"
+
 
 /* --------------------------------------------- */
 // Prototypes
@@ -54,7 +56,7 @@ int main(int argc, char** argv)
 	// Load settings.ini
 	/* --------------------------------------------- */
 
-	INIReader reader("../assets/settings.ini");
+	INIReader reader("assets/settings.ini");
 
 	if (reader.ParseError() < 0) {
 		EXIT_WITH_ERROR("Failed to load 'settings.ini'")
@@ -145,12 +147,8 @@ int main(int argc, char** argv)
 		std::shared_ptr<Material> earthMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.05f, 0.9f, 0.1f), 5.0f, earthTexture);
 		std::shared_ptr<Material> moonMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.05f, 0.9f, 0.05f), 2.0f, moonTexture);
 
-		// Create geometry
-		Geometry sun = Geometry(glm::mat4(1.0f), Geometry::createConeGeometry(10,1.0f,2.0f,1.0f), sunMaterial);
-		Geometry* earth = sun.addChild(std::make_unique<Geometry>(glm::mat4(1.0f), Geometry::createSphereGeometry(64, 32, 1.0f), earthMaterial));
-		earth->setTransformMatrix(glm::translate(glm::mat4(1.0f), glm::vec3(12, 0, 0)));
-		Geometry* moon = earth->addChild(std::make_unique<Geometry>(glm::mat4(1.0f), Geometry::createSphereGeometry(64, 32, 0.5f), moonMaterial));
-		moon->setTransformMatrix(glm::translate(glm::mat4(1.0f), glm::vec3(3, 0, 0)));
+		//Create World
+		DrunkCity world = DrunkCity(900.0f, 600.0f, 30.0f,sunMaterial);
 
 		// Initialize camera
 		Camera camera(fov, float(window_width) / float(window_height), nearZ, farZ);
@@ -175,12 +173,10 @@ int main(int argc, char** argv)
 			setPerFrameUniforms(textureShader.get(), camera, dirL, pointL);
 
 			// Hierarchical animation
-			sun.transform(glm::rotate(glm::mat4(1.0f), glm::radians(15.0f) * dt, glm::vec3(0, 1, 0)));
-			earth->transform(glm::rotate(glm::mat4(1.0f), glm::radians(-45.0f) * dt, glm::vec3(0, 1, 0)));
-			moon->transform(glm::rotate(glm::mat4(1.0f), glm::radians(60.0f) * dt, glm::vec3(0, 1, 0)));
+			
 
 			// Render
-			sun.draw();
+			world.draw();
 
 			// Compute frame time
 			dt = t;
