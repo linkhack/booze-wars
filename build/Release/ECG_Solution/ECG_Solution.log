@@ -1,0 +1,3 @@
+﻿  Geometry.cpp
+  Main.cpp
+LINK : fatal error LNK1181: Eingabedatei "glew32.lib" kann nicht geöffnet werden.
