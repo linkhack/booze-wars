@@ -10,11 +10,12 @@ private:
 	float damageTeens; //Amount of drunken teens per bottle
 
 public:
-	Enemy();
+	Enemy(std::shared_ptr<Material> material);
 	~Enemy();
 
 	//void transform(float dT);
 	//void hit(float damage);
 
+	void draw();
 };
 

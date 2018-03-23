@@ -24,5 +24,6 @@ public:
 	DrunkCity& operator=(DrunkCity&&) = default;
 
 	void draw();
+	void addEnemy();
 };
 

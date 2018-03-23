@@ -149,6 +149,10 @@ int main(int argc, char** argv)
 
 		//Create World
 		DrunkCity world = DrunkCity(900.0f, 600.0f, 30.0f,sunMaterial);
+		
+		//create enemy
+		Enemy enemy = Enemy(moonMaterial);
+		w
 
 		// Initialize camera
 		Camera camera(fov, float(window_width) / float(window_height), nearZ, farZ);
