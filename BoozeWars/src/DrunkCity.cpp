@@ -20,7 +20,7 @@ DrunkCity::~DrunkCity()
 
 void DrunkCity::draw() 
 {
-	/worldModel.draw();
+	worldModel.draw();
 	for (int i = 0; i < alive; i++) 
 	{
 		//enemiesAlive[i].draw();
