@@ -170,6 +170,7 @@ int main(int argc, char** argv)
 
 			// Update camera
 			glfwGetCursorPos(window, &mouse_x, &mouse_y);
+
 			camera.update(int(mouse_x), int(mouse_y), _zoom, _dragging, _strafing);
 
 			// Set per-frame uniforms
@@ -232,7 +233,7 @@ void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight& dirL,
 
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
-{
+{	
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
 		_dragging = true;
 	} else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
@@ -254,6 +255,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	// F1 - Wireframe
 	// F2 - Culling
 	// Esc - Exit
+	if (action == GLFW_REPEAT || action == GLFW_PRESS)
+	{
+		std::cout << "Key pressed" << std::endl;
+	}
 
 	if (action != GLFW_RELEASE) return;
 
