@@ -3,7 +3,7 @@
 class Enemy
 {
 private:
-	Geometry model;
+	Geometry *model;
 	float x;
 	float y;
 	float hp;

@@ -151,12 +151,12 @@ int main(int argc, char** argv)
 		DrunkCity world = DrunkCity(900.0f, 600.0f, 30.0f,sunMaterial);
 		
 		//create enemy
-		world.addEnemy(moonMaterial);
-
+		world.addEnemy(earthMaterial);
+		//Geometry worldModel = Geometry(glm::mat4(1.0f), Geometry::createCubeGeometry(x, y, z), material);
 		// Initialize camera
 		Camera camera(fov, float(window_width) / float(window_height), nearZ, farZ);
 		PointLight pointL(glm::vec3(1, 1, 1), glm::vec3(0), glm::vec3(1, 0, 0));
-		DirectionalLight dirL(glm::vec3(0), glm::vec3(0));
+		DirectionalLight dirL(glm::vec3(1,1,1), glm::vec3(0,-1,0));
 
 
 		// Render loop
@@ -179,8 +179,9 @@ int main(int argc, char** argv)
 			
 
 			// Render
-			world.draw();
-
+			world.zeichne();
+			
+			//worldModel.draw();
 			// Compute frame time
 			dt = t;
 			t = float(glfwGetTime());
