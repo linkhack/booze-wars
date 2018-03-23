@@ -20,6 +20,9 @@ public:
 	~DrunkCity();
 	DrunkCity(float x, float y, float z, std::shared_ptr<Material> material);
 
+	DrunkCity(DrunkCity&&) = default;
+	DrunkCity& operator=(DrunkCity&&) = default;
+
 	void draw();
 };
 

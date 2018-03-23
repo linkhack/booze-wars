@@ -51,6 +51,9 @@ public:
 	Geometry(glm::mat4 modelMatrix = glm::mat4(1.0f));
 
 	~Geometry();
+	
+	Geometry(Geometry&&) = default;
+	Geometry& operator=(Geometry&&) = default;
 
 	void draw(glm::mat4 matrix = glm::mat4(1.0f));
 
