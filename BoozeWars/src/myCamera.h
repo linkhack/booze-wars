@@ -9,7 +9,7 @@ class myCamera
 private:
 	glm::mat4 projMatrix;
 	glm::mat4 viewMatrix;
-	float yaw, pitch;
+	float yaw, pitch, roll;
 	glm::vec3 position;
 	float movementSpeed;
 	float rotationSpeed;

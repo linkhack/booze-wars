@@ -9,6 +9,7 @@ myCamera::myCamera(float fov, float aspect, float near, float far)
 	position = glm::vec3(-10, 10, 0);
 	yaw = glm::pi<float>()/2.0f;
 	pitch = 0;
+	roll = 0;
 }
 
 
@@ -50,22 +51,21 @@ void myCamera::updatePosition(int key)
 	//D:right
 	//R:upwards
 	//F:downwards
-	glm::vec3 lookDirection = glm::vec3(glm::cos(yaw), 0, glm::sin(yaw));
-	glm::vec3 orthoDirection = glm::vec3(glm::sin(yaw), 0, -glm::cos(yaw));
+	glm::vec3 orthoDirection = glm::vec3(glm::cos(yaw), 0, glm::sin(yaw));
+	glm::vec3 lookDirection = glm::vec3(glm::sin(yaw), 0, -glm::cos(yaw));
 	switch (key)
 	{
 	case GLFW_KEY_W:
-		position.x += movementSpeed * lookDirection.x;
-		position.z += movementSpeed * lookDirection.z;
-		break;
-	case GLFW_KEY_A:
-		position -= movementSpeed * orthoDirection;
-		break;
-	case GLFW_KEY_S:
 		position -= movementSpeed * lookDirection;
 		break;
-	case GLFW_KEY_D:
+	case GLFW_KEY_A:
 		position += movementSpeed * orthoDirection;
+		break;
+	case GLFW_KEY_S:
+		position += movementSpeed * lookDirection;
+		break;
+	case GLFW_KEY_D:
+		position -= movementSpeed * orthoDirection;
 		break;
 	case GLFW_KEY_R:
 		position.y += movementSpeed;
