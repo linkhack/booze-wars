@@ -36,7 +36,7 @@ glm::mat4 myCamera::getViewProjectionMatrix() {
 	rotationPitch = glm::rotate(glm::mat4(1.0f), pitch, orthoDirection);
 	
 	
-	viewMatrix = rotationPitch*rotationYaw*translation;
+	viewMatrix = glm::transpose(rotationPitch*rotationYaw)*translation;
 	return projMatrix*viewMatrix;
 }
 
