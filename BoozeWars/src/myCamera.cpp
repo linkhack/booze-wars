@@ -1,5 +1,5 @@
 #include "myCamera.h"
-
+#include <iostream>
 
 
 myCamera::myCamera(float fov, float aspect, float near, float far)
@@ -43,20 +43,33 @@ void myCamera::updatePosition(int key)
 	//D:right
 	//R:upwards
 	//F:downwards
-	glm::vec3 lookDirection = glm::vec3(glm::cos(yaw), glm::sin(yaw), 0);
+	glm::vec3 lookDirection = glm::vec3(glm::sin(yaw), 0, glm::cos(yaw));
+	glm::vec3 orthoDirection = glm::vec3(-glm::cos(yaw), 0, glm::sin(yaw));
 	switch (key)
 	{
 	case GLFW_KEY_W:
-		position += movementSpeed * lookDirection;
-		break;
-	case GLFW_KEY_A:
-		break;
-	case GLFW_KEY_S:
 		position -= movementSpeed * lookDirection;
 		break;
-	case GLFW_KEY_D:
+	case GLFW_KEY_A:
+		position -= movementSpeed * orthoDirection;
 		break;
+	case GLFW_KEY_S:
+		position += movementSpeed * lookDirection;
+		break;
+	case GLFW_KEY_D:
+		position += movementSpeed * orthoDirection;
+		break;
+	case GLFW_KEY_R:
+		position.y += movementSpeed;
+		break;
+	case GLFW_KEY_F:
+		position.y -= movementSpeed;
 	default:
 		break;
 	}
+}
+
+void myCamera::updateDirection(int x, int y)
+{
+	std::cout << "(" << x << "," << y << ")" << std::endl;
 }

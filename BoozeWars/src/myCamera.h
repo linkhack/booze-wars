@@ -11,6 +11,7 @@ private:
 	float yaw, pitch;
 	glm::vec3 position;
 	float movementSpeed;
+	float rotationSpeed;
 
 public:
 	myCamera(float fov, float aspect, float near, float far);
@@ -20,5 +21,6 @@ public:
 	glm::mat4 getViewProjectionMatrix();
 	void update(int x, int y, float zoom, bool dragging, bool strafing);
 	void updatePosition(int direction);
+	void updateDirection(int x, int y);
 };
 
