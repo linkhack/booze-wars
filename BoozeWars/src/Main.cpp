@@ -172,7 +172,6 @@ int main(int argc, char** argv)
 		while (!glfwWindowShouldClose(window)) {
 			// Clear backbuffer
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 			// Update camera
 			glfwGetCursorPos(window, &mouse_x, &mouse_y);
 
