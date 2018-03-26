@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClCompile Include="src\myCamera.cpp" />
     <ClCompile Include="src\Building.cpp" />
     <ClCompile Include="src\Street.cpp" />
+    <ClInclude Include="src\myCamera.h" />
     <ClInclude Include="src\Building.h" />
     <ClInclude Include="src\DrunkCity.h" />
     <ClInclude Include="src\Enemy.h" />
