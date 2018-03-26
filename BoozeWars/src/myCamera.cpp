@@ -8,7 +8,7 @@ myCamera::myCamera(float fov, float aspect, float near, float far)
 	movementSpeed = 0.1;
 	position = glm::vec3(-10, 10, 0);
 	yaw = 0;
-	pitch = 0;
+	pitch = 90;
 }
 
 
@@ -25,10 +25,13 @@ glm::vec3 myCamera::getPosition()
 glm::mat4 myCamera::getViewProjectionMatrix() {
 	glm::vec3 transPos = position;
 	transPos *= -1;
-	glm::mat4 transform(1);
-	transform = glm::translate(transform,transPos);
-	transform = glm::rotate(transform, yaw, glm::vec3(0, 1, 0));
-	transform = glm::rotate(transform, pitch, glm::vec3(1, 0, 0));
+	glm::vec3 orthoDirection = glm::vec3(-glm::sin(yaw), 0, glm::cos(yaw));
+	glm::mat4 transform(1.0f);
+	
+	transform = glm::rotate(transform, yaw, glm::vec3(0, -1, 0));
+	transform = glm::rotate(transform, pitch, orthoDirection);
+	transform = glm::translate(transform, transPos);
+	
 	viewMatrix = transform;
 	return projMatrix*transform;
 }
@@ -43,8 +46,8 @@ void myCamera::updatePosition(int key)
 	//D:right
 	//R:upwards
 	//F:downwards
-	glm::vec3 lookDirection = glm::vec3(glm::sin(yaw), 0, glm::cos(yaw));
-	glm::vec3 orthoDirection = glm::vec3(-glm::cos(yaw), 0, glm::sin(yaw));
+	glm::vec3 lookDirection = glm::vec3(glm::cos(yaw), 0, glm::sin(yaw));
+	glm::vec3 orthoDirection = glm::vec3(-glm::sin(yaw), 0, glm::cos(yaw));
 	switch (key)
 	{
 	case GLFW_KEY_W:
@@ -72,4 +75,6 @@ void myCamera::updatePosition(int key)
 void myCamera::updateDirection(int x, int y)
 {
 	std::cout << "(" << x << "," << y << ")" << std::endl;
+	yaw = 0.001*x;
+	pitch = 0.001*y;
 }

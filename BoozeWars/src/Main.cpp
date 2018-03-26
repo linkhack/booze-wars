@@ -95,6 +95,9 @@ int main(int argc, char** argv)
 	// This function makes the context of the specified window current on the calling thread. 
 	glfwMakeContextCurrent(window);
 
+	//Delegate Cursor calculations to glfw
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
 	// Initialize GLEW
 	glewExperimental = true;
 	GLenum err = glewInit();
@@ -149,7 +152,8 @@ int main(int argc, char** argv)
 		std::shared_ptr<Material> moonMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.05f, 0.9f, 0.05f), 2.0f, moonTexture);
 
 		//Create World
-		DrunkCity world = DrunkCity(10.0f, 9.0f, 5.0f,sunMaterial);
+		DrunkCity world = DrunkCity(20000.0f, 9000.0f, 5000.0f,sunMaterial);
+		Geometry plane = Geometry(glm::mat4(1.0f), Geometry::createPlaneGeometry(1000, 1000), earthMaterial);
 		
 		//create enemy
 		world.addEnemy(earthMaterial);
@@ -174,6 +178,7 @@ int main(int argc, char** argv)
 
 			camera.update(int(mouse_x), int(mouse_y), _zoom, _dragging, _strafing);
 			camera.updatePosition(_key_pressed);
+			camera.updateDirection(int(mouse_x), int(mouse_y));
 
 			// Set per-frame uniforms
 			setPerFrameUniforms(textureShader.get(), camera, dirL, pointL);
@@ -183,6 +188,7 @@ int main(int argc, char** argv)
 
 			// Render
 			world.zeichne();
+			plane.draw();
 			
 			//worldModel.draw();
 			// Compute frame time
