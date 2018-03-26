@@ -7,8 +7,8 @@ myCamera::myCamera(float fov, float aspect, float near, float far)
 	projMatrix = glm::perspective(fov, aspect, near, far);
 	movementSpeed = 0.1;
 	position = glm::vec3(-10, 10, 0);
-	yaw = 0;
-	pitch = 90;
+	yaw = glm::pi<float>()/2.0f;
+	pitch = 0;
 }
 
 
@@ -25,15 +25,19 @@ glm::vec3 myCamera::getPosition()
 glm::mat4 myCamera::getViewProjectionMatrix() {
 	glm::vec3 transPos = position;
 	transPos *= -1;
-	glm::vec3 orthoDirection = glm::vec3(-glm::sin(yaw), 0, glm::cos(yaw));
-	glm::mat4 transform(1.0f);
+	glm::vec3 orthoDirection = glm::vec3(glm::cos(yaw), 0, glm::sin(yaw));
+	glm::mat4 translation;
+	glm::mat4 rotationYaw;
+	glm::mat4 rotationPitch;
+
 	
-	transform = glm::rotate(transform, yaw, glm::vec3(0, -1, 0));
-	transform = glm::rotate(transform, pitch, orthoDirection);
-	transform = glm::translate(transform, transPos);
+	translation = glm::translate(glm::mat4(1.0f), transPos);
+	rotationYaw = glm::rotate(glm::mat4(1.0f), yaw, glm::vec3(0, -1, 0));
+	rotationPitch = glm::rotate(glm::mat4(1.0f), pitch, orthoDirection);
 	
-	viewMatrix = transform;
-	return projMatrix*transform;
+	
+	viewMatrix = rotationPitch*rotationYaw*translation;
+	return projMatrix*viewMatrix;
 }
 
 void myCamera::update(int x, int y, float zoom, bool dragging, bool strafing){}
@@ -47,17 +51,18 @@ void myCamera::updatePosition(int key)
 	//R:upwards
 	//F:downwards
 	glm::vec3 lookDirection = glm::vec3(glm::cos(yaw), 0, glm::sin(yaw));
-	glm::vec3 orthoDirection = glm::vec3(-glm::sin(yaw), 0, glm::cos(yaw));
+	glm::vec3 orthoDirection = glm::vec3(glm::sin(yaw), 0, -glm::cos(yaw));
 	switch (key)
 	{
 	case GLFW_KEY_W:
-		position -= movementSpeed * lookDirection;
+		position.x += movementSpeed * lookDirection.x;
+		position.z += movementSpeed * lookDirection.z;
 		break;
 	case GLFW_KEY_A:
 		position -= movementSpeed * orthoDirection;
 		break;
 	case GLFW_KEY_S:
-		position += movementSpeed * lookDirection;
+		position -= movementSpeed * lookDirection;
 		break;
 	case GLFW_KEY_D:
 		position += movementSpeed * orthoDirection;
