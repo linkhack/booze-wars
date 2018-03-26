@@ -11,7 +11,7 @@
 
 #include "Geometry.h"
 
-#include "Camera.h"
+#include "myCamera.h"
 #include "Shader.h"
 
 #include "Material.h"
@@ -32,7 +32,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
-void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight& dirL, PointLight& pointL);
+void setPerFrameUniforms(Shader* shader, myCamera& camera, DirectionalLight& dirL, PointLight& pointL);
 
 
 /* --------------------------------------------- */
@@ -44,6 +44,7 @@ static bool _culling = true;
 static bool _dragging = false;
 static bool _strafing = false;
 static float _zoom = 12.0f;
+static int _key_pressed = GLFW_KEY_UNKNOWN;
 
 
 /* --------------------------------------------- */
@@ -148,13 +149,13 @@ int main(int argc, char** argv)
 		std::shared_ptr<Material> moonMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.05f, 0.9f, 0.05f), 2.0f, moonTexture);
 
 		//Create World
-		DrunkCity world = DrunkCity(900.0f, 600.0f, 30.0f,sunMaterial);
+		DrunkCity world = DrunkCity(10.0f, 9.0f, 5.0f,sunMaterial);
 		
 		//create enemy
 		world.addEnemy(earthMaterial);
 		//Geometry worldModel = Geometry(glm::mat4(1.0f), Geometry::createCubeGeometry(x, y, z), material);
 		// Initialize camera
-		Camera camera(fov, float(window_width) / float(window_height), nearZ, farZ);
+		myCamera camera(fov, float(window_width) / float(window_height), nearZ, farZ);
 		PointLight pointL(glm::vec3(1, 1, 1), glm::vec3(0), glm::vec3(1, 0, 0));
 		DirectionalLight dirL(glm::vec3(1,1,1), glm::vec3(0,-1,0));
 
@@ -172,6 +173,7 @@ int main(int argc, char** argv)
 			glfwGetCursorPos(window, &mouse_x, &mouse_y);
 
 			camera.update(int(mouse_x), int(mouse_y), _zoom, _dragging, _strafing);
+			camera.updatePosition(_key_pressed);
 
 			// Set per-frame uniforms
 			setPerFrameUniforms(textureShader.get(), camera, dirL, pointL);
@@ -218,7 +220,7 @@ int main(int argc, char** argv)
 }
 
 
-void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight& dirL, PointLight& pointL)
+void setPerFrameUniforms(Shader* shader, myCamera& camera, DirectionalLight& dirL, PointLight& pointL)
 {
 	shader->use();
 	shader->setUniform("viewProjMatrix", camera.getViewProjectionMatrix());
@@ -255,13 +257,17 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	// F1 - Wireframe
 	// F2 - Culling
 	// Esc - Exit
+
 	if (action == GLFW_REPEAT || action == GLFW_PRESS)
 	{
 		std::cout << "Key pressed" << std::endl;
+		_key_pressed = key;
+		return;
 	}
 
 	if (action != GLFW_RELEASE) return;
 
+	_key_pressed = GLFW_KEY_UNKNOWN;
 	switch (key)
 	{
 		case GLFW_KEY_ESCAPE:
