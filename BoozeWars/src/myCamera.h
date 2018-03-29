@@ -23,5 +23,6 @@ public:
 	void update(int x, int y, float zoom, bool dragging, bool strafing);
 	void updatePosition(int direction);
 	void updateDirection(int x, int y);
+	
 };
 

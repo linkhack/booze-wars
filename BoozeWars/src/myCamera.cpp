@@ -8,7 +8,7 @@ myCamera::myCamera(float fov, float aspect, float near, float far)
 	movementSpeed = 0.1;
 	position = glm::vec3(-10, 10, 0);
 	yaw = glm::pi<float>()/2.0f;
-	pitch = 0;
+	pitch = -glm::pi<float>() / 2.0f;
 	roll = 0;
 }
 
@@ -82,3 +82,5 @@ void myCamera::updateDirection(int x, int y)
 	yaw = 0.001*x;
 	pitch = 0.001*y;
 }
+
+

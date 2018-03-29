@@ -419,7 +419,7 @@ GeometryData Geometry::createPlaneGeometry(float width, float height)
 		glm::vec3(width, 0, height),
 		glm::vec3(width, 0, height),
 		glm::vec3(-width,0,height),
-		glm::vec3(width,0,height)
+		glm::vec3(width,0,-height)
 	};
 	data.normals =
 	{

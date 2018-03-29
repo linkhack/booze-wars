@@ -14,6 +14,7 @@ private:
 	Street highway;
 	Enemy *enemiesAlive;
 	std::list<Building> buildings;
+	//std::vector<Enemy> enemiesAlive;
 	int alive;
 	Geometry *worldModel;
 	
