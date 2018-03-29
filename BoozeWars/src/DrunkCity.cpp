@@ -46,14 +46,14 @@ Enemy* DrunkCity::getNearestEnemy(Building* building)
 	for (std::list<Enemy*>::iterator it = enemiesAlive.begin(); it != enemiesAlive.end(); ++it)
 	{
 		Enemy* iteratingEnemy = *it;
-		float iteratingEnemyX = abs(iteratingEnemy->getX - building->getX());
-		float iteratingEnemyY = abs(iteratingEnemy->getY - building->getY());
+		float iteratingEnemyX = abs(iteratingEnemy->getX() - building->getX());
+		float iteratingEnemyY = abs(iteratingEnemy->getY() - building->getY());
 		if (nearestEnemy && iteratingEnemyX + iteratingEnemyY <= building->getRange()) {
 			nearestEnemy = iteratingEnemy;
 		}
 		else {
-			float actualEnemyX = abs(nearestEnemy->getX - building->getX());
-			float actualEnemyY = abs(nearestEnemy->getY - building->getY());
+			float actualEnemyX = abs(nearestEnemy->getX() - building->getX());
+			float actualEnemyY = abs(nearestEnemy->getY() - building->getY());
 			if (actualEnemyX + actualEnemyY > iteratingEnemyX + iteratingEnemyY) {
 				nearestEnemy = iteratingEnemy;
 			}
