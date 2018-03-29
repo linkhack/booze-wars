@@ -27,3 +27,32 @@ glm::mat4 Enemy::getModelMatrix()
 void Enemy::draw() {
 	model->draw(getModelMatrix());
 }
+
+float Enemy::getX() 
+{
+	return x;
+}
+
+float Enemy::getY() 
+{
+	return y;
+}
+
+float Enemy::getHP()
+{
+	return hp;
+}
+
+void Enemy::hit(float damage)
+{
+	hp -= damage;
+}
+
+void Enemy::selfDestruct()
+{
+	if (model != NULL)
+	{
+		delete model;
+		model = NULL;
+	}
+}
