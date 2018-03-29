@@ -18,11 +18,14 @@ public:
 	Enemy& operator=(Enemy&&) = default;
 	Enemy& operator=(const Enemy &) = default;
 	
-
+	float getX();
+	float getY();
+	float getHP();
 
 	//void transform(float dT);
-	//void hit(float damage);
+	void hit(float damage);
 
 	void draw();
+	void selfDestruct(); // delete model from world
 };
 

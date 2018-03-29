@@ -12,10 +12,14 @@ class DrunkCity
 private:
 	
 	Street highway;
-	Enemy *enemiesAlive;
-	std::list<Building> buildings;
-	int alive;
+	std::list<Enemy*> enemiesAlive;
+	std::list<Building*> buildings;
+	int limitBuildings;
 	Geometry *worldModel;
+	int citySizeX;
+	int citySizeY;
+
+	Enemy* getNearestEnemy(Building* building);
 	
 public:
 
@@ -28,5 +32,7 @@ public:
 
 	void zeichne();
 	void addEnemy(std::shared_ptr<Material> material);
+	void addBuilding(int x, int y, std::shared_ptr<Material> material);
+	void fight();
 };
 
