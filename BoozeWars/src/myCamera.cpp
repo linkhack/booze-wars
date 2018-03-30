@@ -6,7 +6,7 @@ myCamera::myCamera(float fov, float aspect, float near, float far)
 {
 	projMatrix = glm::perspective(fov, aspect, near, far);
 	movementSpeed = 0.1;
-	position = glm::vec3(-10, 10, 0);
+	position = glm::vec3(-10, -10, 0);
 	yaw = glm::pi<float>()/2.0f;
 	pitch = -glm::pi<float>() / 2.0f;
 	roll = 0;
@@ -26,14 +26,14 @@ glm::vec3 myCamera::getPosition()
 glm::mat4 myCamera::getViewProjectionMatrix() {
 	glm::vec3 transPos = position;
 	transPos *= -1;
-	glm::vec3 orthoDirection = glm::vec3(glm::cos(yaw), 0, glm::sin(yaw));
+	glm::vec3 orthoDirection = glm::vec3(-glm::sin(yaw), 0, glm::cos(yaw));
 	glm::mat4 translation;
 	glm::mat4 rotationYaw;
 	glm::mat4 rotationPitch;
 
 	
 	translation = glm::translate(glm::mat4(1.0f), transPos);
-	rotationYaw = glm::rotate(glm::mat4(1.0f), yaw, glm::vec3(0, -1, 0));
+	rotationYaw = glm::rotate(glm::mat4(1.0f), yaw, glm::vec3(0, 1, 0));
 	rotationPitch = glm::rotate(glm::mat4(1.0f), pitch, orthoDirection);
 	
 	
@@ -56,16 +56,16 @@ void myCamera::updatePosition(int key)
 	switch (key)
 	{
 	case GLFW_KEY_W:
-		position += movementSpeed * lookDirection;
-		break;
-	case GLFW_KEY_A:
 		position += movementSpeed * orthoDirection;
 		break;
+	case GLFW_KEY_A:
+		position += movementSpeed * lookDirection;
+		break;
 	case GLFW_KEY_S:
-		position -= movementSpeed * lookDirection;
+		position -= movementSpeed * orthoDirection;
 		break;
 	case GLFW_KEY_D:
-		position -= movementSpeed * orthoDirection;
+		position -= movementSpeed * lookDirection;
 		break;
 	case GLFW_KEY_R:
 		position.y += movementSpeed;

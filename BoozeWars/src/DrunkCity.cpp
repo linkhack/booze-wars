@@ -11,7 +11,7 @@ DrunkCity::DrunkCity(float x, float y, float z, std::shared_ptr<Material> materi
 	limitBuildings = 5;
 	citySizeX = x;
 	citySizeY = y;
-	worldModel = new Geometry(glm::translate(glm::mat4(1.0f),glm::vec3(0,z,0))*glm::mat4(1.0f), Geometry::createCubeGeometry(x, y, z), material);
+	worldModel = new Geometry(glm::translate(glm::mat4(1.0f),glm::vec3(0,z/2.0f,0))*glm::mat4(1.0f), Geometry::createCubeGeometry(x, z, y), material);
 	
 	highway = Street(x, y);
 }
