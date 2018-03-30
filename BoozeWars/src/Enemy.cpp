@@ -11,6 +11,7 @@ Enemy::Enemy(std::shared_ptr<Material> material)
 	x = 100;
 	y = 100;
 	z = 5;
+	movementspeed = 15.0f;
 }
 
 
@@ -25,7 +26,8 @@ glm::mat4 Enemy::getModelMatrix()
 }
 
 void Enemy::draw() {
-	model->draw(getModelMatrix());
+	model->setTransformMatrix(getModelMatrix());
+	model->draw();
 }
 
 float Enemy::getX() 
@@ -55,4 +57,11 @@ void Enemy::selfDestruct()
 		delete model;
 		model = NULL;
 	}
+}
+
+void Enemy::walk(float dT)
+{
+	std::cout << dT;
+	x += movementspeed * dT;
+	std::cout << x << std::endl;
 }

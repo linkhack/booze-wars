@@ -11,7 +11,7 @@ DrunkCity::DrunkCity(float x, float y, float z, std::shared_ptr<Material> materi
 	limitBuildings = 5;
 	citySizeX = x;
 	citySizeY = y;
-	worldModel = new Geometry(glm::mat4(1.0f), Geometry::createCubeGeometry(x, y, z), material);
+	worldModel = new Geometry(glm::translate(glm::mat4(1.0f),glm::vec3(0,z,0))*glm::mat4(1.0f), Geometry::createCubeGeometry(x, y, z), material);
 	
 	highway = Street(x, y);
 }
@@ -90,6 +90,26 @@ void DrunkCity::fight()
 			enemy->selfDestruct();
 			enemiesAlive.remove(enemy);
 			delete enemy;
+			enemy = NULL;
+		}
+	}
+}
+
+void DrunkCity::walk(float dT)
+{
+	for (std::list<Enemy*>::iterator it = enemiesAlive.begin(); it != enemiesAlive.end(); ++it)
+	{
+		Enemy* iterEnemy = *it;
+		if (iterEnemy != NULL) 
+		{
+			iterEnemy->walk(dT);
+			if (iterEnemy->getX() >= 800 || iterEnemy->getY()>=900)
+			{
+				iterEnemy->selfDestruct();
+				enemiesAlive.remove(iterEnemy);
+				delete iterEnemy;
+				iterEnemy = NULL;
+			}
 		}
 	}
 }

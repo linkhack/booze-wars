@@ -8,6 +8,7 @@ private:
 	float y;
 	float z;
 	float hp;
+	float movementspeed; //max speed in meter/second
 	float damageTeens; //Amount of drunken teens per bottle
 
 public:
@@ -22,7 +23,8 @@ public:
 	float getX();
 	float getY();
 	float getHP();
-	//void transform(float dT);
+	
+	void walk(float dT);
 	void hit(float damage);
 
 	glm::mat4 getModelMatrix();
