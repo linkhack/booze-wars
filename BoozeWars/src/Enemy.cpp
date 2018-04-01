@@ -22,7 +22,7 @@ Enemy::~Enemy()
 
 glm::mat4 Enemy::getModelMatrix()
 {
-	return glm::translate(glm::mat4(1.0f), glm::vec3(x, z, y));
+	return glm::translate(glm::mat4(1.0f), glm::vec3(x, -z, y));
 }
 
 void Enemy::draw() {
