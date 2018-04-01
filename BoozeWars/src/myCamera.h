@@ -3,6 +3,7 @@
 #include <glm\gtc\matrix_transform.hpp>
 #include <glm\gtc\constants.hpp>
 #include <GLFW\glfw3.h>
+#include <glm\gtc\quaternion.hpp>
 
 class myCamera
 {
@@ -19,6 +20,10 @@ public:
 	~myCamera();
 
 	glm::vec3 getPosition();
+
+	glm::vec3 getLookDirection();
+	glm::vec3 getOrthodirection();
+	
 	glm::mat4 getViewProjectionMatrix();
 	void update(int x, int y, float zoom, bool dragging, bool strafing);
 	void updatePosition(int direction);

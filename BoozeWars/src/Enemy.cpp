@@ -8,9 +8,9 @@ Enemy::Enemy()
 Enemy::Enemy(std::shared_ptr<Material> material)
 {
 	model = new Geometry(glm::mat4(1.0f), Geometry::createCubeGeometry(10, 10, 10), material);
-	x = 100;
-	y = 100;
-	z = 5;
+	x = 0;
+	y = 0;
+	z = 15;
 	movementspeed = 15.0f;
 }
 
@@ -61,7 +61,6 @@ void Enemy::selfDestruct()
 
 void Enemy::walk(float dT)
 {
-	std::cout << dT;
 	x += movementspeed * dT;
-	std::cout << x << std::endl;
+
 }
