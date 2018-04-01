@@ -11,7 +11,7 @@ Enemy::Enemy(std::shared_ptr<Material> material)
 	x = 0;
 	y = 0;
 	z = 15;
-	movementspeed = 15.0f;
+	movementspeed = 60.0f;
 }
 
 

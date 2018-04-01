@@ -97,7 +97,8 @@ void DrunkCity::fight()
 
 void DrunkCity::walk(float dT)
 {
-	for (std::list<Enemy*>::iterator it = enemiesAlive.begin(); it != enemiesAlive.end(); ++it)
+	std::list<Enemy*>::iterator it = enemiesAlive.begin();
+	while(it != enemiesAlive.end())	
 	{
 		Enemy* iterEnemy = *it;
 		if (iterEnemy != NULL) 
@@ -106,9 +107,12 @@ void DrunkCity::walk(float dT)
 			if (iterEnemy->getX() >= 800 || iterEnemy->getY()>=900)
 			{
 				iterEnemy->selfDestruct();
-				enemiesAlive.remove(iterEnemy);
+				it = enemiesAlive.erase(it);
 				delete iterEnemy;
 				iterEnemy = NULL;
+			}else			
+			{
+				++it;
 			}
 		}
 	}

@@ -9,7 +9,7 @@ myCamera::myCamera(float fov, float aspect, float near, float far)
 	position = glm::vec3(0.0f, -10.0f, 0.0f);
 	rotationMatrix = glm::mat4(1.0f);
 	yaw = 0;
-	pitch =0;
+	pitch  =0;
 	roll = 0;
 }
 
@@ -31,7 +31,7 @@ glm::vec3 myCamera::getLookDirection()
 
 glm::vec3 myCamera::getOrthodirection()
 {
-	return glm::vec3(glm::sin(yaw), 0.0f, glm::cos(yaw));
+	return glm::vec3(rotationMatrix[0][0], rotationMatrix[1][0], rotationMatrix[2][0]);
 }
 
 glm::mat4 myCamera::getViewProjectionMatrix() {
@@ -80,10 +80,10 @@ void myCamera::updatePosition(int key)
 		position -= movementSpeed * orthoDirection;
 		break;
 	case GLFW_KEY_R:
-		position.y += movementSpeed;
+		position.y -= movementSpeed;
 		break;
 	case GLFW_KEY_F:
-		position.y -= movementSpeed;
+		position.y += movementSpeed;
 	default:
 		break;
 	}
