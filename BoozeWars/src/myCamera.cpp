@@ -6,9 +6,10 @@ myCamera::myCamera(float fov, float aspect, float near, float far)
 {
 	projMatrix = glm::perspective(fov, aspect, near, far);
 	movementSpeed = 0.1;
-	position = glm::vec3(-10, 10, 0);
-	yaw = glm::pi<float>()/2.0f;
-	pitch = -glm::pi<float>() / 2.0f;
+	position = glm::vec3(0.0f, -10.0f, 0.0f);
+	rotationMatrix = glm::mat4(1.0f);
+	yaw = 0;
+	pitch  =0;
 	roll = 0;
 }
 
@@ -23,21 +24,32 @@ glm::vec3 myCamera::getPosition()
 	return position;
 }
 
+glm::vec3 myCamera::getLookDirection()
+{
+	return -glm::vec3(rotationMatrix[0][2], rotationMatrix[1][2], rotationMatrix[2][2]);
+}
+
+glm::vec3 myCamera::getOrthodirection()
+{
+	return glm::vec3(rotationMatrix[0][0], rotationMatrix[1][0], rotationMatrix[2][0]);
+}
+
 glm::mat4 myCamera::getViewProjectionMatrix() {
+	//Translation
 	glm::vec3 transPos = position;
 	transPos *= -1;
-	glm::vec3 orthoDirection = glm::vec3(glm::cos(yaw), 0, glm::sin(yaw));
-	glm::mat4 translation;
-	glm::mat4 rotationYaw;
-	glm::mat4 rotationPitch;
+	glm::mat4 translation = glm::translate(glm::mat4(1.0f), transPos);
+	
+	//Rotations
+	glm::quat qPitch = glm::angleAxis(pitch, glm::vec3(1, 0, 0));
+	glm::quat qYaw = glm::angleAxis(yaw, glm::vec3(0, 1, 0));
 
-	
-	translation = glm::translate(glm::mat4(1.0f), transPos);
-	rotationYaw = glm::rotate(glm::mat4(1.0f), yaw, glm::vec3(0, -1, 0));
-	rotationPitch = glm::rotate(glm::mat4(1.0f), pitch, orthoDirection);
-	
-	
-	viewMatrix = glm::transpose(rotationPitch*rotationYaw)*translation;
+	glm::quat orientation = qPitch * qYaw;
+	orientation = glm::normalize(orientation);
+	rotationMatrix = glm::mat4_cast(orientation);
+
+	//View and proj matrix
+	viewMatrix = rotationMatrix*translation;
 	return projMatrix*viewMatrix;
 }
 
@@ -51,8 +63,8 @@ void myCamera::updatePosition(int key)
 	//D:right
 	//R:upwards
 	//F:downwards
-	glm::vec3 orthoDirection = glm::vec3(glm::cos(yaw), 0, glm::sin(yaw));
-	glm::vec3 lookDirection = glm::vec3(-glm::sin(yaw), 0, glm::cos(yaw));
+	glm::vec3 orthoDirection = glm::normalize(glm::vec3(rotationMatrix[0][0],0,rotationMatrix[2][0]));
+	glm::vec3 lookDirection = -glm::normalize(glm::vec3(rotationMatrix[0][2],0,rotationMatrix[2][2]));
 	switch (key)
 	{
 	case GLFW_KEY_W:
@@ -68,10 +80,10 @@ void myCamera::updatePosition(int key)
 		position -= movementSpeed * orthoDirection;
 		break;
 	case GLFW_KEY_R:
-		position.y += movementSpeed;
+		position.y -= movementSpeed;
 		break;
 	case GLFW_KEY_F:
-		position.y -= movementSpeed;
+		position.y += movementSpeed;
 	default:
 		break;
 	}
@@ -79,8 +91,16 @@ void myCamera::updatePosition(int key)
 
 void myCamera::updateDirection(int x, int y)
 {
-	yaw = 0.001*x;
-	pitch = 0.001*y;
+	yaw = 0.1*x;
+	pitch = 0.1*y;
+	if (pitch >= 88) {
+		pitch = 88;
+	}
+	if (pitch <= -88) {
+		pitch = -88;
+	}
+	yaw = glm::radians(yaw);
+	pitch = glm::radians(pitch);
 }
 
 

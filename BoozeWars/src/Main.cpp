@@ -185,8 +185,8 @@ int main(int argc, char** argv)
 		std::shared_ptr<Material> moonMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.05f, 0.9f, 0.05f), 2.0f, moonTexture);
 
 		//Create World
-		DrunkCity world = DrunkCity(20000.0f, 9000.0f, 5000.0f,sunMaterial);
-		Geometry plane = Geometry(glm::mat4(1.0f), Geometry::createPlaneGeometry(1000, 1000), earthMaterial);
+		DrunkCity world = DrunkCity(500.0f, 500.0f, 20.0f,sunMaterial);
+		//Geometry plane = Geometry(glm::mat4(1.0f), Geometry::createPlaneGeometry(1000, 1000), earthMaterial);
 		
 		//create enemy
 		world.addEnemy(earthMaterial);
@@ -204,7 +204,7 @@ int main(int argc, char** argv)
 		// Render loop
 		double mouse_x, mouse_y;
 		float t = float(glfwGetTime());
-		float dt = 0.0f;
+		float dt = 0.0f; //frame time in seconds(!)
 		float t_sum = 0.0f;
 		bool firstRun = true;
 		while (!glfwWindowShouldClose(window)) {
@@ -220,7 +220,9 @@ int main(int argc, char** argv)
 			// Set per-frame uniforms
 			setPerFrameUniforms(textureShader.get(), camera, dirL, pointL);
 
-			// Hierarchical animation
+			// Damage and Walking
+			world.fight();
+			world.walk(dt);
 			
 			// Play logic
 			if (firstRun) {
@@ -277,7 +279,7 @@ int main(int argc, char** argv)
 
 			// Render
 			world.zeichne();
-			plane.draw();
+
 			
 			//worldModel.draw();
 			// Compute frame time
