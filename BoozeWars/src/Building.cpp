@@ -33,7 +33,7 @@ float Building::getDamage()
 	return damage;
 }
 
-float Building::getRange()
+int Building::getRange()
 {
 	return range;
 }

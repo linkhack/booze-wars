@@ -1,5 +1,5 @@
 #include "DrunkCity.h"
-
+#include "Exceptions.h"
 
 DrunkCity::DrunkCity()
 {
@@ -41,26 +41,29 @@ Enemy* DrunkCity::getNearestEnemy(Building* building)
 {
 	Enemy* nearestEnemy = NULL;
 	if (enemiesAlive.size() == 0) {
-		//throw Exception
+		throw ALL_ENEMIES_DESTROYED;
 	}
 	for (std::list<Enemy*>::iterator it = enemiesAlive.begin(); it != enemiesAlive.end(); ++it)
 	{
 		Enemy* iteratingEnemy = *it;
 		float iteratingEnemyX = abs(iteratingEnemy->getX() - building->getX());
 		float iteratingEnemyY = abs(iteratingEnemy->getY() - building->getY());
-		if (nearestEnemy && iteratingEnemyX + iteratingEnemyY <= building->getRange()) {
+		if (iteratingEnemyX + iteratingEnemyY <= building->getRange())
+			continue;
+		if (!nearestEnemy) {
 			nearestEnemy = iteratingEnemy;
 		}
 		else {
 			float actualEnemyX = abs(nearestEnemy->getX() - building->getX());
 			float actualEnemyY = abs(nearestEnemy->getY() - building->getY());
-			if (actualEnemyX + actualEnemyY > iteratingEnemyX + iteratingEnemyY) {
+			if (iteratingEnemyX + iteratingEnemyY <= building->getRange() &&
+				actualEnemyX + actualEnemyY > iteratingEnemyX + iteratingEnemyY) {
 				nearestEnemy = iteratingEnemy;
 			}
 		}
 	}
 	if (!nearestEnemy) {
-		//throw Exception
+		throw NO_ENEMIES_IN_RANGE;
 	}
 	return nearestEnemy;
 }
@@ -74,7 +77,7 @@ void DrunkCity::addEnemy(std::shared_ptr<Material> material)
 void DrunkCity::addBuilding(int x, int y, std::shared_ptr<Material> material)
 {
 	if (buildings.size() >= limitBuildings) {
-		// TODO: throw Exception
+		throw BUILDINGS_LIMIT_REACHED;
 	}
 	buildings.push_back(new Building(x, y, material));
 }

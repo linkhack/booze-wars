@@ -21,7 +21,7 @@ public:
 	int getX();
 	int getY();
 	float getDamage();
-	float getRange();
+	int getRange();
 
 	void draw();
 };

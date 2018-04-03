@@ -21,6 +21,14 @@
 
 #include "DrunkCity.h"
 
+#include "Exceptions.h"
+
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
 /* --------------------------------------------- */
 // Prototypes
@@ -45,6 +53,9 @@ static bool _dragging = false;
 static bool _strafing = false;
 static float _zoom = 12.0f;
 static int _key_pressed = GLFW_KEY_UNKNOWN;
+unsigned char **tex;
+static int width = 800;
+static int height = 800;
 
 
 /* --------------------------------------------- */
@@ -63,8 +74,8 @@ int main(int argc, char** argv)
 		EXIT_WITH_ERROR("Failed to load 'settings.ini'")
 	}
 
-	int window_width = reader.GetInteger("window", "width", 800);
-	int window_height = reader.GetInteger("window", "height", 800);
+	int window_width = reader.GetInteger("window", "width", width);
+	int window_height = reader.GetInteger("window", "height", height);
 	std::string window_title = reader.Get("window", "title", "ECG");
 	float fov = float(reader.GetReal("camera", "fov", 60.0f));
 	float nearZ = float(reader.GetReal("camera", "near", 0.1f));
@@ -135,6 +146,28 @@ int main(int argc, char** argv)
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 
+	// set up TrueType
+	FT_Library ft;
+	if (FT_Init_FreeType(&ft))
+		std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
+
+	FT_Face face;
+	if (FT_New_Face(ft, "C://Windows//Fonts//arial.ttf", 0, &face))
+		std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
+
+	FT_Set_Pixel_Sizes(face, 0, 48);
+
+	if (FT_Load_Char(face, 'X', FT_LOAD_RENDER))
+		std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
+
+	struct Character {
+		GLuint     TextureID;  // ID handle of the glyph texture
+		glm::ivec2 Size;       // Size of glyph
+		glm::ivec2 Bearing;    // Offset from baseline to left/top of glyph
+		GLuint     Advance;    // Offset to advance to next glyph
+	};
+
+	std::map<GLchar, Character> Characters;
 
 	/* --------------------------------------------- */
 	// Initialize scene and render loop
@@ -157,6 +190,10 @@ int main(int argc, char** argv)
 		
 		//create enemy
 		world.addEnemy(earthMaterial);
+		
+		//create building
+		world.addBuilding(4,5,moonMaterial);
+
 		//Geometry worldModel = Geometry(glm::mat4(1.0f), Geometry::createCubeGeometry(x, y, z), material);
 		// Initialize camera
 		myCamera camera(fov, float(window_width) / float(window_height), nearZ, farZ);
@@ -169,6 +206,7 @@ int main(int argc, char** argv)
 		float t = float(glfwGetTime());
 		float dt = 0.0f;
 		float t_sum = 0.0f;
+		bool firstRun = true;
 		while (!glfwWindowShouldClose(window)) {
 			// Clear backbuffer
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -184,6 +222,58 @@ int main(int argc, char** argv)
 
 			// Hierarchical animation
 			
+			// Play logic
+			if (firstRun) {
+				firstRun = false;
+			}
+			else {
+				try {
+					world.fight();
+				}
+				catch (int e) {
+					if (e == ALL_ENEMIES_DESTROYED) {
+						glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // Disable byte-alignment restriction
+
+						for (GLubyte c = 0; c < 128; c++)
+						{
+							// Load character glyph 
+							if (FT_Load_Char(face, c, FT_LOAD_RENDER))
+							{
+								std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
+								continue;
+							}
+							// Generate texture
+							GLuint texture;
+							glGenTextures(1, &texture);
+							glBindTexture(GL_TEXTURE_2D, texture);
+							glTexImage2D(
+								GL_TEXTURE_2D,
+								0,
+								GL_RED,
+								face->glyph->bitmap.width,
+								face->glyph->bitmap.rows,
+								0,
+								GL_RED,
+								GL_UNSIGNED_BYTE,
+								face->glyph->bitmap.buffer
+							);
+							// Set texture options
+							glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+							glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+							glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+							glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+							// Now store character for later use
+							Character character = {
+								texture,
+								glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
+								glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
+								face->glyph->advance.x
+							};
+							Characters.insert(std::pair<GLchar, Character>(c, character));
+						}
+					}
+				}
+			}
 
 			// Render
 			world.zeichne();
@@ -237,7 +327,6 @@ void setPerFrameUniforms(Shader* shader, myCamera& camera, DirectionalLight& dir
 	shader->setUniform("pointL.position", pointL.position);
 	shader->setUniform("pointL.attenuation", pointL.attenuation);
 }
-
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {	
