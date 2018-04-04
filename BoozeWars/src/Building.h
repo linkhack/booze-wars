@@ -7,10 +7,8 @@ private:
 	Geometry * model;
 	int x;
 	int y;
-	float z;
 	float damage;
 	int range;
-	glm::mat4 getModelMatrix();
 public:
 	Building();
 	Building::Building(int x, int y, std::shared_ptr<Material> material);
