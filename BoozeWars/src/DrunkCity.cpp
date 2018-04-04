@@ -103,8 +103,10 @@ void DrunkCity::walk(float dT)
 		Enemy* iterEnemy = *it;
 		if (iterEnemy != NULL) 
 		{
+			//walk toward goal
 			iterEnemy->walk(dT);
-			if (iterEnemy->getX() >= 800 || iterEnemy->getY()>=900)
+			//Out of bounds
+			if (iterEnemy->getX() >= 800 || iterEnemy->getY()>=900 )
 			{
 				iterEnemy->selfDestruct();
 				it = enemiesAlive.erase(it);

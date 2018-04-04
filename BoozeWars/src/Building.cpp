@@ -38,7 +38,14 @@ float Building::getRange()
 	return range;
 }
 
+//only translation
+glm::mat4 Building::getModelMatrix()
+{
+	return glm::translate(glm::mat4(1.0f), glm::vec3(x, -z, y));
+}
+
 void Building::draw() 
 {
+	model->setTransformMatrix(getModelMatrix());
 	model->draw();
 }
