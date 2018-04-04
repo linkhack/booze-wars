@@ -9,7 +9,7 @@ Building::Building(int x, int y, std::shared_ptr<Material> material)
 	this->x = x;
 	this->y = y;
 	this->damage = 10;
-	this->range = 20;
+	this->range = 800;
 	model = new Geometry(glm::mat4(1.0f), Geometry::createCubeGeometry(10, 10, 10), material);
 }
 
@@ -33,7 +33,7 @@ float Building::getDamage()
 	return damage;
 }
 
-float Building::getRange()
+int Building::getRange()
 {
 	return range;
 }
