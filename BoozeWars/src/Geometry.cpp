@@ -49,6 +49,7 @@ Geometry::Geometry(glm::mat4 modelMatrix, GeometryData& data, std::shared_ptr<Ma
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	_isEmpty = false;
+	
 }
 
 Geometry::Geometry(glm::mat4 modelMatrix)
@@ -114,7 +115,7 @@ GeometryData Geometry::createCubeGeometry(float width, float height, float depth
 {
 	GeometryData data;
 
-
+	
 	data.positions = {
 		// front
 		glm::vec4(-width / 2.0f, -height / 2.0f,  depth / 2.0f, 1.0f),
@@ -415,8 +416,8 @@ GeometryData Geometry::createInfinitePlane()
 	data.positions =
 	{
 		glm::vec4(0.0f, 0.0f ,0.0f, 1.0f),
-		glm::vec4(1.0f,0.0f,0.0f,1.0f),
-		glm::vec4(0.0f,0.0f,1.0f,1.0f),
+		glm::vec4(1.0f,0.0f,0.0f,0.0f),
+		glm::vec4(0.0f,0.0f,1.0f,0.0f),
 		glm::vec4(-1.0f,0.0f,0.0f,0.0f),
 		glm::vec4(0.0f, 0.0f,-1.0f, 0.0f)
 	};
@@ -432,12 +433,19 @@ GeometryData Geometry::createInfinitePlane()
 	
 	data.uvs =
 	{
-		glm::vec2(0.0f,0.0f),
-		glm::vec2(0, 1.0f),
+		glm::vec2(0.5f,0.5f),
 		glm::vec2(1, 1),
 		glm::vec2(1, 0),
+		glm::vec2(0, 1),
 		glm::vec2(0, 0)
 	};
 
-	return data;
+	data.indices =
+	{
+		0,1,2,
+		0,2,3,
+		0,3,4,
+		0,4,1
+	};
+	return std::move(data);
 }
