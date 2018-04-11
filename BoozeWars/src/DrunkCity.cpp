@@ -15,12 +15,12 @@ DrunkCity::DrunkCity(float x, float y, float z, std::shared_ptr<Shader> skyShade
 	//Cubemap: right/left/top/bottom/back/front
 	std::vector<std::string> skymapTextureLoc =
 	{
-		"assets/textures/cubemap/posx.jpg",
-		"assets/textures/cubemap/negx.jpg",
-		"assets/textures/cubemap/posy.jpg",
-		"assets/textures/cubemap/negy.jpg",
-		"assets/textures/cubemap/posz.jpg",
-		"assets/textures/cubemap/negz.jpg"
+		"assets/textures/cubemap/posx.png",
+		"assets/textures/cubemap/negx.png",
+		"assets/textures/cubemap/negy.png",
+		"assets/textures/cubemap/posy.png",
+		"assets/textures/cubemap/negz.png",
+		"assets/textures/cubemap/posz.png"	
 	};
 	worldModel = new Skybox(skyShader,skymapTextureLoc);
 	
