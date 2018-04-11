@@ -16,11 +16,11 @@ Geometry::Geometry(glm::mat4 modelMatrix, GeometryData& data, std::shared_ptr<Ma
 	// create positions VBO
 	glGenBuffers(1, &_vboPositions);
 	glBindBuffer(GL_ARRAY_BUFFER, _vboPositions);
-	glBufferData(GL_ARRAY_BUFFER, data.positions.size() * sizeof(glm::vec3), data.positions.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, data.positions.size() * sizeof(glm::vec4), data.positions.data(), GL_STATIC_DRAW);
 
 	// bind positions to location 0
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
 
 	// create normals VBO
 	glGenBuffers(1, &_vboNormals);
@@ -117,35 +117,35 @@ GeometryData Geometry::createCubeGeometry(float width, float height, float depth
 
 	data.positions = {
 		// front
-		glm::vec3(-width / 2.0f, -height / 2.0f,  depth / 2.0f),
-		glm::vec3(width / 2.0f, -height / 2.0f,  depth / 2.0f),
-		glm::vec3(width / 2.0f, height / 2.0f,  depth / 2.0f),
-		glm::vec3(-width / 2.0f, height / 2.0f,  depth / 2.0f),
+		glm::vec4(-width / 2.0f, -height / 2.0f,  depth / 2.0f, 1.0f),
+		glm::vec4(width / 2.0f, -height / 2.0f,  depth / 2.0f,1.0f),
+		glm::vec4(width / 2.0f, height / 2.0f,  depth / 2.0f,1.0f),
+		glm::vec4(-width / 2.0f, height / 2.0f,  depth / 2.0f,1.0f),
 		// back
-		glm::vec3(width / 2.0f, -height / 2.0f,  -depth / 2.0f),
-		glm::vec3(-width / 2.0f, -height / 2.0f,  -depth / 2.0f),
-		glm::vec3(-width / 2.0f, height / 2.0f,  -depth / 2.0f),
-		glm::vec3(width / 2.0f, height / 2.0f,  -depth / 2.0f),
+		glm::vec4(width / 2.0f, -height / 2.0f,  -depth / 2.0f,1.0f),
+		glm::vec4(-width / 2.0f, -height / 2.0f,  -depth / 2.0f,1.0f),
+		glm::vec4(-width / 2.0f, height / 2.0f,  -depth / 2.0f,1.0f),
+		glm::vec4(width / 2.0f, height / 2.0f,  -depth / 2.0f,1.0f),
 		// right
-		glm::vec3(width / 2.0f, -height / 2.0f,  depth / 2.0f),
-		glm::vec3(width / 2.0f, -height / 2.0f,  -depth / 2.0f),
-		glm::vec3(width / 2.0f, height / 2.0f,  -depth / 2.0f),
-		glm::vec3(width / 2.0f, height / 2.0f,  depth / 2.0f),
+		glm::vec4(width / 2.0f, -height / 2.0f,  depth / 2.0f,1.0f),
+		glm::vec4(width / 2.0f, -height / 2.0f,  -depth / 2.0f,1.0f),
+		glm::vec4(width / 2.0f, height / 2.0f,  -depth / 2.0f,1.0f),
+		glm::vec4(width / 2.0f, height / 2.0f,  depth / 2.0f,1.0f),
 		// left
-		glm::vec3(-width / 2.0f, -height / 2.0f,  -depth / 2.0f),
-		glm::vec3(-width / 2.0f, -height / 2.0f,  depth / 2.0f),
-		glm::vec3(-width / 2.0f, height / 2.0f,  depth / 2.0f),
-		glm::vec3(-width / 2.0f, height / 2.0f,  -depth / 2.0f),
+		glm::vec4(-width / 2.0f, -height / 2.0f,  -depth / 2.0f,1.0f),
+		glm::vec4(-width / 2.0f, -height / 2.0f,  depth / 2.0f,1.0f),
+		glm::vec4(-width / 2.0f, height / 2.0f,  depth / 2.0f,1.0f),
+		glm::vec4(-width / 2.0f, height / 2.0f,  -depth / 2.0f,1.0f),
 		// top
-		glm::vec3(-width / 2.0f, height / 2.0f,  -depth / 2.0f),
-		glm::vec3(-width / 2.0f, height / 2.0f,  depth / 2.0f),
-		glm::vec3(width / 2.0f, height / 2.0f,  depth / 2.0f),
-		glm::vec3(width / 2.0f, height / 2.0f,  -depth / 2.0f),
+		glm::vec4(-width / 2.0f, height / 2.0f,  -depth / 2.0f,1.0f),
+		glm::vec4(-width / 2.0f, height / 2.0f,  depth / 2.0f,1.0f),
+		glm::vec4(width / 2.0f, height / 2.0f,  depth / 2.0f,1.0f),
+		glm::vec4(width / 2.0f, height / 2.0f,  -depth / 2.0f,1.0f),
 		// bottom
-		glm::vec3(-width / 2.0f, -height / 2.0f,  -depth / 2.0f),
-		glm::vec3(width / 2.0f, -height / 2.0f,  -depth / 2.0f),
-		glm::vec3(width / 2.0f, -height / 2.0f,  depth / 2.0f),
-		glm::vec3(-width / 2.0f, -height / 2.0f,  depth / 2.0f)
+		glm::vec4(-width / 2.0f, -height / 2.0f,  -depth / 2.0f,1.0f),
+		glm::vec4(width / 2.0f, -height / 2.0f,  -depth / 2.0f,1.0f),
+		glm::vec4(width / 2.0f, -height / 2.0f,  depth / 2.0f,1.0f),
+		glm::vec4(-width / 2.0f, -height / 2.0f,  depth / 2.0f,1.0f)
 	};
 
 	data.normals = {
@@ -245,10 +245,10 @@ GeometryData Geometry::createCylinderGeometry(unsigned int segments, float heigh
 
 
 	// center vertices
-	data.positions.push_back(glm::vec3(0, -height / 2.0f, 0));
+	data.positions.push_back(glm::vec4(0, -height / 2.0f, 0.0f,1.0f));
 	data.normals.push_back(glm::vec3(0, -1, 0));
 	data.uvs.push_back(glm::vec2(0.5f, 0.5f));
-	data.positions.push_back(glm::vec3(0, height / 2.0f, 0));
+	data.positions.push_back(glm::vec4(0, height / 2.0f, 0.0f,1.0f));
 	data.normals.push_back(glm::vec3(0, 1, 0));
 	data.uvs.push_back(glm::vec2(0.5f, 0.5f));
 
@@ -267,8 +267,8 @@ GeometryData Geometry::createCylinderGeometry(unsigned int segments, float heigh
 		);
 
 		// bottom ring vertex
-		data.positions.push_back(circlePos);
-		data.positions.push_back(circlePos);
+		data.positions.push_back(glm::vec4(circlePos,1));
+		data.positions.push_back(glm::vec4(circlePos, 1));
 		data.normals.push_back(glm::vec3(0, -1, 0));
 		data.normals.push_back(glm::normalize(circlePos - glm::vec3(0, -height / 2.0f, 0)));
 		data.uvs.push_back(squareToCirlceUV);
@@ -276,8 +276,8 @@ GeometryData Geometry::createCylinderGeometry(unsigned int segments, float heigh
 
 		// top ring vertex
 		circlePos.y = height / 2.0f;
-		data.positions.push_back(circlePos);
-		data.positions.push_back(circlePos);
+		data.positions.push_back(glm::vec4(circlePos, 1));
+		data.positions.push_back(glm::vec4(circlePos, 1));
 		data.normals.push_back(glm::vec3(0, 1, 0));
 		data.normals.push_back(glm::normalize(circlePos - glm::vec3(0, height / 2.0f, 0)));
 		data.uvs.push_back(squareToCirlceUV);
@@ -312,8 +312,8 @@ GeometryData Geometry::createSphereGeometry(unsigned int longitudeSegments, unsi
 	GeometryData data;
 
 
-	data.positions.push_back(glm::vec3(0.0f, radius, 0.0f));
-	data.positions.push_back(glm::vec3(0.0f, -radius, 0.0f));
+	data.positions.push_back(glm::vec4(0.0f, radius, 0.0f,1.0f));
+	data.positions.push_back(glm::vec4(0.0f, -radius, 0.0f,1.0f));
 	data.normals.push_back(glm::vec3(0.0f, radius, 0.0f));
 	data.normals.push_back(glm::vec3(0.0f, -radius, 0.0f));
 	data.uvs.push_back(glm::vec2(0.5f, 1.0f));
@@ -340,7 +340,7 @@ GeometryData Geometry::createSphereGeometry(unsigned int longitudeSegments, unsi
 				radius * glm::cos(verticalAngle),
 				radius * glm::sin(verticalAngle) * glm::sin(horizontalAngle)
 			);
-			data.positions.push_back(position);
+			data.positions.push_back(glm::vec4(position, 1));
 			data.normals.push_back(glm::normalize(position));
 			data.uvs.push_back(glm::vec2(horizontalAngle / (2.0f * glm::pi<float>()), verticalAngle / glm::pi<float>()));
 
@@ -363,10 +363,10 @@ GeometryData Geometry::createConeGeometry(unsigned int segments, float radius, f
 	GeometryData data;
 
 	//create center vertex for lower face
-	data.positions.push_back(glm::vec3(0, 0, 0));
+	data.positions.push_back(glm::vec4(0, 0, 0,1.0f));
 	data.normals.push_back(glm::vec3(0, -1, 0));
 	data.uvs.push_back(glm::vec2(0.5f, 0.5f));
-	data.positions.push_back(glm::vec3(0, height, 0));
+	data.positions.push_back(glm::vec4(0, height, 0,1.0f));
 	data.normals.push_back(glm::vec3(0, 1, 0));
 	data.uvs.push_back(glm::vec2(0.5f, 0.5f));
 
@@ -387,8 +387,8 @@ GeometryData Geometry::createConeGeometry(unsigned int segments, float radius, f
 		);
 
 		// bottom ring vertex
-		data.positions.push_back(circlePos);
-		data.positions.push_back(circlePos);
+		data.positions.push_back(glm::vec4(circlePos, 1));
+		data.positions.push_back(glm::vec4(circlePos, 1));
 		data.normals.push_back(glm::vec3(0, -1, 0));
 		data.normals.push_back(glm::normalize(circlePos));
 		data.uvs.push_back(squareToCirlceUV);
@@ -415,5 +415,7 @@ GeometryData Geometry::createInfinitePlane()
 	data.positions =
 	{
 
-	}
+	};
+
+	return data;
 }
