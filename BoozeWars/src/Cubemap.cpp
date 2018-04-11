@@ -20,11 +20,11 @@ Cubemap::Cubemap(std::vector<std::string> faces)
 		FREE_IMAGE_FORMAT texFormat = FreeImage_GetFileType(faces[i].c_str(), 0);
 		if (texFormat == FIF_UNKNOWN) { std::cout << "Cubemap: Image format unknow" << std::endl;}
 		FIBITMAP* texImage = FreeImage_Load(texFormat, faces[i].c_str());
-		if (!texImage) { std::cout << "Cubemap: Image loading failed" << std::endl; }
+		if (!texImage) { std::cout << "Cubemap: Image loading failed: " << faces[i].c_str()<<std::endl; }
 		data = FreeImage_GetBits(texImage);
 		width = FreeImage_GetWidth(texImage);
 		height = FreeImage_GetHeight(texImage);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height,
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height,
 			0, GL_RGB, GL_UNSIGNED_BYTE, data);
 		FreeImage_Unload(texImage);
 	}

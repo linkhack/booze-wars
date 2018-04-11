@@ -10,5 +10,5 @@ void main()
 {
     TexCoords = position;
     vec4 pos = projection * rotation * vec4(position, 1.0);
-    gl_Position = pos.xyzw;
+    gl_Position = pos.xyww;
 }  
