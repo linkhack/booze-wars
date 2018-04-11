@@ -5,6 +5,7 @@
 #include "Building.h"
 #include <glm\glm.hpp>
 #include "Material.h"
+#include "Skybox.h"
 
 
 class DrunkCity
@@ -17,7 +18,7 @@ private:
 	std::list<Enemy*> enemiesAlive;
 	std::list<Building*> buildings;
 	int limitBuildings;
-	Geometry *worldModel;
+	Skybox* worldModel;
 	int citySizeX;
 	int citySizeY;
 
@@ -27,7 +28,7 @@ public:
 
 	DrunkCity();
 	~DrunkCity();
-	DrunkCity(float x, float y, float z, std::shared_ptr<Material> material);
+	DrunkCity(float x, float y, float z, std::shared_ptr<Shader> skyShader);
 
 	DrunkCity(DrunkCity&&) = default;
 	DrunkCity& operator=(DrunkCity&&) = default;

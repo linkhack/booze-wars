@@ -1,17 +1,27 @@
 #include "DrunkCity.h"
 #include "Exceptions.h"
+#include "Skybox.h"
 
 DrunkCity::DrunkCity()
 {
 
 }
 
-DrunkCity::DrunkCity(float x, float y, float z, std::shared_ptr<Material> material)
+DrunkCity::DrunkCity(float x, float y, float z, std::shared_ptr<Shader> skyShader)
 {
 	limitBuildings = 5;
 	citySizeX = x;
 	citySizeY = y;
-	worldModel = new Geometry(glm::translate(glm::mat4(1.0f),glm::vec3(0,z/2.0f,0))*glm::mat4(1.0f), Geometry::createCubeGeometry(x, z, y), material);
+	std::vector<std::string> skymapTextureLoc =
+	{
+		"textures\cubemap\negx.jpg",
+		".\assets\textures\cubemap\negy.jpg",
+		"assets\textures\cubemap\negz.jpg",
+		"assets\textures\cubemap\posx.jpg",
+		"assets\textures\cubemap\posy.jpg",
+		"assets\textures\cubemap\posz.jpg"
+	};
+	worldModel = new Skybox(skyShader,skymapTextureLoc);
 	
 	highway = Street(x, y);
 }
@@ -22,7 +32,7 @@ DrunkCity::~DrunkCity()
 
 void DrunkCity::zeichne() 
 {
-	worldModel->draw();
+
 
 	for (std::list<Enemy*>::iterator it = enemiesAlive.begin(); it != enemiesAlive.end(); ++it)
 	{
@@ -35,6 +45,7 @@ void DrunkCity::zeichne()
 		Building* iteratingBuilding = *it;
 		iteratingBuilding->draw();
 	}
+	worldModel->draw();
 }
 
 Enemy* DrunkCity::getNearestEnemy(Building* building)

@@ -24,6 +24,8 @@ public:
 
 	glm::vec3 getLookDirection();
 	glm::vec3 getOrthodirection();
+	glm::mat4 getRotationMatrix();
+	glm::mat4 getProjectionMatrix();
 	
 	glm::mat4 getViewProjectionMatrix();
 	void update(int x, int y, float zoom, bool dragging, bool strafing);

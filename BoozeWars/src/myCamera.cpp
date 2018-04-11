@@ -34,6 +34,16 @@ glm::vec3 myCamera::getOrthodirection()
 	return glm::vec3(rotationMatrix[0][0], rotationMatrix[1][0], rotationMatrix[2][0]);
 }
 
+glm::mat4 myCamera::getRotationMatrix()
+{
+	return rotationMatrix;
+}
+
+glm::mat4 myCamera::getProjectionMatrix()
+{
+	return projMatrix;
+}
+
 glm::mat4 myCamera::getViewProjectionMatrix() {
 	//Translation
 	glm::mat4 translation = glm::translate(glm::mat4(1.0f), -position);

@@ -41,6 +41,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
 void setPerFrameUniforms(Shader* shader, myCamera& camera, DirectionalLight& dirL, PointLight& pointL);
+void setPerFrameUniformsSkybox(Shader* shader, myCamera& camera);
 
 
 /* --------------------------------------------- */
@@ -173,7 +174,11 @@ int main(int argc, char** argv)
 	// Initialize scene and render loop
 	/* --------------------------------------------- */
 	{
+		//Shaders
 		std::shared_ptr<Shader> textureShader = std::make_shared<Shader>("texture.vert", "texture.frag");
+		std::shared_ptr<Shader> skyboxShader = std::make_shared<Shader>("skybox.vert", "skybox.frag");
+		
+		//Textures
 		std::shared_ptr<Texture> sunTexture = std::make_shared<Texture>("sun.dds");
 		std::shared_ptr<Texture> moonTexture = std::make_shared<Texture>("moon.dds");
 		std::shared_ptr<Texture> earthTexture = std::make_shared<Texture>("earth.dds");
@@ -185,7 +190,7 @@ int main(int argc, char** argv)
 		std::shared_ptr<Material> moonMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.05f, 0.9f, 0.05f), 2.0f, moonTexture);
 
 		//Create World
-		DrunkCity world = DrunkCity(20000.0f, 9000.0f, 5000.0f,sunMaterial);
+		DrunkCity world = DrunkCity(20000.0f, 9000.0f, 5000.0f,skyboxShader);
 		
 		//create enemy
 		world.addEnemy(earthMaterial);
@@ -217,6 +222,7 @@ int main(int argc, char** argv)
 
 			// Set per-frame uniforms
 			setPerFrameUniforms(textureShader.get(), camera, dirL, pointL);
+			setPerFrameUniformsSkybox(skyboxShader.get(), camera);
 
 			// Hierarchical animation
 			
@@ -328,6 +334,13 @@ void setPerFrameUniforms(Shader* shader, myCamera& camera, DirectionalLight& dir
 	shader->setUniform("pointL.color", pointL.color);
 	shader->setUniform("pointL.position", pointL.position);
 	shader->setUniform("pointL.attenuation", pointL.attenuation);
+}
+
+void setPerFrameUniformsSkybox(Shader* shader, myCamera& camera)
+{
+	shader->use();
+	shader->setUniform("rotation", camera.getRotationMatrix());
+	shader->setUniform("projection",camera.getProjectionMatrix());
 }
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)

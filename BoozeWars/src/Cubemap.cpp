@@ -4,18 +4,22 @@
 #include "FreeImage.h"
 #include <iostream>
 
+Cubemap::Cubemap()
+{
+}
+
 Cubemap::Cubemap(std::vector<std::string> faces)
 {
 	glGenTextures(1, &textureID);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
-	int width, height, nrChannels;
+	int width, height;
 	BYTE* data(0);
 	//load textures
 	for (unsigned int i = 0; i < faces.size(); ++i)
 	{
-		FREE_IMAGE_FORMAT texFormat = FreeImage_GetFileType(faces[i].c_str, 0);
+		FREE_IMAGE_FORMAT texFormat = FreeImage_GetFileType(faces[i].c_str(), 0);
 		if (texFormat == FIF_UNKNOWN) { std::cout << "Cubemap: Image format unknow" << std::endl;}
-		FIBITMAP* texImage = FreeImage_Load(texFormat, faces[i].c_str);
+		FIBITMAP* texImage = FreeImage_Load(texFormat, faces[i].c_str());
 		if (!texImage) { std::cout << "Cubemap: Image loading failed" << std::endl; }
 		data = FreeImage_GetBits(texImage);
 		width = FreeImage_GetWidth(texImage);

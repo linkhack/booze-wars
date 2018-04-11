@@ -9,9 +9,9 @@ class Cubemap
 private:
 	GLuint textureID;
 public:
+	Cubemap();
 	Cubemap(std::vector<std::string> faces);
 	~Cubemap();
 	void bind(unsigned int unit);
-
 };
 
