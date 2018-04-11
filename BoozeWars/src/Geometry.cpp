@@ -408,40 +408,12 @@ GeometryData Geometry::createConeGeometry(unsigned int segments, float radius, f
 	return std::move(data);
 }
 
-GeometryData Geometry::createPlaneGeometry(float width, float height)
+GeometryData Geometry::createInfinitePlane()
 {
 	GeometryData data;
-	//vertices
-	data.positions =	
+
+	data.positions =
 	{
-		glm::vec3(-width, 0, -height),
-		glm::vec3(-width, 0, -height),
-		glm::vec3(width, 0, height),
-		glm::vec3(width, 0, height),
-		glm::vec3(-width,0,height),
-		glm::vec3(width,0,-height)
-	};
-	data.normals =
-	{
-		glm::vec3(0,1,0),
-		glm::vec3(0,1,0),
-		glm::vec3(0,1,0),
-		glm::vec3(0,1,0),
-		glm::vec3(0,1,0)
-	};
-	data.uvs =
-	{
-		glm::vec2(0,0),
-		glm::vec2(1,1),
-		glm::vec2(1,1),
-		glm::vec2(0,0),
-		glm::vec2(1, 0),
-		glm::vec2(0, 1)
-	};
-	data.indices =
-	{
-		0,4,2,
-		1,5,3
-	};
-	return std::move(data);
+
+	}
 }

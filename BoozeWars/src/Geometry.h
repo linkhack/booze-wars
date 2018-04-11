@@ -69,5 +69,5 @@ public:
 	static GeometryData createCylinderGeometry(unsigned int segments, float height, float radius);
 	static GeometryData createSphereGeometry(unsigned int longitudeSegments, unsigned int latitudeSegments, float radius);
 	static GeometryData createConeGeometry(unsigned int segments, float radius, float height, float angle);
-	
+	static GeometryData createInfinitePlane();
 };
