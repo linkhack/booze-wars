@@ -191,7 +191,9 @@ int main(int argc, char** argv)
 
 		//Create World
 		DrunkCity world = DrunkCity(20000.0f, 9000.0f, 5000.0f,skyboxShader);
-		
+		//Create Ground
+
+		Geometry ground = Geometry(glm::mat4(1.0f), Geometry::createInfinitePlane(), earthMaterial);
 		//create enemy
 		world.addEnemy(earthMaterial);
 		
@@ -284,6 +286,7 @@ int main(int argc, char** argv)
 			}
 
 			// Render
+			ground.draw();
 			world.zeichne();
 
 			

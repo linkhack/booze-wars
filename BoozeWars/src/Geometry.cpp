@@ -414,7 +414,29 @@ GeometryData Geometry::createInfinitePlane()
 
 	data.positions =
 	{
+		glm::vec4(0.0f, 0.0f ,0.0f, 1.0f),
+		glm::vec4(1.0f,0.0f,0.0f,1.0f),
+		glm::vec4(0.0f,0.0f,1.0f,1.0f),
+		glm::vec4(-1.0f,0.0f,0.0f,0.0f),
+		glm::vec4(0.0f, 0.0f,-1.0f, 0.0f)
+	};
 
+	data.normals =
+	{
+		glm::vec3(0.0f,1.0f,0.0f),
+		glm::vec3(0.0f,1.0f,0.0f),
+		glm::vec3(0.0f,1.0f,0.0f),
+		glm::vec3(0.0f,1.0f,0.0f),
+		glm::vec3(0.0f,1.0f,0.0f)
+	};
+	
+	data.uvs =
+	{
+		glm::vec2(0.0f,0.0f),
+		glm::vec2(0, 1.0f),
+		glm::vec2(1, 1),
+		glm::vec2(1, 0),
+		glm::vec2(0, 0)
 	};
 
 	return data;
