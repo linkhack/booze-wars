@@ -79,7 +79,7 @@ int main(int argc, char** argv)
 	std::string window_title = reader.Get("window", "title", "ECG");
 	float fov = float(reader.GetReal("camera", "fov", 60.0f));
 	float nearZ = float(reader.GetReal("camera", "near", 0.1f));
-	float farZ = float(reader.GetReal("camera", "far", 100.0f));
+	float farZ = float(reader.GetReal("camera", "far", 1000.0f));
 
 	/* --------------------------------------------- */
 	// Create context
@@ -213,7 +213,6 @@ int main(int argc, char** argv)
 			// Update camera
 			glfwGetCursorPos(window, &mouse_x, &mouse_y);
 
-			camera.update(int(mouse_x), int(mouse_y), _zoom, _dragging, _strafing);
 			camera.updatePosition(_key_pressed);
 			camera.updateDirection(int(mouse_x), int(mouse_y));
 

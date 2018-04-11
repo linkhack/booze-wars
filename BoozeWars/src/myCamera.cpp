@@ -36,9 +36,7 @@ glm::vec3 myCamera::getOrthodirection()
 
 glm::mat4 myCamera::getViewProjectionMatrix() {
 	//Translation
-	glm::vec3 transPos = position;
-	transPos *= -1;
-	glm::mat4 translation = glm::translate(glm::mat4(1.0f), transPos);
+	glm::mat4 translation = glm::translate(glm::mat4(1.0f), -position);
 	
 	//Rotations
 	glm::quat qPitch = glm::angleAxis(pitch, glm::vec3(1, 0, 0));
