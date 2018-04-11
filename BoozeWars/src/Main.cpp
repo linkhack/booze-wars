@@ -186,7 +186,6 @@ int main(int argc, char** argv)
 
 		//Create World
 		DrunkCity world = DrunkCity(20000.0f, 9000.0f, 5000.0f,sunMaterial);
-		Geometry plane = Geometry(glm::mat4(1.0f), Geometry::createPlaneGeometry(1000, 1000), earthMaterial);
 		
 		//create enemy
 		world.addEnemy(earthMaterial);
@@ -280,7 +279,7 @@ int main(int argc, char** argv)
 
 			// Render
 			world.zeichne();
-			plane.draw();
+
 			
 			//worldModel.draw();
 			// Compute frame time
