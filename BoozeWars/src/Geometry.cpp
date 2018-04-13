@@ -434,10 +434,10 @@ GeometryData Geometry::createInfinitePlane()
 	data.uvs =
 	{
 		glm::vec2(0.5f,0.5f),
-		glm::vec2(1, 1),
-		glm::vec2(1, 0),
-		glm::vec2(0, 1),
-		glm::vec2(0, 0)
+		glm::vec2(1.0f, 1.0f),
+		glm::vec2(1.0f, 0.0f),
+		glm::vec2(0.0f, 1.0f),
+		glm::vec2(0.0f, 0.0f)
 	};
 
 	data.indices =

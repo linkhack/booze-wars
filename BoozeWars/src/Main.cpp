@@ -177,15 +177,12 @@ int main(int argc, char** argv)
 		//Shaders
 		std::shared_ptr<Shader> textureShader = std::make_shared<Shader>("texture.vert", "texture.frag");
 		std::shared_ptr<Shader> skyboxShader = std::make_shared<Shader>("skybox.vert", "skybox.frag");
-		
+		std::shared_ptr<Shader> repeatTexture = std::make_shared<Shader>("texture.vert", "texture.frag");
 		//Textures
 		std::shared_ptr<Texture> sunTexture = std::make_shared<Texture>("sun.dds");
 		std::shared_ptr<Texture> moonTexture = std::make_shared<Texture>("moon.dds");
 		std::shared_ptr<Texture> earthTexture = std::make_shared<Texture>("earth.dds");
 		std::shared_ptr<Texture> brickTexture = std::make_shared<Texture>("bricks_diffuse.dds");
-		brickTexture->bind(0);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 		// Create materials
 		std::shared_ptr<Material> sunMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, sunTexture);
