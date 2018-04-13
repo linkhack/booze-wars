@@ -182,18 +182,22 @@ int main(int argc, char** argv)
 		std::shared_ptr<Texture> sunTexture = std::make_shared<Texture>("sun.dds");
 		std::shared_ptr<Texture> moonTexture = std::make_shared<Texture>("moon.dds");
 		std::shared_ptr<Texture> earthTexture = std::make_shared<Texture>("earth.dds");
-
+		std::shared_ptr<Texture> brickTexture = std::make_shared<Texture>("bricks_diffuse.dds");
+		brickTexture->bind(0);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 		// Create materials
 		std::shared_ptr<Material> sunMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, sunTexture);
 		std::shared_ptr<Material> earthMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.05f, 0.9f, 0.1f), 5.0f, earthTexture);
 		std::shared_ptr<Material> moonMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.05f, 0.9f, 0.05f), 2.0f, moonTexture);
+		std::shared_ptr<Material> brickMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, brickTexture);
 
 		//Create World
 		DrunkCity world = DrunkCity(20000.0f, 9000.0f, 5000.0f,skyboxShader);
 		//Create Ground
 
-		Geometry ground = Geometry(glm::mat4(1.0f), Geometry::createInfinitePlane(), earthMaterial);
+		Geometry ground = Geometry(glm::mat4(1.0f), Geometry::createInfinitePlane(), brickMaterial);
 		//create enemy
 		world.addEnemy(earthMaterial);
 		
