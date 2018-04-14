@@ -177,7 +177,7 @@ int main(int argc, char** argv)
 		//Shaders
 		std::shared_ptr<Shader> textureShader = std::make_shared<Shader>("texture.vert", "texture.frag");
 		std::shared_ptr<Shader> skyboxShader = std::make_shared<Shader>("skybox.vert", "skybox.frag");
-		std::shared_ptr<Shader> repeatTexture = std::make_shared<Shader>("texture.vert", "texture.frag");
+		std::shared_ptr<Shader> infiniGreen = std::make_shared<Shader>("texture.vert", "infiniGreen.frag");
 		//Textures
 		std::shared_ptr<Texture> sunTexture = std::make_shared<Texture>("sun.dds");
 		std::shared_ptr<Texture> moonTexture = std::make_shared<Texture>("moon.dds");
@@ -188,13 +188,13 @@ int main(int argc, char** argv)
 		std::shared_ptr<Material> sunMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, sunTexture);
 		std::shared_ptr<Material> earthMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.05f, 0.9f, 0.1f), 5.0f, earthTexture);
 		std::shared_ptr<Material> moonMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.05f, 0.9f, 0.05f), 2.0f, moonTexture);
-		std::shared_ptr<Material> brickMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, brickTexture);
+		std::shared_ptr<Material> infiniGreenMat = std::make_shared<Material>(infiniGreen, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f);
 
 		//Create World
 		DrunkCity world = DrunkCity(20000.0f, 9000.0f, 5000.0f,skyboxShader);
 		//Create Ground
 
-		Geometry ground = Geometry(glm::mat4(1.0f), Geometry::createInfinitePlane(), brickMaterial);
+		Geometry ground = Geometry(glm::mat4(1.0f), Geometry::createInfinitePlane(), infiniGreenMat);
 		//create enemy
 		world.addEnemy(earthMaterial);
 		
@@ -225,6 +225,7 @@ int main(int argc, char** argv)
 
 			// Set per-frame uniforms
 			setPerFrameUniforms(textureShader.get(), camera, dirL, pointL);
+			setPerFrameUniforms(infiniGreen.get(), camera, dirL, pointL);
 			setPerFrameUniformsSkybox(skyboxShader.get(), camera);
 
 			// Hierarchical animation

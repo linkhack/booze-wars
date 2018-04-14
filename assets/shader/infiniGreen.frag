@@ -44,7 +44,7 @@ void main() {
 	vec3 n = normalize(vert.normal_world);
 	vec3 v = normalize(camera_world - vert.position_world);
 	
-	vec3 texColor = texture(diffuseTexture, vert.uv).rgb;;
+	vec3 texColor = vec3(0.2,0.6,0.2);;
 	color = vec4(texColor * materialCoefficients.x, 1); // ambient
 	
 	// add directional light contribution
