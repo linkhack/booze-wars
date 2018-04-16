@@ -91,10 +91,14 @@ void myCamera::updatePosition(int key)
 		position.y -= movementSpeed;
 		break;
 	case GLFW_KEY_F:
-		position.y += movementSpeed;
+		if (position.y + movementSpeed >= -1) {
+			position.y += movementSpeed;
+		}
+		break;
 	default:
 		break;
 	}
+	
 }
 
 void myCamera::updateDirection(int x, int y)
@@ -111,4 +115,21 @@ void myCamera::updateDirection(int x, int y)
 	pitch = glm::radians(pitch);
 }
 
+/**Return intersection of look direction and y=0 plane, if no such point can be found or it is
+* too far away then glm::vec3(0,1,0) is returned;
+*
+*/
+glm::vec3 myCamera::getGroundIntersection()
+{
+	glm::vec3 lookDirecrtion = myCamera::getLookDirection();
+	glm::vec3 position = myCamera::getPosition();
+	float yChange = lookDirecrtion.y;
+	float yPosition = position.y;
+	float t = -yPosition / yChange;
+	if (yChange > 0 && t<1000) {
+		return position + t * lookDirecrtion;
+	} else {
+		return glm::vec3(0, 1, 0);
+	}
 
+}
