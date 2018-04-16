@@ -65,9 +65,9 @@ public:
 	Geometry* addChild(std::unique_ptr<Geometry> child);
 
 	static GeometryData createCubeGeometry(float width, float height, float depth);
-	static GeometryData createPlaneGeometry(float width, float height);
 	static GeometryData createCylinderGeometry(unsigned int segments, float height, float radius);
 	static GeometryData createSphereGeometry(unsigned int longitudeSegments, unsigned int latitudeSegments, float radius);
 	static GeometryData createConeGeometry(unsigned int segments, float radius, float height, float angle);
 	static GeometryData createInfinitePlane();
+	static GeometryData createRectangle(float width, float height);
 };

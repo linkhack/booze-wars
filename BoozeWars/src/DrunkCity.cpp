@@ -7,22 +7,13 @@ DrunkCity::DrunkCity()
 
 }
 
-DrunkCity::DrunkCity(float x, float y, float z, std::shared_ptr<Shader> skyShader)
+DrunkCity::DrunkCity(float x, float y, float z)
 {
 	limitBuildings = 5;
 	citySizeX = x;
 	citySizeY = y;
 	//Cubemap: right/left/top/bottom/back/front
-	std::vector<std::string> skymapTextureLoc =
-	{
-		"assets/textures/cubemap/posx.png",
-		"assets/textures/cubemap/negx.png",
-		"assets/textures/cubemap/negy.png",
-		"assets/textures/cubemap/posy.png",
-		"assets/textures/cubemap/negz.png",
-		"assets/textures/cubemap/posz.png"	
-	};
-	worldModel = new Skybox(skyShader,skymapTextureLoc);
+
 	
 	highway = Street(x, y);
 }
@@ -46,7 +37,6 @@ void DrunkCity::zeichne()
 		Building* iteratingBuilding = *it;
 		iteratingBuilding->draw();
 	}
-	worldModel->draw();
 }
 
 Enemy* DrunkCity::getNearestEnemy(Building* building)

@@ -91,7 +91,7 @@ void myCamera::updatePosition(int key)
 		position.y -= movementSpeed;
 		break;
 	case GLFW_KEY_F:
-		if (position.y + movementSpeed >= -1) {
+		if (position.y + movementSpeed <= -1) {
 			position.y += movementSpeed;
 		}
 		break;
@@ -126,7 +126,8 @@ glm::vec3 myCamera::getGroundIntersection()
 	float yChange = lookDirecrtion.y;
 	float yPosition = position.y;
 	float t = -yPosition / yChange;
-	if (yChange > 0 && t<1000) {
+	if (yChange > 0 && t<1000) { 
+		std::cout << (position + t * lookDirecrtion).x << "," << (position + t * lookDirecrtion).z << std::endl;
 		return position + t * lookDirecrtion;
 	} else {
 		return glm::vec3(0, 1, 0);

@@ -18,7 +18,6 @@ private:
 	std::list<Enemy*> enemiesAlive;
 	std::list<Building*> buildings;
 	int limitBuildings;
-	Skybox* worldModel;
 	int citySizeX;
 	int citySizeY;
 
@@ -28,7 +27,7 @@ public:
 
 	DrunkCity();
 	~DrunkCity();
-	DrunkCity(float x, float y, float z, std::shared_ptr<Shader> skyShader);
+	DrunkCity(float x, float y, float z);
 
 	DrunkCity(DrunkCity&&) = default;
 	DrunkCity& operator=(DrunkCity&&) = default;
