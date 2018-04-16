@@ -126,8 +126,8 @@ glm::vec3 myCamera::getGroundIntersection()
 	float yChange = lookDirecrtion.y;
 	float yPosition = position.y;
 	float t = -yPosition / yChange;
-	if (yChange > 0 && t<1000) { 
-		std::cout << (position + t * lookDirecrtion).x << "," << (position + t * lookDirecrtion).z << std::endl;
+	if (yChange > 0 && t<50) { 
+		std::cout << t<< std::endl;
 		return position + t * lookDirecrtion;
 	} else {
 		return glm::vec3(0, 1, 0);

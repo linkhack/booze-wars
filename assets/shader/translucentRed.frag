@@ -45,7 +45,7 @@ void main() {
 	vec3 v = normalize(camera_world - vert.position_world);
 	
 	vec3 texColor = vec3(0.9,0.1,0.0);
-	color = vec4(texColor * materialCoefficients.x, 1.0); // ambient
+	color = vec4(texColor * materialCoefficients.x, 0.4); // ambient
 	
 	// add directional light contribution
 	color.rgb += phong(n, -dirL.direction, v, dirL.color * texColor, materialCoefficients.y, dirL.color, materialCoefficients.z, specularAlpha, false, vec3(0));
