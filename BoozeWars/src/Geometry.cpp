@@ -456,10 +456,10 @@ GeometryData Geometry::createRectangle(float width, float height)
 
 	data.positions =
 	{
-		glm::vec4(-width / 2.0f, -0.001f,  -height / 2.0f,1.0f),
-		glm::vec4(-width / 2.0f, -0.001f,  height / 2.0f,1.0f),
-		glm::vec4(width / 2.0f, -0.001f,  height / 2.0f,1.0f),
-		glm::vec4(width / 2.0f, -0.001f,  -height / 2.0f,1.0f),
+		glm::vec4(-width / 2.0f, 0.0f,  -height / 2.0f,1.0f),
+		glm::vec4(-width / 2.0f, 0.0f,  height / 2.0f,1.0f),
+		glm::vec4(width / 2.0f, 0.0f,  height / 2.0f,1.0f),
+		glm::vec4(width / 2.0f, 0.0f,  -height / 2.0f,1.0f),
 	};
 
 	data.normals =

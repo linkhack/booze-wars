@@ -10,6 +10,7 @@ Cubemap::Cubemap()
 
 Cubemap::Cubemap(std::vector<std::string> faces)
 {
+	//Cubemap: right/left/top/bottom/back/front
 	glGenTextures(1, &textureID);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
 	int width, height;

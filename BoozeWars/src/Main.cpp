@@ -186,6 +186,7 @@ int main(int argc, char** argv)
 		std::shared_ptr<Texture> moonTexture = std::make_shared<Texture>("moon.dds");
 		std::shared_ptr<Texture> earthTexture = std::make_shared<Texture>("earth.dds");
 		std::shared_ptr<Texture> brickTexture = std::make_shared<Texture>("bricks_diffuse.dds");
+		std::shared_ptr<Texture> mapTexture = std::make_shared<Texture>("map.dds");
 
 		// Create materials
 		std::shared_ptr<Material> sunMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, sunTexture);
@@ -193,10 +194,13 @@ int main(int argc, char** argv)
 		std::shared_ptr<Material> moonMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.05f, 0.9f, 0.05f), 2.0f, moonTexture);
 		std::shared_ptr<Material> infiniGreenMat = std::make_shared<Material>(infiniGreen, glm::vec3(1.0f, 0.0f, 0.0f), 10.0f);
 		std::shared_ptr<Material> translucentRed = std::make_shared<Material>(translucent, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f);
+		std::shared_ptr<Material> mapMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, mapTexture);
 		//Create World
 		DrunkCity world = DrunkCity(20000.0f, 9000.0f, 5000.0f);
 		//Create Ground
 		Geometry ground = Geometry(glm::mat4(1.0f), Geometry::createInfinitePlane(), infiniGreenMat);
+		//Create map
+		Geometry map = Geometry(glm::mat4(1.0f), Geometry::createRectangle(1000, 1000), mapMaterial);
 		//Helper Rectangle for building placment
 		Geometry cameraPlacement = Geometry(glm::mat4(1.0f), Geometry::createRectangle(10.0f, 10.0f), translucentRed);
 		//Skybox
@@ -304,15 +308,15 @@ int main(int argc, char** argv)
 			}
 
 			// Render
-			ground.draw();
+			//ground.draw();
 
-			world.zeichne();
+			//world.zeichne();
+			map.draw();
 			if (camera.getGroundIntersection() != glm::vec3(0, 1, 0)) {
-				cameraPlacement.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection()));
+				cameraPlacement.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection()+glm::vec3(0.0f,-0.01f,0.0f)));
 			}
-			worldModel.draw();
-			
 			//worldModel.draw();
+			
 			// Compute frame time
 			dt = t;
 			t = float(glfwGetTime());
