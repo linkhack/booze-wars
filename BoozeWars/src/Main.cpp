@@ -194,7 +194,7 @@ int main(int argc, char** argv)
 		std::shared_ptr<Material> moonMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.05f, 0.9f, 0.05f), 2.0f, moonTexture);
 		std::shared_ptr<Material> infiniGreenMat = std::make_shared<Material>(infiniGreen, glm::vec3(1.0f, 0.0f, 0.0f), 10.0f);
 		std::shared_ptr<Material> translucentRed = std::make_shared<Material>(translucent, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f);
-		std::shared_ptr<Material> mapMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, mapTexture);
+		std::shared_ptr<Material> mapMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(1.0f, 0.0f, 0.0f), 2.0f, mapTexture);
 		//Create World
 		DrunkCity world = DrunkCity(20000.0f, 9000.0f, 5000.0f);
 		//Create Ground
@@ -220,12 +220,14 @@ int main(int argc, char** argv)
 		//create building
 		world.addBuilding(4,5,moonMaterial);
 
-		//Geometry worldModel = Geometry(glm::mat4(1.0f), Geometry::createCubeGeometry(x, y, z), material);
 		// Initialize camera
 		myCamera camera(fov, float(window_width) / float(window_height), nearZ, farZ);
 		PointLight pointL(glm::vec3(1, 1, 1), glm::vec3(0), glm::vec3(1, 0, 0));
 		DirectionalLight dirL(glm::vec3(1.0f,1.0f,1.0f), glm::vec3(0,1.0f,0));
 
+		//TextureArb
+		TextureArb bla;
+		
 
 		// Render loop
 		double mouse_x, mouse_y;

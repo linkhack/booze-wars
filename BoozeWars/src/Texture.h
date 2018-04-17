@@ -23,6 +23,7 @@ private:
 
 public:
 	Texture(std::string file);
+	Texture() = default;
 	~Texture();
 
 	void bind(unsigned int unit);
