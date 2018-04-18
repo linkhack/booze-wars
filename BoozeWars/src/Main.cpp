@@ -216,10 +216,10 @@ int main(int argc, char** argv)
 		Skybox worldModel = Skybox(skyboxShader, skymapTextureLoc);
 		//create enemy
 		world.addEnemy(earthMaterial);
-		int lookingx;
-		int lookingy;
 		//create building
 		Building* buildingInHand = new Building(4, 5, moonMaterial);
+		//if the left click is still pressed
+		bool pressing = false;
 
 		//Geometry worldModel = Geometry(glm::mat4(1.0f), Geometry::createCubeGeometry(x, y, z), material);
 		// Initialize camera
@@ -251,8 +251,9 @@ int main(int argc, char** argv)
 
 			// Hierarchical animation
 
-			// Placing logic
-			if (_dragging) {
+			// Placement logic
+			if (_dragging && !pressing) {
+				pressing = true;
 				try {
 					// trying to place building
 					world.placeBuilding(camera.getPosition()[0], camera.getPosition()[1], buildingInHand);
@@ -264,6 +265,10 @@ int main(int argc, char** argv)
 						//something happens
 					}
 				}
+			}
+
+			if (!_dragging && pressing) {
+				pressing = false;
 			}
 			
 			// Play logic
