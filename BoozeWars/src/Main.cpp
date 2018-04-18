@@ -216,9 +216,10 @@ int main(int argc, char** argv)
 		Skybox worldModel = Skybox(skyboxShader, skymapTextureLoc);
 		//create enemy
 		world.addEnemy(earthMaterial);
-		
+		int lookingx;
+		int lookingy;
 		//create building
-		world.addBuilding(4,5,moonMaterial);
+		Building* buildingInHand = new Building(4, 5, moonMaterial);
 
 		//Geometry worldModel = Geometry(glm::mat4(1.0f), Geometry::createCubeGeometry(x, y, z), material);
 		// Initialize camera
@@ -249,6 +250,18 @@ int main(int argc, char** argv)
 			setPerFrameUniformsSkybox(skyboxShader.get(), camera);
 
 			// Hierarchical animation
+
+			// Placing logic
+			if () {
+				try {
+					world.placeBuilding(lookingx, lookingy, new Building(4, 5, moonMaterial));
+				}
+				catch (int e) {
+					if (e == PLACING_COLLISION) {
+
+					}
+				}
+			}
 			
 			// Play logic
 			if (firstRun) {
@@ -302,7 +315,7 @@ int main(int argc, char** argv)
 					}
 
 					if (e == NO_ENEMIES_IN_RANGE) {
-
+						// DO NOTHING
 					}
 				}
 			}

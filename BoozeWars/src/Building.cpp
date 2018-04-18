@@ -10,6 +10,8 @@ Building::Building(int x, int y, std::shared_ptr<Material> material)
 	this->y = y;
 	this->damage = 10;
 	this->range = 800;
+	this->width = 10;
+	this->length = 10;
 	model = new Geometry(glm::mat4(1.0f), Geometry::createCubeGeometry(10, 10, 10), material);
 }
 
@@ -26,6 +28,16 @@ int Building::getX()
 int Building::getY()
 {
 	return y;
+}
+
+int Building::getWidth()
+{
+	return width;
+}
+
+int Building::getLength()
+{
+	return length;
 }
 
 float Building::getDamage()

@@ -9,6 +9,8 @@ private:
 	int y;
 	float damage;
 	int range;
+	int width;
+	int length;
 public:
 	Building();
 	Building::Building(int x, int y, std::shared_ptr<Material> material);
@@ -20,6 +22,8 @@ public:
 
 	int getX();
 	int getY();
+	int getWidth();
+	int getLength();
 	float getDamage();
 	int getRange();
 

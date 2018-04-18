@@ -76,12 +76,12 @@ void DrunkCity::addEnemy(std::shared_ptr<Material> material)
 }
 
 
-void DrunkCity::addBuilding(int x, int y, std::shared_ptr<Material> material)
+void DrunkCity::addBuilding(Building* building)
 {
 	if (buildings.size() >= limitBuildings) {
 		throw BUILDINGS_LIMIT_REACHED;
 	}
-	buildings.push_back(new Building(x, y, material));
+	buildings.push_back(building);
 }
 
 void DrunkCity::fight()
@@ -120,5 +120,18 @@ void DrunkCity::walk(float dT)
 				++it;
 			}
 		}
+	}
+}
+
+void DrunkCity::placeBuilding(int x, int y, Building* building) {
+	std::list<Building*>::iterator it = buildings.begin();
+	while (it != buildings.end())
+	{
+		Building* iterBuilding = *it;
+		if (x >= iterBuilding->getX() && x <= iterBuilding->getX() + iterBuilding->getWidth() &&
+			y >= iterBuilding->getY() && y <= iterBuilding->getY() + iterBuilding->getLength()) {
+			throw PLACING_COLLISION;
+		}
+		addBuilding(building);
 	}
 }

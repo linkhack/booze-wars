@@ -22,6 +22,7 @@ private:
 	int citySizeY;
 
 	Enemy* getNearestEnemy(Building* building);
+	void addBuilding(Building* building);
 	
 public:
 
@@ -34,8 +35,8 @@ public:
 
 	void zeichne();
 	void addEnemy(std::shared_ptr<Material> material);
-	void addBuilding(int x, int y, std::shared_ptr<Material> material);
 	void fight();
 	void walk(float dT);
+	void placeBuilding(int x, int y, Building* building);
 };
 
