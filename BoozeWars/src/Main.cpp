@@ -252,13 +252,16 @@ int main(int argc, char** argv)
 			// Hierarchical animation
 
 			// Placing logic
-			if () {
+			if (_dragging) {
 				try {
-					world.placeBuilding(lookingx, lookingy, new Building(4, 5, moonMaterial));
+					// trying to place building
+					world.placeBuilding(camera.getPosition()[0], camera.getPosition()[1], buildingInHand);
+					// if placing was successful, create a new building to be placed
+					buildingInHand = new Building(4, 5, moonMaterial);
 				}
 				catch (int e) {
 					if (e == PLACING_COLLISION) {
-
+						//something happens
 					}
 				}
 			}
