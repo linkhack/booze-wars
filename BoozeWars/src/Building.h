@@ -13,7 +13,7 @@ private:
 	int length;
 public:
 	Building();
-	Building::Building(int x, int y, std::shared_ptr<Material> material);
+	Building::Building(int x, int z, std::shared_ptr<Material> material);
 	~Building();
 
 	Building(Building&&) = default;

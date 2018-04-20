@@ -4,7 +4,7 @@ Building::Building()
 {
 }
 
-Building::Building(int x, int y, std::shared_ptr<Material> material)
+Building::Building(int x, int z, std::shared_ptr<Material> material)
 {
 	this->x = x;
 	this->y = y;
@@ -12,7 +12,11 @@ Building::Building(int x, int y, std::shared_ptr<Material> material)
 	this->range = 800;
 	this->width = 10;
 	this->length = 10;
-	model = new Geometry(glm::mat4(1.0f), Geometry::createCubeGeometry(width, 10, length), material);
+
+	glm::mat4 startPoint = glm::mat4(1.0f);
+	glm::vec3 moveToCamera = glm::vec3(x, 0.0f, z);
+	glm::mat4 resultPosition = glm::translate(startPoint, moveToCamera);
+	model = new Geometry(resultPosition, Geometry::createCubeGeometry(width, 10, length), material);
 }
 
 

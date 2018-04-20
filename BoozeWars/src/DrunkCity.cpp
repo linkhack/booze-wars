@@ -123,7 +123,7 @@ void DrunkCity::walk(float dT)
 	}
 }
 
-void DrunkCity::placeBuilding(int x, int y, std::shared_ptr<Material> material) {
+void DrunkCity::placeBuilding(int x, int z, std::shared_ptr<Material> material) {
 	std::list<Building*>::iterator it = buildings.begin();
 	while (it != buildings.end())
 	{
@@ -135,5 +135,5 @@ void DrunkCity::placeBuilding(int x, int y, std::shared_ptr<Material> material) 
 		}
 		++it;
 	}
-	addBuilding(new Building(x, y, material));
+	addBuilding(new Building(x, z, material));
 }

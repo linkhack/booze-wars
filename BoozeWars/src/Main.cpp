@@ -254,7 +254,7 @@ int main(int argc, char** argv)
 				pressing = true;
 				try {
 					// trying to place building
-					world.placeBuilding(camera.getPosition()[0], camera.getPosition()[1], moonMaterial);
+					world.placeBuilding(camera.getGroundIntersection()[0], camera.getGroundIntersection()[2], moonMaterial);
 				}
 				catch (int e) {
 					if (e == PLACING_COLLISION) {
