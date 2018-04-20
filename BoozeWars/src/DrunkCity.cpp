@@ -123,15 +123,17 @@ void DrunkCity::walk(float dT)
 	}
 }
 
-void DrunkCity::placeBuilding(int x, int y, Building* building) {
+void DrunkCity::placeBuilding(int x, int y, std::shared_ptr<Material> material) {
 	std::list<Building*>::iterator it = buildings.begin();
 	while (it != buildings.end())
 	{
 		Building* iterBuilding = *it;
 		if (x >= iterBuilding->getX() && x <= iterBuilding->getX() + iterBuilding->getWidth() &&
 			y >= iterBuilding->getY() && y <= iterBuilding->getY() + iterBuilding->getLength()) {
+			//TODO: check if not on street
 			throw PLACING_COLLISION;
 		}
-		addBuilding(building);
+		++it;
 	}
+	addBuilding(new Building(x, y, material));
 }

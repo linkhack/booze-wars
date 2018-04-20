@@ -216,8 +216,6 @@ int main(int argc, char** argv)
 		Skybox worldModel = Skybox(skyboxShader, skymapTextureLoc);
 		//create enemy
 		world.addEnemy(earthMaterial);
-		//create building
-		Building* buildingInHand = new Building(4, 5, moonMaterial);
 		//if the left click is still pressed
 		bool pressing = false;
 
@@ -256,9 +254,7 @@ int main(int argc, char** argv)
 				pressing = true;
 				try {
 					// trying to place building
-					world.placeBuilding(camera.getPosition()[0], camera.getPosition()[1], buildingInHand);
-					// if placing was successful, create a new building to be placed
-					buildingInHand = new Building(4, 5, moonMaterial);
+					world.placeBuilding(camera.getPosition()[0], camera.getPosition()[1], moonMaterial);
 				}
 				catch (int e) {
 					if (e == PLACING_COLLISION) {
