@@ -129,7 +129,7 @@ void DrunkCity::placeBuilding(int x, int z, std::shared_ptr<Material> material) 
 	{
 		Building* iterBuilding = *it;
 		if (x >= iterBuilding->getX() && x <= iterBuilding->getX() + iterBuilding->getWidth() &&
-			y >= iterBuilding->getY() && y <= iterBuilding->getY() + iterBuilding->getLength()) {
+			z >= iterBuilding->getY() && z <= iterBuilding->getY() + iterBuilding->getLength()) {
 			//TODO: check if not on street
 			throw PLACING_COLLISION;
 		}

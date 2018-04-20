@@ -37,6 +37,6 @@ public:
 	void addEnemy(std::shared_ptr<Material> material);
 	void fight();
 	void walk(float dT);
-	void placeBuilding(int x, int zs, std::shared_ptr<Material> material);
+	void placeBuilding(int x, int z, std::shared_ptr<Material> material);
 };
 

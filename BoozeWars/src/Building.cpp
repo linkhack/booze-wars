@@ -14,7 +14,7 @@ Building::Building(int x, int z, std::shared_ptr<Material> material)
 	this->length = 10;
 
 	glm::mat4 startPoint = glm::mat4(1.0f);
-	glm::vec3 moveToCamera = glm::vec3(x, 0.0f, z);
+	glm::vec3 moveToCamera = glm::vec3(x, 1.0f, z);
 	glm::mat4 resultPosition = glm::translate(startPoint, moveToCamera);
 	model = new Geometry(resultPosition, Geometry::createCubeGeometry(width, 10, length), material);
 }
