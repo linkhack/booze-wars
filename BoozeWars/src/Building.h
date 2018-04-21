@@ -6,11 +6,9 @@ class Building
 private:
 	Geometry * model;
 	int x;
-	int y;
+	int z;
 	float damage;
 	int range;
-	int width;
-	int length;
 public:
 	Building();
 	Building::Building(int x, int z, std::shared_ptr<Material> material);
@@ -21,9 +19,9 @@ public:
 	Building& operator=(const Building &) = default;
 
 	int getX();
-	int getY();
-	int getWidth();
-	int getLength();
+	int getZ();
+	static int getWidth();
+	static int getLength();
 	float getDamage();
 	int getRange();
 

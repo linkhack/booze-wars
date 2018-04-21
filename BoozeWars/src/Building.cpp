@@ -1,22 +1,21 @@
 #include "Building.h"
 
+int width = 10;
+int length = 10;
+
 Building::Building()
 {
 }
 
 Building::Building(int x, int z, std::shared_ptr<Material> material)
 {
-	this->x = x;
-	this->y = y;
 	this->damage = 10;
 	this->range = 800;
-	this->width = 10;
-	this->length = 10;
 
-	glm::mat4 startPoint = glm::mat4(1.0f);
-	glm::vec3 moveToCamera = glm::vec3(x, 1.0f, z);
-	glm::mat4 resultPosition = glm::translate(startPoint, moveToCamera);
-	model = new Geometry(resultPosition, Geometry::createCubeGeometry(width, 10, length), material);
+	glm::mat4 position = glm::translate(glm::mat4(1.0f), glm::vec3(x, 1.0f, z));
+	this->x = position[0][0];
+	this->z = position[0][2];
+	model = new Geometry(position, Geometry::createCubeGeometry(width, 10, length), material);
 }
 
 
@@ -29,9 +28,9 @@ int Building::getX()
 	return x;
 }
 
-int Building::getY()
+int Building::getZ()
 {
-	return y;
+	return z;
 }
 
 int Building::getWidth()

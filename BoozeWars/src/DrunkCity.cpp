@@ -11,11 +11,11 @@ DrunkCity::DrunkCity(float x, float y, float z)
 {
 	limitBuildings = 5;
 	citySizeX = x;
-	citySizeY = y;
+	citySizeZ = z;
 	//Cubemap: right/left/top/bottom/back/front
 
 	
-	highway = Street(x, y);
+	highway = Street(x, z);
 }
 
 DrunkCity::~DrunkCity()
@@ -24,8 +24,6 @@ DrunkCity::~DrunkCity()
 
 void DrunkCity::zeichne() 
 {
-
-
 	for (std::list<Enemy*>::iterator it = enemiesAlive.begin(); it != enemiesAlive.end(); ++it)
 	{
 		Enemy* iteratingEnemy = *it;
@@ -49,17 +47,17 @@ Enemy* DrunkCity::getNearestEnemy(Building* building)
 	{
 		Enemy* iteratingEnemy = *it;
 		float iteratingEnemyX = abs(iteratingEnemy->getX() - building->getX());
-		float iteratingEnemyY = abs(iteratingEnemy->getY() - building->getY());
-		if (iteratingEnemyX + iteratingEnemyY <= building->getRange())
+		float iteratingEnemyZ = abs(iteratingEnemy->getZ() - building->getZ());
+		if (iteratingEnemyX + iteratingEnemyZ <= building->getRange())
 			continue;
 		if (!nearestEnemy) {
 			nearestEnemy = iteratingEnemy;
 		}
 		else {
 			float actualEnemyX = abs(nearestEnemy->getX() - building->getX());
-			float actualEnemyY = abs(nearestEnemy->getY() - building->getY());
-			if (iteratingEnemyX + iteratingEnemyY <= building->getRange() &&
-				actualEnemyX + actualEnemyY > iteratingEnemyX + iteratingEnemyY) {
+			float actualEnemyY = abs(nearestEnemy->getZ() - building->getZ());
+			if (iteratingEnemyX + iteratingEnemyZ <= building->getRange() &&
+				actualEnemyX + actualEnemyY > iteratingEnemyX + iteratingEnemyZ) {
 				nearestEnemy = iteratingEnemy;
 			}
 		}
@@ -109,7 +107,7 @@ void DrunkCity::walk(float dT)
 		if (iterEnemy != NULL) 
 		{
 			iterEnemy->walk(dT);
-			if (iterEnemy->getX() >= 800 || iterEnemy->getY()>=900)
+			if (iterEnemy->getX() >= 800 || iterEnemy->getZ()>=900)
 			{
 				iterEnemy->selfDestruct();
 				it = enemiesAlive.erase(it);
@@ -124,16 +122,35 @@ void DrunkCity::walk(float dT)
 }
 
 void DrunkCity::placeBuilding(int x, int z, std::shared_ptr<Material> material) {
+	glm::mat2x2 toPlace = glm::mat2x2(x, z, x + Building::getWidth(), z + Building::getLength());
 	std::list<Building*>::iterator it = buildings.begin();
+	if (isColliding(highway.getPart1(), toPlace) || 
+		isColliding(highway.getPart2(), toPlace) || 
+		isColliding(highway.getPart3(), toPlace)) {
+		throw PLACING_COLLISION;
+	}
+
 	while (it != buildings.end())
 	{
 		Building* iterBuilding = *it;
-		if (x >= iterBuilding->getX() && x <= iterBuilding->getX() + iterBuilding->getWidth() &&
-			z >= iterBuilding->getY() && z <= iterBuilding->getY() + iterBuilding->getLength()) {
-			//TODO: check if not on street
+		if (isColliding(
+			glm::mat2x2(iterBuilding->getX(), iterBuilding->getZ(), iterBuilding->getX() + iterBuilding->getWidth(), iterBuilding->getZ() + iterBuilding->getLength()),
+			glm::mat2x2(x, z, x + Building::getWidth(), z + Building::getLength())
+		)) {
 			throw PLACING_COLLISION;
 		}
 		++it;
 	}
 	addBuilding(new Building(x, z, material));
+}
+
+bool DrunkCity::isColliding(glm::mat2x2 placed, glm::mat2x2 toPlace)
+{
+	if (placed[0][0] > toPlace[1][0] || 
+		placed[0][1] > toPlace[1][1] || 
+		placed[1][0] < toPlace[0][0] || 
+		placed[1][1] < toPlace[0][1]) {
+		return false;
+	}
+	return true;
 }

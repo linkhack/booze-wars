@@ -19,10 +19,11 @@ private:
 	std::list<Building*> buildings;
 	int limitBuildings;
 	int citySizeX;
-	int citySizeY;
+	int citySizeZ;
 
 	Enemy* getNearestEnemy(Building* building);
 	void addBuilding(Building* building);
+	bool isColliding(glm::mat2x2 placed, glm::mat2x2 toPlace);
 	
 public:
 

@@ -21,7 +21,7 @@ public:
 	Enemy& operator=(const Enemy &) = default;
 
 	float getX();
-	float getY();
+	float getZ();
 	float getHP();
 	
 	void walk(float dT);
