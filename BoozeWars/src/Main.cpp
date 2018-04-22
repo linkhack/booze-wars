@@ -153,7 +153,7 @@ int main(int argc, char** argv)
 	// set up TrueType
 	
 
-	Character* mainCharacter = new Character();
+	Character* mainCharacter = new Character(window);
 
 	//std::map<GLchar, Character> Characters;
 
@@ -324,7 +324,7 @@ int main(int argc, char** argv)
 
 			//test start
 			mainCharacter->setFontSize(24);
-			mainCharacter->display("hallo", window);
+			mainCharacter->display("hallo");
 			// test end
 
 			// Compute frame time

@@ -3,6 +3,7 @@
 #include <sstream>
 #include "GL\glew.h"
 #include "glm\glm.hpp"
+#include <glm\gtc\matrix_transform.hpp>
 #include <ft2build.h>
 #include <map>
 #include FT_FREETYPE_H
@@ -18,11 +19,14 @@ private:
 	GLuint _vao;
 	std::map<char, GLuint> charToTexture;
 	std::shared_ptr<Shader> shader;
-	void renderText(const char *text, float x, float y, float sx, float sy);
+	void renderText(const char *text, float x, float y);
+	int windowWidth;
+	int windowHeight;
+	GLFWwindow *window;
 public:
-	Character();
+	Character(GLFWwindow *window);
 	~Character();
 	void setFontSize(int fontSize);
-	void display(char* text, GLFWwindow *window);
+	void display(char* text);
 };
 
