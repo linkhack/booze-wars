@@ -215,7 +215,7 @@ int main(int argc, char** argv)
 		};
 		Skybox worldModel = Skybox(skyboxShader, skymapTextureLoc);
 		//create enemy
-		world.addEnemy(earthMaterial);
+		//world.addEnemy(earthMaterial);
 		//if the left click is still pressed
 		bool pressing = false;
 

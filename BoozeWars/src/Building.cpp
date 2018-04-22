@@ -13,8 +13,8 @@ Building::Building(int x, int z, std::shared_ptr<Material> material)
 	this->range = 800;
 
 	glm::mat4 position = glm::translate(glm::mat4(1.0f), glm::vec3(x, 1.0f, z));
-	this->x = position[0][0];
-	this->z = position[0][2];
+	this->x = position[3][0];
+	this->z = position[3][2];
 	model = new Geometry(position, Geometry::createCubeGeometry(width, 10, length), material);
 }
 

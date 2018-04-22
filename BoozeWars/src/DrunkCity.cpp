@@ -135,7 +135,7 @@ void DrunkCity::placeBuilding(int x, int z, std::shared_ptr<Material> material) 
 		Building* iterBuilding = *it;
 		if (isColliding(
 			glm::mat2x2(iterBuilding->getX(), iterBuilding->getZ(), iterBuilding->getX() + iterBuilding->getWidth(), iterBuilding->getZ() + iterBuilding->getLength()),
-			glm::mat2x2(x, z, x + Building::getWidth(), z + Building::getLength())
+			toPlace
 		)) {
 			throw PLACING_COLLISION;
 		}
