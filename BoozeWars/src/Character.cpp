@@ -55,8 +55,6 @@ void Character::renderText(const char *text, float x, float y, float sx, float s
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 		glBufferData(GL_ARRAY_BUFFER, sizeof box, box, GL_DYNAMIC_DRAW);
 
-		//bin vertex positions to location 0
-
 
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
@@ -79,9 +77,7 @@ void Character::display(char* text, GLFWwindow *window) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	//glm::vec4 red = glm::vec4( 1, 0, 0, 1 );
-	GLfloat red[4] = { 1,0,0,1 }; 
 	//shader->setUniform("color", red);
-	//glUniform4fv(glGetUniformLocation(shader->getID(), "color"), 1,red);
 
 	int windowWidth;
 	int windowHeight;
