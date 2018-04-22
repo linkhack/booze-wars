@@ -151,15 +151,9 @@ int main(int argc, char** argv)
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// set up TrueType
-	FT_Library ft;
-	if (FT_Init_FreeType(&ft))
-		std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
+	
 
-	FT_Face face;
-	if (FT_New_Face(ft, "C://Windows//Fonts//arial.ttf", 0, &face))
-		std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
-
-	Character* mainCharacter = new Character(face);
+	Character* mainCharacter = new Character();
 
 	//std::map<GLchar, Character> Characters;
 
@@ -226,7 +220,7 @@ int main(int argc, char** argv)
 		bool firstRun = true;
 		while (!glfwWindowShouldClose(window)) {
 			//test start
-			FT_Set_Pixel_Sizes(face, 0, 12);
+			mainCharacter->setFontSize(24);
 			mainCharacter->display("hallo", window);
 			// test end
 

@@ -81,6 +81,6 @@ void Skybox::draw()
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 	glBindVertexArray(0);
 	glDepthFunc(GL_LESS);
-
+	glBindTexture(GL_TEXTURE_2D, 0);
 
 }
