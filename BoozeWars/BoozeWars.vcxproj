@@ -9,6 +9,7 @@
     <ClCompile Include="src\Building.cpp" />
     <ClCompile Include="src\Exceptions.h" />
     <ClCompile Include="src\Street.cpp" />
+    <ClCompile Include="src\Texture.cpp" />
     <ClInclude Include="src\Character.h" />
     <ClInclude Include="src\Cubemap.h" />
     <ClInclude Include="src\Skybox.h" />

@@ -177,7 +177,8 @@ int main(int argc, char** argv)
 		std::shared_ptr<Texture> moonTexture = std::make_shared<Texture>("moon.dds");
 		std::shared_ptr<Texture> earthTexture = std::make_shared<Texture>("earth.dds");
 		std::shared_ptr<Texture> brickTexture = std::make_shared<Texture>("bricks_diffuse.dds");
-		std::shared_ptr<Texture> mapTexture = std::make_shared<Texture>("map.dds");
+		std::shared_ptr<Texture> mapTexture = std::make_shared<Texture>();
+		mapTexture->loadImage("map.png");
 
 		// Create materials
 		std::shared_ptr<Material> sunMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, sunTexture);

@@ -9,6 +9,10 @@
 #include <string>
 #include <GL/glew.h>
 #include "Utils.h"
+#include <vector>
+#include "FreeImage.h"
+#include <iostream>
+
 
 
 /* --------------------------------------------- */
@@ -22,8 +26,10 @@ private:
 	bool _init;
 
 public:
+	Texture();
 	Texture(std::string file);
 	~Texture();
 
 	void bind(unsigned int unit);
+	void loadImage(std::string fileName);
 };
