@@ -19,7 +19,6 @@ private:
 	GLuint _vao;
 	std::map<char, GLuint> charToTexture;
 	std::shared_ptr<Shader> shader;
-	void renderText(const char *text, float x, float y);
 	int windowWidth;
 	int windowHeight;
 	GLFWwindow *window;
@@ -27,6 +26,6 @@ public:
 	Character(GLFWwindow *window);
 	~Character();
 	void setFontSize(int fontSize);
-	void display(char* text);
+	void renderText(const char *text, float x, float y, GLfloat scale, glm::vec3 color);
 };
 

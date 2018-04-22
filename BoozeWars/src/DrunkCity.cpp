@@ -13,13 +13,17 @@ DrunkCity::DrunkCity(float x, float y, float z)
 	citySizeX = x;
 	citySizeZ = z;
 	//Cubemap: right/left/top/bottom/back/front
-
+	hp = 100;
 	
 	highway = Street(x, z);
 }
 
 DrunkCity::~DrunkCity()
 {
+}
+
+int DrunkCity::getHP() {
+	return hp;
 }
 
 void DrunkCity::zeichne() 
@@ -153,4 +157,9 @@ bool DrunkCity::isColliding(glm::mat2x2 placed, glm::mat2x2 toPlace)
 		return false;
 	}
 	return true;
+}
+
+bool DrunkCity::hasMinOneBuildings()
+{
+	return buildings.size() > 0;
 }

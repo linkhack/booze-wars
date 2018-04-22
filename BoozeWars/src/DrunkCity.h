@@ -20,6 +20,7 @@ private:
 	int limitBuildings;
 	int citySizeX;
 	int citySizeZ;
+	int hp;
 
 	Enemy* getNearestEnemy(Building* building);
 	void addBuilding(Building* building);
@@ -34,10 +35,12 @@ public:
 	DrunkCity(DrunkCity&&) = default;
 	DrunkCity& operator=(DrunkCity&&) = default;
 
+	int getHP();
 	void zeichne();
 	void addEnemy(std::shared_ptr<Material> material);
 	void fight();
 	void walk(float dT);
 	void placeBuilding(int x, int z, std::shared_ptr<Material> material);
+	bool hasMinOneBuildings();
 };
 

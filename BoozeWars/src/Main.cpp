@@ -58,6 +58,7 @@ static int _key_pressed = GLFW_KEY_UNKNOWN;
 unsigned char **tex;
 static int width = 800;
 static int height = 800;
+static bool _starting = false;
 
 
 /* --------------------------------------------- */
@@ -154,6 +155,7 @@ int main(int argc, char** argv)
 	
 
 	Character* mainCharacter = new Character(window);
+	mainCharacter->setFontSize(54);
 
 	//std::map<GLchar, Character> Characters;
 
@@ -217,7 +219,9 @@ int main(int argc, char** argv)
 		float t = float(glfwGetTime());
 		float dt = 0.0f;
 		float t_sum = 0.0f;
-		bool firstRun = true;
+		int collsionCounter = 0;
+		bool start = false;
+		int buildingLimit = 0;
 		while (!glfwWindowShouldClose(window)) {
 
 			// Clear backbuffer
@@ -234,10 +238,19 @@ int main(int argc, char** argv)
 			setPerFrameUniforms(translucent.get(), camera, dirL, pointL);
 			setPerFrameUniformsSkybox(skyboxShader.get(), camera);
 
-			// Hierarchical animation
 
+			// Render
+			//ground.draw();
+
+			world.zeichne();
+			map.draw();
+			if (camera.getGroundIntersection() != glm::vec3(0, 1, 0)) {
+				cameraPlacement.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection()+glm::vec3(0.0f,-0.01f,0.0f)));
+			}
+			worldModel.draw();
+			
 			// Placement logic
-			if (_dragging && !pressing) {
+			if (_dragging && !pressing && !start) {
 				pressing = true;
 				try {
 					// trying to place building
@@ -245,64 +258,46 @@ int main(int argc, char** argv)
 				}
 				catch (int e) {
 					if (e == PLACING_COLLISION) {
-						//something happens
+						collsionCounter = 500;
+					}
+					if (e == BUILDINGS_LIMIT_REACHED) {
+						buildingLimit = 1;
 					}
 				}
+			}
+
+			if (_starting) {
+				if (!world.hasMinOneBuildings()) {
+					_starting = false;
+					mainCharacter->renderText("PLACE MININUM 1 BUILDING BEFORE STARTING!", 0, 600, 0.5f, glm::vec3(1.0, 0.0, 0.0));
+				}
+				else {
+					start = true;
+					buildingLimit = 0;
+				}
+			}
+
+			if (collsionCounter > 0) {
+				mainCharacter->renderText("BUILDINGS INTERSECT!", 0, 500, 1.0f, glm::vec3(1.0, 0.0, 0.0));
+				collsionCounter--;
+			}
+
+			if (buildingLimit > 0) {
+				mainCharacter->renderText("BUILDING LIMIT REACHED!", 0, 600, 1.0f, glm::vec3(1.0, 0.0, 0.0));
 			}
 
 			if (!_dragging && pressing) {
 				pressing = false;
 			}
-			
+
 			// Play logic
-			if (firstRun) {
-				firstRun = false;
-			}
-			else {
+			if (start) {
 				try {
 					world.fight();
 				}
 				catch (int e) {
 					if (e == ALL_ENEMIES_DESTROYED) {
-						/*
-						glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // Disable byte-alignment restriction
-
-						for (GLubyte c = 0; c < 128; c++)
-						{
-							// Load character glyph 
-							if (FT_Load_Char(face, c, FT_LOAD_RENDER))
-							{
-								std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
-								continue;
-							}
-							// Generate texture
-							GLuint texture;
-							glGenTextures(1, &texture);
-							glBindTexture(GL_TEXTURE_2D, texture);
-							glTexImage2D(
-								GL_TEXTURE_2D,
-								0,
-								GL_RED,
-								face->glyph->bitmap.width,
-								face->glyph->bitmap.rows,
-								0,
-								GL_RED,
-								GL_UNSIGNED_BYTE,
-								face->glyph->bitmap.buffer
-							);
-							// Set texture options
-							glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-							glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-							glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-							glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-							// Now store character for later use
-							Character* character = new Character(texture, 
-								glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
-								glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
-								face->glyph->advance.x);
-							Characters.insert(std::pair<GLchar, Character>(c, character));
-						}
-						*/
+						mainCharacter->renderText("YOU WIN", 20, 600, 3.0f, glm::vec3(1.0, 0.0, 0.0));
 					}
 
 					if (e == NO_ENEMIES_IN_RANGE) {
@@ -311,21 +306,19 @@ int main(int argc, char** argv)
 				}
 			}
 
-			// Render
-			//ground.draw();
-
-			world.zeichne();
-			map.draw();
-			if (camera.getGroundIntersection() != glm::vec3(0, 1, 0)) {
-				//cameraPlacement.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection()+glm::vec3(0.0f,-0.01f,0.0f)));
+			// player informations
+			std::string text = "LIFE: ";
+			std::ostringstream oss;
+			oss << world.getHP();
+			text += oss.str();
+			glm::vec3 color;
+			if (world.getHP() <= 20) {
+				color = glm::vec3(1.0, 0.0, 0.0);
 			}
-			worldModel.draw();
-			
-
-			//test start
-			mainCharacter->setFontSize(24);
-			mainCharacter->display("hallo");
-			// test end
+			else {
+				color = glm::vec3(0.0, 0.0, 1.0);
+			}
+			mainCharacter->renderText(text.c_str(), 100, 100, 0.8f,color);
 
 			// Compute frame time
 			dt = t;
@@ -429,6 +422,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			_culling = !_culling;
 			if (_culling) glEnable(GL_CULL_FACE);
 			else glDisable(GL_CULL_FACE);
+			break;
+		case GLFW_KEY_ENTER:
+			_starting = true;
 			break;
 	}
 }
