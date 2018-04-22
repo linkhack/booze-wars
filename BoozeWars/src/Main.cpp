@@ -151,15 +151,9 @@ int main(int argc, char** argv)
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// set up TrueType
-	FT_Library ft;
-	if (FT_Init_FreeType(&ft))
-		std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
+	
 
-	FT_Face face;
-	if (FT_New_Face(ft, "C://Windows//Fonts//arial.ttf", 0, &face))
-		std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
-
-	Character* mainCharacter = new Character(face);
+	Character* mainCharacter = new Character();
 
 	//std::map<GLchar, Character> Characters;
 
@@ -186,7 +180,7 @@ int main(int argc, char** argv)
 		std::shared_ptr<Material> moonMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.05f, 0.9f, 0.05f), 2.0f, moonTexture);
 		std::shared_ptr<Material> infiniGreenMat = std::make_shared<Material>(infiniGreen, glm::vec3(1.0f, 0.0f, 0.0f), 10.0f);
 		std::shared_ptr<Material> translucentRed = std::make_shared<Material>(translucent, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f);
-		std::shared_ptr<Material> mapMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, earthTexture);
+		std::shared_ptr<Material> mapMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, mapTexture);
 		//Create World
 		DrunkCity world = DrunkCity(20000.0f, 9000.0f, 5000.0f);
 		//Create Ground
@@ -226,7 +220,7 @@ int main(int argc, char** argv)
 		bool firstRun = true;
 		while (!glfwWindowShouldClose(window)) {
 			//test start
-			FT_Set_Pixel_Sizes(face, 0, 12);
+			mainCharacter->setFontSize(24);
 			mainCharacter->display("hallo", window);
 			// test end
 
