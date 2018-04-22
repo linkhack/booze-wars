@@ -56,4 +56,6 @@ public:
 	void setUniform(GLint location, const glm::vec4& vec);
 	void setUniformArr(std::string arr, unsigned int i, std::string prop, const glm::vec3& vec);
 	void setUniformArr(std::string arr, unsigned int i, std::string prop, const float f);
+
+	int getID();
 };

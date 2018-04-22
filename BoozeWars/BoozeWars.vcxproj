@@ -2,6 +2,7 @@
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="src\Cubemap.cpp" />
+    <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\Skybox.cpp" />
     <ClCompile Include="src\myCamera.cpp" />
     <ClCompile Include="src\Building.cpp" />
