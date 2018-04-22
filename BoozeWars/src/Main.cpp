@@ -19,6 +19,7 @@
 
 #include "Texture.h"
 
+#include "Character.h"
 #include "DrunkCity.h"
 
 #include "Exceptions.h"
@@ -158,19 +159,9 @@ int main(int argc, char** argv)
 	if (FT_New_Face(ft, "C://Windows//Fonts//arial.ttf", 0, &face))
 		std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
 
-	FT_Set_Pixel_Sizes(face, 0, 48);
+	Character* mainCharacter = new Character(face);
 
-	if (FT_Load_Char(face, 'X', FT_LOAD_RENDER))
-		std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
-
-	struct Character {
-		GLuint     TextureID;  // ID handle of the glyph texture
-		glm::ivec2 Size;       // Size of glyph
-		glm::ivec2 Bearing;    // Offset from baseline to left/top of glyph
-		GLuint     Advance;    // Offset to advance to next glyph
-	};
-
-	std::map<GLchar, Character> Characters;
+	//std::map<GLchar, Character> Characters;
 
 	/* --------------------------------------------- */
 	// Initialize scene and render loop
@@ -233,6 +224,11 @@ int main(int argc, char** argv)
 		float t_sum = 0.0f;
 		bool firstRun = true;
 		while (!glfwWindowShouldClose(window)) {
+			//test start
+			FT_Set_Pixel_Sizes(face, 0, 48);
+			mainCharacter->display("hallo", window);
+			// test end
+
 			// Clear backbuffer
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			// Update camera
@@ -277,6 +273,7 @@ int main(int argc, char** argv)
 				}
 				catch (int e) {
 					if (e == ALL_ENEMIES_DESTROYED) {
+						/*
 						glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // Disable byte-alignment restriction
 
 						for (GLubyte c = 0; c < 128; c++)
@@ -308,14 +305,13 @@ int main(int argc, char** argv)
 							glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 							glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 							// Now store character for later use
-							Character character = {
-								texture,
+							Character* character = new Character(texture, 
 								glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
 								glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
-								face->glyph->advance.x
-							};
+								face->glyph->advance.x);
 							Characters.insert(std::pair<GLchar, Character>(c, character));
 						}
+						*/
 					}
 
 					if (e == NO_ENEMIES_IN_RANGE) {
