@@ -98,14 +98,6 @@ void Character::renderText(const char *text, float x, float y, float sx, float s
 		glBindBuffer(GL_ARRAY_BUFFER, _vboPositions);
 		glBufferData(GL_ARRAY_BUFFER, sizeof box, box, GL_DYNAMIC_DRAW);
 
-
-		//bin vertex positions to location 0
-
-
-		
-
-
-
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 		x += (g->advance.x / 64) * sx;
