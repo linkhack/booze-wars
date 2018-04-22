@@ -106,8 +106,12 @@ void Character::display(char* text, GLFWwindow *window) {
 	glClearColor(1, 1, 1, 1);
 	//glClear(GL_COLOR_BUFFER_BIT);
 	
-	glm::vec4 red = glm::vec4( 1, 0, 0, 1 );
-	shader->setUniform("color", red);
+	//glm::vec4 red = glm::vec4( 1, 0, 0, 1 );
+	//shader->setUniform("color", red);
+	shader->use();
+
+	GLfloat red[4] = { 1, 0, 0, 1 };
+	glUniform4fv(glGetUniformLocation(shader->getID(),"color"), 1, red);
 
 	int windowWidth;
 	int windowHeight;
@@ -117,8 +121,6 @@ void Character::display(char* text, GLFWwindow *window) {
 	float sy = 2.0 / windowHeight;
 
 	renderText(text, -1 + 8 * sx, 1 - 50 * sy, sx, sy);
-
-	shader->use();
 
 	//glfwSwapBuffers(window);
 }
