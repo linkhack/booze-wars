@@ -1,12 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClCompile Include="src\Character.cpp" />
     <ClCompile Include="src\Cubemap.cpp" />
     <ClCompile Include="src\Skybox.cpp" />
     <ClCompile Include="src\myCamera.cpp" />
     <ClCompile Include="src\Building.cpp" />
     <ClCompile Include="src\Exceptions.h" />
     <ClCompile Include="src\Street.cpp" />
+    <ClInclude Include="src\Character.h" />
     <ClInclude Include="src\Cubemap.h" />
     <ClInclude Include="src\Skybox.h" />
     <ClInclude Include="src\myCamera.h" />
