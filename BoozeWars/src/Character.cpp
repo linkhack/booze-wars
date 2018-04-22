@@ -18,7 +18,17 @@ void Character::renderText(const char *text, float x, float y, float sx, float s
 	for (p = text; *p; p++) {
 		if (FT_Load_Char(face, *p, FT_LOAD_RENDER))
 			continue;
-
+		
+		GLuint textureID;
+		glActiveTexture(GL_TEXTURE0);
+		glGenTextures(1, &textureID);
+		glBindTexture(GL_TEXTURE_2D, textureID);
+		//shader->setUniform("tex", 0);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 		glTexImage2D(
 			GL_TEXTURE_2D,
@@ -62,22 +72,14 @@ void Character::renderText(const char *text, float x, float y, float sx, float s
 
 		x += (g->advance.x / 64) * sx;
 		y += (g->advance.y / 64) * sy;
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 }
 
 void Character::display(char* text, GLFWwindow *window) {
 	glClearColor(1, 1, 1, 1);
 	glClear(GL_COLOR_BUFFER_BIT);
-	GLuint textureID;
-	glActiveTexture(GL_TEXTURE0);
-	glGenTextures(1, &textureID);
-	glBindTexture(GL_TEXTURE_2D, textureID);
-	//shader->setUniform("tex", 0);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	
 	//glm::vec4 red = glm::vec4( 1, 0, 0, 1 );
 	GLfloat red[4] = { 1,0,0,1 }; 
 	//shader->setUniform("color", red);

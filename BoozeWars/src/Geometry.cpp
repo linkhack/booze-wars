@@ -82,6 +82,7 @@ void Geometry::draw(glm::mat4 matrix)
 		glBindVertexArray(_vao);
 		glDrawElements(GL_TRIANGLES, _elements, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
+		glBindTexture(GL_TEXTURE_2D, 0);
 
 	}
 
