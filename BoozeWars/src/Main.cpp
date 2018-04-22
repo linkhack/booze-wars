@@ -225,7 +225,7 @@ int main(int argc, char** argv)
 		bool firstRun = true;
 		while (!glfwWindowShouldClose(window)) {
 			//test start
-			FT_Set_Pixel_Sizes(face, 0, 48);
+			FT_Set_Pixel_Sizes(face, 0, 12);
 			mainCharacter->display("hallo", window);
 			// test end
 
@@ -343,6 +343,7 @@ int main(int argc, char** argv)
 			if (glGetError() != GL_NO_ERROR)
 			{
 				std::cout << "GL Error detected" << std::endl;
+
 			}
 		}
 	}
