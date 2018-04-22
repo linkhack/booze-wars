@@ -415,7 +415,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 	if (action == GLFW_REPEAT || action == GLFW_PRESS)
 	{
-		std::cout << "Key pressed" << std::endl;
 		_key_pressed = key;
 		return;
 	}
