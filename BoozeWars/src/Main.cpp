@@ -219,10 +219,6 @@ int main(int argc, char** argv)
 		float t_sum = 0.0f;
 		bool firstRun = true;
 		while (!glfwWindowShouldClose(window)) {
-			//test start
-			mainCharacter->setFontSize(24);
-			mainCharacter->display("hallo", window);
-			// test end
 
 			// Clear backbuffer
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -325,6 +321,12 @@ int main(int argc, char** argv)
 			}
 			//worldModel.draw();
 			
+
+			//test start
+			mainCharacter->setFontSize(24);
+			mainCharacter->display("hallo", window);
+			// test end
+
 			// Compute frame time
 			dt = t;
 			t = float(glfwGetTime());
