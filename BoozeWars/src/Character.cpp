@@ -104,10 +104,10 @@ void Character::renderText(const char *text, float x, float y, float sx, float s
 
 void Character::display(char* text, GLFWwindow *window) {
 	glClearColor(1, 1, 1, 1);
-	glClear(GL_COLOR_BUFFER_BIT);
+	//glClear(GL_COLOR_BUFFER_BIT);
 	
-	//glm::vec4 red = glm::vec4( 1, 0, 0, 1 );
-	//shader->setUniform("color", red);
+	glm::vec4 red = glm::vec4( 1, 0, 0, 1 );
+	shader->setUniform("color", red);
 
 	int windowWidth;
 	int windowHeight;
