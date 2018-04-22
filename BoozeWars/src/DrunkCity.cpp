@@ -131,7 +131,7 @@ void DrunkCity::placeBuilding(int x, int z, std::shared_ptr<Material> material) 
 	if (isColliding(highway.getPart1(), toPlace) || 
 		isColliding(highway.getPart2(), toPlace) || 
 		isColliding(highway.getPart3(), toPlace)) {
-		throw PLACING_COLLISION;
+		throw STREET_COLLISION;
 	}
 
 	while (it != buildings.end())
@@ -141,7 +141,7 @@ void DrunkCity::placeBuilding(int x, int z, std::shared_ptr<Material> material) 
 			glm::mat2x2(iterBuilding->getX(), iterBuilding->getZ(), iterBuilding->getX() + iterBuilding->getWidth(), iterBuilding->getZ() + iterBuilding->getLength()),
 			toPlace
 		)) {
-			throw PLACING_COLLISION;
+			throw BUILDING_COLLISION;
 		}
 		++it;
 	}

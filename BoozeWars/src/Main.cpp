@@ -219,9 +219,11 @@ int main(int argc, char** argv)
 		float t = float(glfwGetTime());
 		float dt = 0.0f;
 		float t_sum = 0.0f;
-		int collsionCounter = 0;
+		int buildingColCounter = 0;
+		int streetColCounter = 0;
 		bool start = false;
 		int buildingLimit = 0;
+		int placeMinCounter = 0;
 		while (!glfwWindowShouldClose(window)) {
 
 			// Clear backbuffer
@@ -257,8 +259,11 @@ int main(int argc, char** argv)
 					world.placeBuilding(camera.getGroundIntersection()[0], camera.getGroundIntersection()[2], moonMaterial);
 				}
 				catch (int e) {
-					if (e == PLACING_COLLISION) {
-						collsionCounter = 500;
+					if (e == BUILDING_COLLISION) {
+						buildingColCounter = 300;
+					}
+					if (e == STREET_COLLISION) {
+						streetColCounter = 300;
 					}
 					if (e == BUILDINGS_LIMIT_REACHED) {
 						buildingLimit = 1;
@@ -269,7 +274,7 @@ int main(int argc, char** argv)
 			if (_starting) {
 				if (!world.hasMinOneBuildings()) {
 					_starting = false;
-					mainCharacter->renderText("PLACE MININUM 1 BUILDING BEFORE STARTING!", 0, 600, 0.5f, glm::vec3(1.0, 0.0, 0.0));
+					placeMinCounter = 200;
 				}
 				else {
 					start = true;
@@ -277,13 +282,23 @@ int main(int argc, char** argv)
 				}
 			}
 
-			if (collsionCounter > 0) {
-				mainCharacter->renderText("BUILDINGS INTERSECT!", 0, 500, 1.0f, glm::vec3(1.0, 0.0, 0.0));
-				collsionCounter--;
+			if (placeMinCounter > 0) {
+				mainCharacter->renderText("PLACE MININUM 1 BUILDING BEFORE STARTING!", 0, 600, 0.5f, glm::vec3(1.0, 0.0, 0.0));
+				placeMinCounter--;
+			}
+
+			if (buildingColCounter > 0) {
+				mainCharacter->renderText("COLLIDING WITH BUILDING!", 20, window_height - 250, 0.8f, glm::vec3(1.0, 0.0, 0.0));
+				buildingColCounter--;
+			}
+
+			if (streetColCounter > 0) {
+				mainCharacter->renderText("COLLIDING WITH STREET!", 20, window_height - 200, 0.8f, glm::vec3(1.0, 0.0, 0.0));
+				streetColCounter--;
 			}
 
 			if (buildingLimit > 0) {
-				mainCharacter->renderText("BUILDING LIMIT REACHED!", 0, 600, 1.0f, glm::vec3(1.0, 0.0, 0.0));
+				mainCharacter->renderText("BUILDING LIMIT REACHED!", 20, window_height - 100, 0.8f, glm::vec3(1.0, 0.0, 0.0));
 			}
 
 			if (!_dragging && pressing) {
@@ -319,6 +334,10 @@ int main(int argc, char** argv)
 				color = glm::vec3(0.0, 0.0, 1.0);
 			}
 			mainCharacter->renderText(text.c_str(), 100, 100, 0.8f,color);
+
+			if (!start) {
+				mainCharacter->renderText("PRESS ENTER TO START WAVE", 20, window_height-50, 0.5f, glm::vec3(0.0,0.5,0.5));
+			}
 
 			// Compute frame time
 			dt = t;
