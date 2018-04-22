@@ -317,7 +317,7 @@ int main(int argc, char** argv)
 			world.zeichne();
 			map.draw();
 			if (camera.getGroundIntersection() != glm::vec3(0, 1, 0)) {
-				cameraPlacement.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection()+glm::vec3(0.0f,-0.01f,0.0f)));
+				//cameraPlacement.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection()+glm::vec3(0.0f,-0.01f,0.0f)));
 			}
 			//worldModel.draw();
 			

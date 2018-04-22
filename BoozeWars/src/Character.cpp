@@ -4,21 +4,23 @@ Character::Character()
 {
 	GLfloat box[4][4] = {
 		{0,     0   , 0, 0 },
-	{ 0, 0    , 1, 0 },
-	{ 0,     0, 0, 1 },
-	{ 0, 0, 1, 1 },
+	{ 1, 0    , 1, 0 },
+	{ 0,    1, 0, 1 },
+	{ 1, 1, 1, 1 },
 	};
 	glGenVertexArrays(1, &_vao);
 	glBindVertexArray(_vao);
 
 	//Generate VBO
 	glGenBuffers(1, &_vboPositions);
+	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, _vboPositions);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glBufferData(GL_ARRAY_BUFFER, sizeof box, box, GL_DYNAMIC_DRAW);
 
 	//bin vertex positions to location 0
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
+
 
 	if (FT_Init_FreeType(&ft))
 		std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
@@ -74,7 +76,11 @@ void Character::renderText(const char *text, float x, float y, float sx, float s
 			glBindTexture(GL_TEXTURE_2D, textureID);
 		}
 
-		
+		shader->use();
+
+		GLfloat red[4] = { 1, 0, 0, 1 };
+		glUniform1i(glGetUniformLocation(shader->getID(), "tex"), 0);
+		glUniform4fv(glGetUniformLocation(shader->getID(), "color"), 1, red);
 		
 
 		float x2 = x + g->bitmap_left * sx;
@@ -88,12 +94,18 @@ void Character::renderText(const char *text, float x, float y, float sx, float s
 			{ x2,     -y2 - h, 0, 1 },
 			{ x2 + w, -y2 - h, 1, 1 },
 		};
+		glBindVertexArray(_vao);
+		glBindBuffer(GL_ARRAY_BUFFER, _vboPositions);
+		glBufferData(GL_ARRAY_BUFFER, sizeof box, box, GL_DYNAMIC_DRAW);
 
-		glBufferData(GL_ARRAY_BUFFER, 16*sizeof GLfloat, box, GL_DYNAMIC_DRAW);
 
 		//bin vertex positions to location 0
 
-		glBindVertexArray(_vao);
+
+		
+
+
+
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 		x += (g->advance.x / 64) * sx;
@@ -103,15 +115,12 @@ void Character::renderText(const char *text, float x, float y, float sx, float s
 }
 
 void Character::display(char* text, GLFWwindow *window) {
-	glClearColor(1, 1, 1, 1);
+	//glClearColor(1, 1, 1, 1);
 	//glClear(GL_COLOR_BUFFER_BIT);
 	
 	//glm::vec4 red = glm::vec4( 1, 0, 0, 1 );
 	//shader->setUniform("color", red);
-	shader->use();
 
-	GLfloat red[4] = { 1, 0, 0, 1 };
-	glUniform4fv(glGetUniformLocation(shader->getID(),"color"), 1, red);
 
 	int windowWidth;
 	int windowHeight;
