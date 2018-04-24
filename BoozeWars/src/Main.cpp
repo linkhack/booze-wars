@@ -203,7 +203,7 @@ int main(int argc, char** argv)
 		};
 		Skybox worldModel = Skybox(skyboxShader, skymapTextureLoc);
 		//create Wave
-		Wave wave = Wave(20, 0.5);
+		Wave wave = Wave(std::list<wavetuple>({wavetuple(10,0.5,1),wavetuple(5,0.1,1),wavetuple(10,1,0.1),wavetuple(20,0.2,1)}));
 		//if the left click is still pressed
 		bool pressing = false;
 
