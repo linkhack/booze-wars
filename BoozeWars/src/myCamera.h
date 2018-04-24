@@ -30,7 +30,7 @@ public:
 	glm::mat4 getViewProjectionMatrix();
 	glm::vec3 getGroundIntersection();
 	void update(int x, int y, float zoom, bool dragging, bool strafing);
-	void updatePosition(int direction);
+	void updatePosition(int direction, float dT);
 	void updateDirection(int x, int y);
 	
 };

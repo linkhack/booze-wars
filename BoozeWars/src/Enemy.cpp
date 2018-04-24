@@ -5,12 +5,13 @@ Enemy::Enemy()
 
 }
 
-Enemy::Enemy(std::shared_ptr<Material> material)
+Enemy::Enemy(std::shared_ptr<Material> material,int x, int y)
 {
 	model = new Geometry(glm::mat4(1.0f), Geometry::createCubeGeometry(10, 10, 10), material);
 	x = 0;
 	y = 0;
 	z = 15;
+	street=Street(x, y);
 	movementspeed = 60.0f;
 }
 
@@ -61,6 +62,8 @@ void Enemy::selfDestruct()
 
 void Enemy::walk(float dT)
 {
-	x += movementspeed * dT;
+	if (x < street.getPart2()[0][0]) {
+		x += movementspeed * dT;
+	}
 
 }

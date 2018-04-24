@@ -230,8 +230,8 @@ int main(int argc, char** argv)
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			// Update camera
 			glfwGetCursorPos(window, &mouse_x, &mouse_y);
-
-			camera.updatePosition(_key_pressed);
+			std::cout << dt << std::endl;
+			camera.updatePosition(_key_pressed,dt);
 			camera.updateDirection(int(mouse_x), int(mouse_y));
 
 			// Set per-frame uniforms

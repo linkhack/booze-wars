@@ -74,7 +74,7 @@ Enemy* DrunkCity::getNearestEnemy(Building* building)
 
 void DrunkCity::addEnemy(std::shared_ptr<Material> material)
 {
-	enemiesAlive.push_back(new Enemy(material));
+	enemiesAlive.push_back(new Enemy(material),);
 }
 
 

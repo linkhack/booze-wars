@@ -1,5 +1,6 @@
 #pragma once
 #include "Geometry.h"
+#include "Street.h"
 class Enemy
 {
 private:
@@ -10,10 +11,11 @@ private:
 	float hp;
 	float movementspeed; //max speed in meter/second
 	float damageTeens; //Amount of drunken teens per bottle
+	Street street;
 
 public:
 	Enemy();
-	Enemy(std::shared_ptr<Material> material);
+	Enemy(std::shared_ptr<Material> material,int x, int y);
 	~Enemy();
 
 	Enemy(Enemy&&) = default;

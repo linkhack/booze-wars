@@ -5,7 +5,7 @@
 myCamera::myCamera(float fov, float aspect, float near, float far)
 {
 	projMatrix = glm::perspective(fov, aspect, near, far);
-	movementSpeed = 0.1;
+	movementSpeed = 20;
 	position = glm::vec3(0.0f, -10.0f, 0.0f);
 	rotationMatrix = glm::mat4(1.0f);
 	yaw = 0;
@@ -63,7 +63,7 @@ glm::mat4 myCamera::getViewProjectionMatrix() {
 
 void myCamera::update(int x, int y, float zoom, bool dragging, bool strafing){}
 
-void myCamera::updatePosition(int key)
+void myCamera::updatePosition(int key, float dT)
 {
 	//W:forward
 	//A:left
@@ -76,23 +76,23 @@ void myCamera::updatePosition(int key)
 	switch (key)
 	{
 	case GLFW_KEY_W:
-		position += movementSpeed * lookDirection;
+		position += movementSpeed * lookDirection*dT;
 		break;
 	case GLFW_KEY_A:
-		position += movementSpeed * orthoDirection;
+		position += movementSpeed * orthoDirection*dT;
 		break;
 	case GLFW_KEY_S:
-		position -= movementSpeed * lookDirection;
+		position -= movementSpeed * lookDirection*dT;
 		break;
 	case GLFW_KEY_D:
-		position -= movementSpeed * orthoDirection;
+		position -= movementSpeed * orthoDirection*dT;
 		break;
 	case GLFW_KEY_R:
-		position.y -= movementSpeed;
+		position.y -= movementSpeed * dT;
 		break;
 	case GLFW_KEY_F:
-		if (position.y + movementSpeed <= -1) {
-			position.y += movementSpeed;
+		if (position.y + movementSpeed * dT <= -1) {
+			position.y += movementSpeed * dT;
 		}
 		break;
 	default:
