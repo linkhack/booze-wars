@@ -27,7 +27,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-
+#include "Wave.h"
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
@@ -202,8 +202,8 @@ int main(int argc, char** argv)
 			"assets/textures/cubemap/posz.png"
 		};
 		Skybox worldModel = Skybox(skyboxShader, skymapTextureLoc);
-		//create enemy
-		//world.addEnemy(earthMaterial);
+		//create Wave
+		Wave wave = Wave(20, 0.5);
 		//if the left click is still pressed
 		bool pressing = false;
 
@@ -307,11 +307,15 @@ int main(int argc, char** argv)
 			// Play logic
 			if (start) {
 				world.walk(dt);
+				if (wave.spawnEnemy(dt)) 
+				{
+					world.addEnemy(sunMaterial);
+				}
 				try {
 					world.fight(dt);				
 				}
 				catch (int e) {
-					if (e == ALL_ENEMIES_DESTROYED) {
+					if (e == ALL_ENEMIES_DESTROYED && wave.waveIsFinished()) {
 						mainCharacter->renderText("YOU WIN", 20, 600, 3.0f, glm::vec3(1.0, 0.0, 0.0));
 					}
 

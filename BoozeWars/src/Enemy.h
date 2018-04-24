@@ -25,6 +25,7 @@ public:
 	float getX();
 	float getZ();
 	float getHP();
+	float getDamage();
 	
 	void walk(float dT);
 	void hit(float damage);

@@ -6,6 +6,7 @@
 #include <glm\glm.hpp>
 #include "Material.h"
 #include "Skybox.h"
+#include "Wave.h"
 
 
 class DrunkCity
@@ -25,6 +26,7 @@ private:
 	Enemy* getNearestEnemy(Building* building);
 	void addBuilding(Building* building);
 	bool isColliding(glm::mat2x2 placed, glm::mat2x2 toPlace);
+
 	
 public:
 
@@ -37,10 +39,11 @@ public:
 
 	int getHP();
 	void zeichne();
-	void addEnemy(std::shared_ptr<Material> material);
 	void fight(float dT);
 	void walk(float dT);
 	void placeBuilding(int x, int z, std::shared_ptr<Material> material);
 	bool hasMinOneBuildings();
+	void addEnemy(std::shared_ptr<Material> material);
+
 };
 

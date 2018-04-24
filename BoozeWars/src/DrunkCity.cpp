@@ -12,9 +12,8 @@ DrunkCity::DrunkCity(float x, float y, float z)
 	limitBuildings = 5;
 	citySizeX = x;
 	citySizeZ = z;
-
-	hp = 100;
 	
+	hp = 100;
 	highway = std::make_shared<Street>(x, z);
 }
 
@@ -113,10 +112,12 @@ void DrunkCity::walk(float dT)
 			iterEnemy->walk(dT);
 			if (iterEnemy->getX() >= 1000 || iterEnemy->getZ()>=1000)
 			{
+				hp -= iterEnemy->getDamage();
 				iterEnemy->selfDestruct();
 				it = enemiesAlive.erase(it);
 				delete iterEnemy;
 				iterEnemy = NULL;
+				
 			}else			
 			{
 				++it;
@@ -163,3 +164,4 @@ bool DrunkCity::hasMinOneBuildings()
 {
 	return buildings.size() > 0;
 }
+

@@ -14,7 +14,8 @@ Enemy::Enemy(std::shared_ptr<Material> material,std::shared_ptr<Street> street)
 	y = part[0][1]+ 0.5*(street->getStreetWidth());
 	this->street = street;
 	movementspeed = 60.0f;
-	hp = 1000;
+	hp = 100;
+	damageTeens = 5;
 }
 
 
@@ -47,7 +48,12 @@ float Enemy::getHP()
 {
 	return hp;
 }
-
+/*
+	Returns damage given
+*/
+float Enemy::getDamage() {
+	return damageTeens;
+}
 void Enemy::hit(float damage)
 {	
 	hp -= damage;
