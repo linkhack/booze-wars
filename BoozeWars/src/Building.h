@@ -7,7 +7,7 @@ private:
 	Geometry * model;
 	int x;
 	int z;
-	float damage;
+	float damage;//demage per second
 	int range;
 public:
 	Building();

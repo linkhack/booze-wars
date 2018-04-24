@@ -12,10 +12,10 @@ DrunkCity::DrunkCity(float x, float y, float z)
 	limitBuildings = 5;
 	citySizeX = x;
 	citySizeZ = z;
-	//Cubemap: right/left/top/bottom/back/front
+
 	hp = 100;
 	
-	highway = Street(x, z);
+	highway = std::make_shared<Street>(x, z);
 }
 
 DrunkCity::~DrunkCity()
@@ -52,7 +52,7 @@ Enemy* DrunkCity::getNearestEnemy(Building* building)
 		Enemy* iteratingEnemy = *it;
 		float iteratingEnemyX = abs(iteratingEnemy->getX() - building->getX());
 		float iteratingEnemyZ = abs(iteratingEnemy->getZ() - building->getZ());
-		if (iteratingEnemyX + iteratingEnemyZ <= building->getRange())
+		if (iteratingEnemyX + iteratingEnemyZ >= building->getRange()) //if out of range don't need to check
 			continue;
 		if (!nearestEnemy) {
 			nearestEnemy = iteratingEnemy;
@@ -74,7 +74,7 @@ Enemy* DrunkCity::getNearestEnemy(Building* building)
 
 void DrunkCity::addEnemy(std::shared_ptr<Material> material)
 {
-	enemiesAlive.push_back(new Enemy(material),);
+	enemiesAlive.push_back(new Enemy(material,highway));
 }
 
 
@@ -86,13 +86,13 @@ void DrunkCity::addBuilding(Building* building)
 	buildings.push_back(building);
 }
 
-void DrunkCity::fight()
+void DrunkCity::fight(float dT)
 {
 	for (std::list<Building*>::iterator it = buildings.begin(); it != buildings.end(); ++it)
 	{
 		Building* building = *it;
 		Enemy* enemy = getNearestEnemy(building);
-		enemy->hit(building->getDamage());
+		enemy->hit(building->getDamage()*dT);
 		if (enemy->getHP() <= 0) {
 			enemy->selfDestruct();
 			enemiesAlive.remove(enemy);
@@ -111,7 +111,7 @@ void DrunkCity::walk(float dT)
 		if (iterEnemy != NULL) 
 		{
 			iterEnemy->walk(dT);
-			if (iterEnemy->getX() >= 800 || iterEnemy->getZ()>=900)
+			if (iterEnemy->getX() >= 1000 || iterEnemy->getZ()>=1000)
 			{
 				iterEnemy->selfDestruct();
 				it = enemiesAlive.erase(it);
@@ -128,9 +128,9 @@ void DrunkCity::walk(float dT)
 void DrunkCity::placeBuilding(int x, int z, std::shared_ptr<Material> material) {
 	glm::mat2x2 toPlace = glm::mat2x2(x, z, x + Building::getWidth(), z + Building::getLength());
 	std::list<Building*>::iterator it = buildings.begin();
-	if (isColliding(highway.getPart1(), toPlace) || 
-		isColliding(highway.getPart2(), toPlace) || 
-		isColliding(highway.getPart3(), toPlace)) {
+	if (isColliding(highway->getPart1(), toPlace) || 
+		isColliding(highway->getPart2(), toPlace) || 
+		isColliding(highway->getPart3(), toPlace)) {
 		throw STREET_COLLISION;
 	}
 

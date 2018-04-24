@@ -42,7 +42,9 @@ int Building::getLength()
 {
 	return length;
 }
-
+/*
+Returns damage per second
+*/
 float Building::getDamage()
 {
 	return damage;

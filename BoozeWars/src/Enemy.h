@@ -11,11 +11,11 @@ private:
 	float hp;
 	float movementspeed; //max speed in meter/second
 	float damageTeens; //Amount of drunken teens per bottle
-	Street street;
+	std::shared_ptr<Street> street;
 
 public:
 	Enemy();
-	Enemy(std::shared_ptr<Material> material,int x, int y);
+	Enemy(std::shared_ptr<Material> material,std::shared_ptr<Street> Street);
 	~Enemy();
 
 	Enemy(Enemy&&) = default;

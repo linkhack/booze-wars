@@ -12,7 +12,7 @@ class DrunkCity
 {
 private:
 	
-	Street highway;
+	std::shared_ptr<Street> highway;
 	//std::vector<Enemy> enemiesAlive;
 	int alive;
 	std::list<Enemy*> enemiesAlive;
@@ -38,7 +38,7 @@ public:
 	int getHP();
 	void zeichne();
 	void addEnemy(std::shared_ptr<Material> material);
-	void fight();
+	void fight(float dT);
 	void walk(float dT);
 	void placeBuilding(int x, int z, std::shared_ptr<Material> material);
 	bool hasMinOneBuildings();

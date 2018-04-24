@@ -5,10 +5,10 @@
 myCamera::myCamera(float fov, float aspect, float near, float far)
 {
 	projMatrix = glm::perspective(fov, aspect, near, far);
-	movementSpeed = 20;
-	position = glm::vec3(0.0f, -10.0f, 0.0f);
+	movementSpeed = 250;
+	position = glm::vec3(0.0f, -10.0f, 250.0f);
 	rotationMatrix = glm::mat4(1.0f);
-	yaw = 0;
+	yaw = glm::radians(-90.0f);
 	pitch  =0;
 	roll = 0;
 }

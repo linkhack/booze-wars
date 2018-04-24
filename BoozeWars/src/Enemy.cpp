@@ -5,14 +5,16 @@ Enemy::Enemy()
 
 }
 
-Enemy::Enemy(std::shared_ptr<Material> material,int x, int y)
+Enemy::Enemy(std::shared_ptr<Material> material,std::shared_ptr<Street> street)
 {
 	model = new Geometry(glm::mat4(1.0f), Geometry::createCubeGeometry(10, 10, 10), material);
-	x = 0;
-	y = 0;
-	z = 15;
-	street=Street(x, y);
+	glm::mat2 part = street->getPart1();
+	x = part[0][0];
+	z = 5;
+	y = part[0][1]+ 0.5*(street->getStreetWidth());
+	this->street = street;
 	movementspeed = 60.0f;
+	hp = 1000;
 }
 
 
@@ -27,8 +29,8 @@ glm::mat4 Enemy::getModelMatrix()
 }
 
 void Enemy::draw() {
-	model->setTransformMatrix(getModelMatrix());
-	model->draw();
+
+	model->draw(getModelMatrix());
 }
 
 float Enemy::getX() 
@@ -47,8 +49,9 @@ float Enemy::getHP()
 }
 
 void Enemy::hit(float damage)
-{
+{	
 	hp -= damage;
+	std::cout << hp << std::endl;
 }
 
 void Enemy::selfDestruct()
@@ -62,8 +65,13 @@ void Enemy::selfDestruct()
 
 void Enemy::walk(float dT)
 {
-	if (x < street.getPart2()[0][0]) {
+	if (x < street->getPart1()[1][0] + 0.5*street->getStreetWidth()) {
 		x += movementspeed * dT;
 	}
-
+	else if (y < street->getPart2()[1][1] - 0.6*street->getStreetWidth()) {
+		y += movementspeed * dT;
+	}
+	else {
+		x += movementspeed * dT;
+	}
 }

@@ -184,11 +184,11 @@ int main(int argc, char** argv)
 		std::shared_ptr<Material> translucentRed = std::make_shared<Material>(translucent, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f);
 		std::shared_ptr<Material> mapMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, mapTexture);
 		//Create World
-		DrunkCity world = DrunkCity(20000.0f, 9000.0f, 5000.0f);
+		DrunkCity world = DrunkCity(1000.0f, 9000.0f, 1000.0f);
 		//Create Ground
 		Geometry ground = Geometry(glm::mat4(1.0f), Geometry::createInfinitePlane(), infiniGreenMat);
 		//Create map
-		Geometry map = Geometry(glm::mat4(1.0f), Geometry::createRectangle(1000, 1000), mapMaterial);
+		Geometry map = Geometry(glm::translate(glm::mat4(1.0f),glm::vec3(500,0,500))*glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0, 1, 0)), Geometry::createRectangle(1000, 1000), mapMaterial);
 		//Helper Rectangle for building placment
 		Geometry cameraPlacement = Geometry(glm::mat4(1.0f), Geometry::createRectangle(10.0f, 10.0f), translucentRed);
 		//Skybox
@@ -212,7 +212,7 @@ int main(int argc, char** argv)
 		myCamera camera(fov, float(window_width) / float(window_height), nearZ, farZ);
 		PointLight pointL(glm::vec3(1, 1, 1), glm::vec3(0), glm::vec3(1, 0, 0));
 		DirectionalLight dirL(glm::vec3(1.0f,1.0f,1.0f), glm::vec3(0,1.0f,0));
-
+		world.addEnemy(sunMaterial);
 
 		// Render loop
 		double mouse_x, mouse_y;
@@ -230,7 +230,6 @@ int main(int argc, char** argv)
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			// Update camera
 			glfwGetCursorPos(window, &mouse_x, &mouse_y);
-			std::cout << dt << std::endl;
 			camera.updatePosition(_key_pressed,dt);
 			camera.updateDirection(int(mouse_x), int(mouse_y));
 
@@ -307,8 +306,9 @@ int main(int argc, char** argv)
 
 			// Play logic
 			if (start) {
+				world.walk(dt);
 				try {
-					world.fight();
+					world.fight(dt);				
 				}
 				catch (int e) {
 					if (e == ALL_ENEMIES_DESTROYED) {
