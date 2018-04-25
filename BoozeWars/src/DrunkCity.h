@@ -43,6 +43,7 @@ public:
 	void walk(float dT);
 	void placeBuilding(int x, int z, std::shared_ptr<Material> material);
 	bool hasMinOneBuildings();
+	int getBuildingsLeft();
 	void addEnemy(std::shared_ptr<Material> material);
 
 };

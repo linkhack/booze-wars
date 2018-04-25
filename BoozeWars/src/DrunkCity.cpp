@@ -9,7 +9,7 @@ DrunkCity::DrunkCity()
 
 DrunkCity::DrunkCity(float x, float y, float z)
 {
-	limitBuildings = 5;
+	limitBuildings = 10;
 	citySizeX = x;
 	citySizeZ = z;
 	
@@ -49,18 +49,18 @@ Enemy* DrunkCity::getNearestEnemy(Building* building)
 	for (std::list<Enemy*>::iterator it = enemiesAlive.begin(); it != enemiesAlive.end(); ++it)
 	{
 		Enemy* iteratingEnemy = *it;
-		float iteratingEnemyX = abs(iteratingEnemy->getX() - building->getX());
-		float iteratingEnemyZ = abs(iteratingEnemy->getZ() - building->getZ());
-		if (iteratingEnemyX + iteratingEnemyZ >= building->getRange()) //if out of range don't need to check
+		glm::vec2 buildingCoords = glm::vec2(building->getX(), building->getZ());
+		glm::vec2 enemyCoords = glm::vec2(iteratingEnemy->getX(), iteratingEnemy->getZ());
+		float iterEnemylength = glm::abs(glm::distance(buildingCoords, enemyCoords));
+		if (iterEnemylength >= building->getRange()) //if out of range don't need to check
 			continue;
 		if (!nearestEnemy) {
 			nearestEnemy = iteratingEnemy;
 		}
 		else {
-			float actualEnemyX = abs(nearestEnemy->getX() - building->getX());
-			float actualEnemyY = abs(nearestEnemy->getZ() - building->getZ());
-			if (iteratingEnemyX + iteratingEnemyZ <= building->getRange() &&
-				actualEnemyX + actualEnemyY > iteratingEnemyX + iteratingEnemyZ) {
+			glm::vec2 lastEnemyCoords = glm::vec2(nearestEnemy->getX(), nearestEnemy->getZ());
+			float lastEnemyLength = glm::abs(glm::distance(buildingCoords, enemyCoords));
+			if (lastEnemyLength <= iterEnemylength) {
 				nearestEnemy = iteratingEnemy;
 			}
 		}
@@ -117,6 +117,10 @@ void DrunkCity::walk(float dT)
 				it = enemiesAlive.erase(it);
 				delete iterEnemy;
 				iterEnemy = NULL;
+
+				if (hp <= 0) {
+					throw GAME_END;
+				}
 				
 			}else			
 			{
@@ -165,3 +169,7 @@ bool DrunkCity::hasMinOneBuildings()
 	return buildings.size() > 0;
 }
 
+int DrunkCity::getBuildingsLeft()
+{
+	return limitBuildings - buildings.size();
+}

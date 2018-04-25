@@ -154,8 +154,8 @@ int main(int argc, char** argv)
 	// set up TrueType
 	
 
-	Character* mainCharacter = new Character(window);
-	mainCharacter->setFontSize(54);
+	Character* charactorService = new Character(window);
+	charactorService->setFontSize(54);
 
 	//std::map<GLchar, Character> Characters;
 
@@ -222,6 +222,7 @@ int main(int argc, char** argv)
 		int buildingColCounter = 0;
 		int streetColCounter = 0;
 		bool start = false;
+		bool end = false;
 		int buildingLimit = 0;
 		int placeMinCounter = 0;
 		while (!glfwWindowShouldClose(window)) {
@@ -251,7 +252,7 @@ int main(int argc, char** argv)
 			worldModel.draw();
 			
 			// Placement logic
-			if (_dragging && !pressing && !start) {
+			if (_dragging && !pressing && !end) {
 				pressing = true;
 				try {
 					// trying to place building
@@ -265,7 +266,7 @@ int main(int argc, char** argv)
 						streetColCounter = 300;
 					}
 					if (e == BUILDINGS_LIMIT_REACHED) {
-						buildingLimit = 1;
+						buildingLimit = 200;
 					}
 				}
 			}
@@ -277,27 +278,31 @@ int main(int argc, char** argv)
 				}
 				else {
 					start = true;
-					buildingLimit = 0;
 				}
 			}
 
 			if (placeMinCounter > 0) {
-				mainCharacter->renderText("PLACE MININUM 1 BUILDING BEFORE STARTING!", 0, 600, 0.5f, glm::vec3(1.0, 0.0, 0.0));
+				charactorService->renderText("PLACE MININUM 1 BUILDING BEFORE STARTING!", 0, 600, 0.5f, glm::vec3(1.0, 0.0, 0.0));
 				placeMinCounter--;
 			}
 
 			if (buildingColCounter > 0) {
-				mainCharacter->renderText("COLLIDING WITH BUILDING!", 20, window_height - 250, 0.8f, glm::vec3(1.0, 0.0, 0.0));
+				charactorService->renderText("COLLIDING WITH BUILDING!", 20, window_height - 250, 0.8f, glm::vec3(1.0, 0.0, 0.0));
 				buildingColCounter--;
 			}
 
 			if (streetColCounter > 0) {
-				mainCharacter->renderText("COLLIDING WITH STREET!", 20, window_height - 200, 0.8f, glm::vec3(1.0, 0.0, 0.0));
+				charactorService->renderText("COLLIDING WITH STREET!", 20, window_height - 200, 0.8f, glm::vec3(1.0, 0.0, 0.0));
 				streetColCounter--;
 			}
 
 			if (buildingLimit > 0) {
-				mainCharacter->renderText("BUILDING LIMIT REACHED!", 20, window_height - 100, 0.8f, glm::vec3(1.0, 0.0, 0.0));
+				charactorService->renderText("BUILDING LIMIT REACHED!", 20, window_height - 100, 0.8f, glm::vec3(1.0, 0.0, 0.0));
+				buildingLimit--;
+			}
+
+			if (end) {
+				charactorService->renderText("YOU LOSE!", 20, 600, 2.5f, glm::vec3(1.0, 0.0, 0.0));
 			}
 
 			if (!_dragging && pressing) {
@@ -305,8 +310,15 @@ int main(int argc, char** argv)
 			}
 
 			// Play logic
-			if (start) {
-				world.walk(dt);
+			if (start && !end) {
+				try {
+					world.walk(dt);
+				}
+				catch (int e) {
+					if (e == GAME_END) {
+						end = true;
+					}
+				}
 				if (wave.spawnEnemy(dt)) 
 				{
 					world.addEnemy(sunMaterial);
@@ -316,7 +328,7 @@ int main(int argc, char** argv)
 				}
 				catch (int e) {
 					if (e == ALL_ENEMIES_DESTROYED && wave.waveIsFinished()) {
-						mainCharacter->renderText("YOU WIN", 20, 600, 3.0f, glm::vec3(1.0, 0.0, 0.0));
+						charactorService->renderText("YOU WIN", 20, 600, 3.0f, glm::vec3(1.0, 0.0, 0.0));
 					}
 
 					if (e == NO_ENEMIES_IN_RANGE) {
@@ -326,10 +338,10 @@ int main(int argc, char** argv)
 			}
 
 			// player informations
-			std::string text = "LIFE: ";
-			std::ostringstream oss;
-			oss << world.getHP();
-			text += oss.str();
+			std::string life = "LIFE: ";
+			std::ostringstream lifeAmout;
+			lifeAmout << world.getHP();
+			life += lifeAmout.str();
 			glm::vec3 color;
 			if (world.getHP() <= 20) {
 				color = glm::vec3(1.0, 0.0, 0.0);
@@ -337,10 +349,22 @@ int main(int argc, char** argv)
 			else {
 				color = glm::vec3(0.0, 0.0, 1.0);
 			}
-			mainCharacter->renderText(text.c_str(), 100, 100, 0.8f,color);
+			charactorService->renderText(life.c_str(), 100, 100, 0.8f, color);
 
-			if (!start) {
-				mainCharacter->renderText("PRESS ENTER TO START WAVE", 20, window_height-50, 0.5f, glm::vec3(0.0,0.5,0.5));
+			std::string buildings = "BUILDINGS: ";
+			std::ostringstream left;
+			left << world.getBuildingsLeft();
+			buildings += left.str();
+			if (world.getBuildingsLeft() <= 0) {
+				color = glm::vec3(1.0, 0.0, 0.0);
+			}
+			else {
+				color = glm::vec3(0.0, 0.0, 1.0);
+			}
+			charactorService->renderText(buildings.c_str(), 450, 100, 0.8f, color);
+
+			if (!start && world.hasMinOneBuildings()) {
+				charactorService->renderText("PRESS ENTER TO START WAVE", 20, window_height-50, 0.5f, glm::vec3(0.0,0.5,0.5));
 			}
 
 			// Compute frame time

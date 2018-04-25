@@ -9,8 +9,8 @@ Building::Building()
 
 Building::Building(int x, int z, std::shared_ptr<Material> material)
 {
-	this->damage = 10;
-	this->range = 800;
+	this->damage = 20;
+	this->range = 700;
 
 	glm::mat4 position = glm::translate(glm::mat4(1.0f), glm::vec3(x, 1.0f, z));
 	this->x = position[3][0];
