@@ -59,8 +59,8 @@ Enemy* DrunkCity::getNearestEnemy(Building* building)
 		}
 		else {
 			glm::vec2 lastEnemyCoords = glm::vec2(nearestEnemy->getX(), nearestEnemy->getZ());
-			float lastEnemyLength = glm::abs(glm::distance(buildingCoords, enemyCoords));
-			if (lastEnemyLength <= iterEnemylength) {
+			float lastEnemyLength = glm::abs(glm::distance(buildingCoords, lastEnemyCoords));
+			if (lastEnemyLength > iterEnemylength) {
 				nearestEnemy = iteratingEnemy;
 			}
 		}
