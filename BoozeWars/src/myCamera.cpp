@@ -2,13 +2,15 @@
 #include <iostream>
 
 
+
 myCamera::myCamera(float fov, float aspect, float near, float far)
 {
-	projMatrix = glm::perspective(fov, aspect, near, far);
-	movementSpeed = 250;
-	position = glm::vec3(0.0f, -10.0f, 250.0f);
+
+	projMatrix = glm::perspective(-glm::radians(fov), aspect, near, far);
+	movementSpeed = 30;
+	position = glm::vec3(0.0f, -10.0f, 150.0f);
 	rotationMatrix = glm::mat4(1.0f);
-	yaw = glm::radians(-90.0f);
+	yaw = glm::radians(0.0f);
 	pitch  =0;
 	roll = 0;
 }
@@ -52,9 +54,11 @@ glm::mat4 myCamera::getViewProjectionMatrix() {
 	glm::quat qPitch = glm::angleAxis(pitch, glm::vec3(1, 0, 0));
 	glm::quat qYaw = glm::angleAxis(yaw, glm::vec3(0, 1, 0));
 
+
 	glm::quat orientation = qPitch * qYaw;
 	orientation = glm::normalize(orientation);
 	rotationMatrix = glm::mat4_cast(orientation);
+	
 
 	//View and proj matrix
 	viewMatrix = rotationMatrix*translation;
@@ -126,7 +130,7 @@ glm::vec3 myCamera::getGroundIntersection()
 	float yChange = lookDirecrtion.y;
 	float yPosition = position.y;
 	float t = -yPosition / yChange;
-	if (yChange > 0 && t<50) { 
+	if (yChange > 0 && t<100) { 
 		return position + t * lookDirecrtion;
 	} else {
 		return glm::vec3(0, 1, 0);

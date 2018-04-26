@@ -1,7 +1,7 @@
 #include "Building.h"
 
-int width = 10;
-int length = 10;
+int width = 15;
+int length = 15;
 
 Building::Building()
 {
@@ -12,10 +12,10 @@ Building::Building(int x, int z, std::shared_ptr<Material> material)
 	this->damage = 20;
 	this->range = 700;
 
-	glm::mat4 position = glm::translate(glm::mat4(1.0f), glm::vec3(x, 1.0f, z));
+	glm::mat4 position = glm::translate(glm::mat4(1.0f), glm::vec3(x, -10.0f, z));
 	this->x = position[3][0];
 	this->z = position[3][2];
-	model = new Geometry(position, Geometry::createCubeGeometry(width, 10, length), material);
+	model = new Geometry(position, Geometry::createCubeGeometry(width, 20, length), material);
 }
 
 

@@ -184,11 +184,11 @@ int main(int argc, char** argv)
 		std::shared_ptr<Material> translucentRed = std::make_shared<Material>(translucent, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f);
 		std::shared_ptr<Material> mapMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, mapTexture);
 		//Create World
-		DrunkCity world = DrunkCity(1000.0f, 9000.0f, 1000.0f);
+		DrunkCity world = DrunkCity(300.0f, 9000.0f, 300.0f);
 		//Create Ground
 		Geometry ground = Geometry(glm::mat4(1.0f), Geometry::createInfinitePlane(), infiniGreenMat);
 		//Create map
-		Geometry map = Geometry(glm::translate(glm::mat4(1.0f),glm::vec3(500,0,500))*glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0, 1, 0)), Geometry::createRectangle(1000, 1000), mapMaterial);
+		Geometry map = Geometry(glm::translate(glm::mat4(1.0f),glm::vec3(150,0,150))*glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0, 1, 0)), Geometry::createRectangle(300, 300), mapMaterial);
 		//Helper Rectangle for building placment
 		Geometry cameraPlacement = Geometry(glm::mat4(1.0f), Geometry::createRectangle(10.0f, 10.0f), translucentRed);
 		//Skybox
