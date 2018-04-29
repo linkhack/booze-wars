@@ -59,7 +59,7 @@ void main() {
 	color.rgb += phong(n, pointL.position - vert.position_world, v, pointL.color * texColor, materialCoefficients.y, pointL.color, materialCoefficients.z, specularAlpha, true, pointL.attenuation);
 	
 	float fogDistance = gl_FragCoord.z/gl_FragCoord.w;
-	float fogAmount = fogFunction(fogDistance,100,400);
+	float fogAmount = fogFunction(fogDistance,100,450);
 	
 	color = mix(color, fogColor,fogAmount);
 	

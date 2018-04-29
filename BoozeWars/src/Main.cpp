@@ -183,6 +183,8 @@ int main(int argc, char** argv)
 		std::shared_ptr<Material> infiniGreenMat = std::make_shared<Material>(infiniGreen, glm::vec3(1.0f, 0.0f, 0.0f), 10.0f);
 		std::shared_ptr<Material> translucentRed = std::make_shared<Material>(translucent, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f);
 		std::shared_ptr<Material> mapMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, mapTexture);
+		
+		//Geometries
 		//Create World
 		DrunkCity world = DrunkCity(300.0f, 9000.0f, 300.0f);
 		//Create Ground
@@ -202,6 +204,15 @@ int main(int argc, char** argv)
 			"assets/textures/cubemap/posz.png"
 		};
 		Skybox worldModel = Skybox(skyboxShader, skymapTextureLoc);
+
+		//Create School building
+		Geometry school = Geometry(glm::translate(glm::mat4(1.0f), glm::vec3(340, -15, 240)),
+									Geometry::createCubeGeometry(45, 30, 70),
+									earthMaterial);
+		school.addChild(std::make_unique<Geometry>(glm::translate(glm::mat4(1.0f), glm::vec3(-5, -5, 40)), 
+													Geometry::createCylinderGeometry(14, 45, 10),
+													earthMaterial));
+
 		//create Wave
 		Wave wave = Wave(std::list<wavetuple>({wavetuple(10,0.5,1),wavetuple(5,0.1,1),wavetuple(10,1,0.1),wavetuple(20,0.2,1)}));
 		//if the left click is still pressed
@@ -249,6 +260,7 @@ int main(int argc, char** argv)
 			if (camera.getGroundIntersection() != glm::vec3(0, 1, 0)) {
 				cameraPlacement.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection()+glm::vec3(0.0f,-0.01f,0.0f)));
 			}
+			school.draw();
 			worldModel.draw();
 			
 			// Placement logic

@@ -7,10 +7,10 @@ Enemy::Enemy()
 
 Enemy::Enemy(std::shared_ptr<Material> material,std::shared_ptr<Street> street)
 {
-	model = new Geometry(glm::mat4(1.0f), Geometry::createCubeGeometry(10, 10, 10), material);
+	model = new Geometry(glm::mat4(1.0f), Geometry::createCubeGeometry(4, 6, 4), material);
 	glm::mat2 part = street->getPart1();
 	x = part[0][0];
-	z = 5;
+	z = 3;
 	y = part[0][1]+ 0.5*(street->getStreetWidth());
 	this->street = street;
 	movementspeed = 20.0f;
