@@ -4,7 +4,6 @@
 * Institute of Computer Graphics and Algorithms.
 * This file is part of the ECG Lab Framework and must not be redistributed.
 */
-
 layout(location = 0) in vec4 position;
 layout(location = 1) in vec3 normal;
 layout(location = 2) in vec2 uv;
@@ -15,9 +14,11 @@ out VertexData {
 	vec2 uv;
 } vert;
 
+
 uniform mat4 modelMatrix;
 uniform mat4 viewProjMatrix;
 uniform mat3 normalMatrix;
+
 
 void main() {
 	vert.normal_world = normalMatrix * normal;

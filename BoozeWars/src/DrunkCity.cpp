@@ -110,7 +110,7 @@ void DrunkCity::walk(float dT)
 		if (iterEnemy != NULL) 
 		{
 			iterEnemy->walk(dT);
-			if (iterEnemy->getX() >= 1000 || iterEnemy->getZ()>=1000)
+			if (iterEnemy->getX() >= 300 || iterEnemy->getZ()>=300)
 			{
 				hp -= iterEnemy->getDamage();
 				iterEnemy->selfDestruct();

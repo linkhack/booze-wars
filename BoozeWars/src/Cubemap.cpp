@@ -25,8 +25,9 @@ Cubemap::Cubemap(std::vector<std::string> faces)
 		data = FreeImage_GetBits(texImage);
 		width = FreeImage_GetWidth(texImage);
 		height = FreeImage_GetHeight(texImage);
-		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height,
-			0, GL_RGB, GL_UNSIGNED_BYTE, data);
+
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_BGRA, width, height,
+			0, GL_BGRA, GL_UNSIGNED_BYTE, data);
 		FreeImage_Unload(texImage);
 	}
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

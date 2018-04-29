@@ -242,7 +242,7 @@ int main(int argc, char** argv)
 
 
 			// Render
-			//ground.draw();
+			ground.draw(glm::translate(glm::mat4(1.0f),glm::vec3(0.0f,0.1f,0.0f)));
 
 			world.zeichne();
 			map.draw();

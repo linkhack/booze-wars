@@ -30,6 +30,10 @@ uniform struct PointLight {
 	vec3 attenuation;
 } pointL;
 
+float fogFunction(float distance, float start, float end)
+{
+	return clamp((distance-start)/(end-start),0,1);
+}
 
 vec3 phong(vec3 n, vec3 l, vec3 v, vec3 diffuseC, float diffuseF, vec3 specularC, float specularF, float alpha, bool attenuate, vec3 attenuation) {
 	float d = length(l);
@@ -46,12 +50,18 @@ void main() {
 	
 	vec3 texColor = texture(diffuseTexture, vert.uv).rgb;
 	color = vec4(texColor * materialCoefficients.x, 1); // ambient
+	vec4 fogColor = vec4(0.45,0.45,0.6,1);
 	
 	// add directional light contribution
 	color.rgb += phong(n, -dirL.direction, v, dirL.color * texColor, materialCoefficients.y, dirL.color, materialCoefficients.z, specularAlpha, false, vec3(0));
 			
 	// add point light contribution
 	color.rgb += phong(n, pointL.position - vert.position_world, v, pointL.color * texColor, materialCoefficients.y, pointL.color, materialCoefficients.z, specularAlpha, true, pointL.attenuation);
+	
+	float fogDistance = gl_FragCoord.z/gl_FragCoord.w;
+	float fogAmount = fogFunction(fogDistance,100,400);
+	
+	color = mix(color, fogColor,fogAmount);
 	
 }
 
