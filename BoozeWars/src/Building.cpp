@@ -1,20 +1,20 @@
 #include "Building.h"
 
-int width = 15;
-int length = 15;
+int width = 20;
+int length = 20;
 int range = 70;
 
 Building::Building()
 {
 }
 
-Building::Building(int x, int z, std::shared_ptr<Material> material)
+Building::Building(float x, float z, std::shared_ptr<Material> material)
 {
-	this->damage = 20;
-	glm::mat4 position = glm::translate(glm::mat4(1.0f), glm::vec3(x, -10.0f, z));
+	this->damage = 45;
+	glm::mat4 position = glm::translate(glm::mat4(1.0f), glm::vec3(x, -15.0f, z));
 	this->x = position[3][0];
 	this->z = position[3][2];
-	model = new Geometry(position, Geometry::createCubeGeometry(width, 20, length), material);
+	model = new Geometry(position, Geometry::createCubeGeometry(width, 30, length), material);
 }
 
 

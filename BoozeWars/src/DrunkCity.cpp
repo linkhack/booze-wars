@@ -9,7 +9,7 @@ DrunkCity::DrunkCity()
 
 DrunkCity::DrunkCity(float x, float y, float z)
 {
-	limitBuildings = 10;
+	limitBuildings = 3;
 	citySizeX = x;
 	citySizeZ = z;
 	
@@ -79,7 +79,7 @@ void DrunkCity::addEnemy(std::shared_ptr<Material> material)
 
 void DrunkCity::addBuilding(Building* building)
 {
-	if (buildings.size() >= limitBuildings) {
+	if (buildings.size() >= (int)limitBuildings) {
 		throw BUILDINGS_LIMIT_REACHED;
 	}
 	buildings.push_back(building);
@@ -93,6 +93,7 @@ void DrunkCity::fight(float dT)
 		Enemy* enemy = getNearestEnemy(building);
 		enemy->hit(building->getDamage()*dT);
 		if (enemy->getHP() <= 0) {
+			limitBuildings += 0.1;
 			enemy->selfDestruct();
 			enemiesAlive.remove(enemy);
 			delete enemy;
@@ -130,8 +131,8 @@ void DrunkCity::walk(float dT)
 	}
 }
 
-void DrunkCity::placeBuilding(int x, int z, std::shared_ptr<Material> material) {
-	glm::mat2x2 toPlace = glm::mat2x2(x, z, x + Building::getWidth(), z + Building::getLength());
+void DrunkCity::placeBuilding(float x, float z, std::shared_ptr<Material> material) {
+	glm::mat2x2 toPlace = glm::mat2x2(x - Building::getWidth() / 2, z - Building::getLength() / 2, x + Building::getWidth()/2, z + Building::getLength()/2);
 	std::list<Building*>::iterator it = buildings.begin();
 	if (isColliding(highway->getPart1(), toPlace) || 
 		isColliding(highway->getPart2(), toPlace) || 
@@ -143,7 +144,7 @@ void DrunkCity::placeBuilding(int x, int z, std::shared_ptr<Material> material) 
 	{
 		Building* iterBuilding = *it;
 		if (isColliding(
-			glm::mat2x2(iterBuilding->getX(), iterBuilding->getZ(), iterBuilding->getX() + iterBuilding->getWidth(), iterBuilding->getZ() + iterBuilding->getLength()),
+			glm::mat2x2(iterBuilding->getX() - iterBuilding->getWidth() / 2, iterBuilding->getZ() - iterBuilding->getLength() / 2, iterBuilding->getX() + iterBuilding->getWidth()/2, iterBuilding->getZ() + iterBuilding->getLength()/2),
 			toPlace
 		)) {
 			throw BUILDING_COLLISION;

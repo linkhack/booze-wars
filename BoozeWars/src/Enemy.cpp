@@ -41,7 +41,7 @@ float Enemy::getX()
 
 float Enemy::getZ() 
 {
-	return z;
+	return y;
 }
 
 float Enemy::getHP()

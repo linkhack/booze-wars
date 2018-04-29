@@ -18,7 +18,7 @@ private:
 	int alive;
 	std::list<Enemy*> enemiesAlive;
 	std::list<Building*> buildings;
-	int limitBuildings;
+	float limitBuildings;
 	int citySizeX;
 	int citySizeZ;
 	int hp;
@@ -41,7 +41,7 @@ public:
 	void zeichne();
 	void fight(float dT);
 	void walk(float dT);
-	void placeBuilding(int x, int z, std::shared_ptr<Material> material);
+	void placeBuilding(float x, float z, std::shared_ptr<Material> material);
 	bool hasMinOneBuildings();
 	int getBuildingsLeft();
 	void addEnemy(std::shared_ptr<Material> material);

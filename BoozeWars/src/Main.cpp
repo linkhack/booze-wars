@@ -150,8 +150,7 @@ int main(int argc, char** argv)
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glLineWidth(4.5f);
-	glEnable(GL_LINE_SMOOTH);
+
 
 	// set up TrueType
 	
@@ -174,6 +173,7 @@ int main(int argc, char** argv)
 		std::shared_ptr<Texture> sunTexture = std::make_shared<Texture>("sun.dds");
 		std::shared_ptr<Texture> moonTexture = std::make_shared<Texture>("moon.dds");
 		std::shared_ptr<Texture> earthTexture = std::make_shared<Texture>("earth.dds");
+		std::shared_ptr<Texture> brickTexture = std::make_shared<Texture>("bricks_diffuse.dds");
 		std::shared_ptr<Texture> woodTexture = std::make_shared<Texture>("wood_texture.dds");
 		std::shared_ptr<Texture> mapTexture = std::make_shared<Texture>();
 		mapTexture->loadImage("map.png");
@@ -182,6 +182,7 @@ int main(int argc, char** argv)
 		std::shared_ptr<Material> sunMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, sunTexture);
 		std::shared_ptr<Material> earthMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.05f, 0.9f, 0.1f), 5.0f, earthTexture);
 		std::shared_ptr<Material> moonMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.05f, 0.9f, 0.05f), 2.0f, woodTexture);
+		std::shared_ptr<Material> brickMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.05f, 0.9f, 0.05f), 2.0f, brickTexture);
 		std::shared_ptr<Material> infiniGreenMat = std::make_shared<Material>(infiniGreen, glm::vec3(1.0f, 0.0f, 0.0f), 10.0f);
 		std::shared_ptr<Material> translucentRed = std::make_shared<Material>(translucent, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f);
 		std::shared_ptr<Material> mapMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, mapTexture);
@@ -192,9 +193,9 @@ int main(int argc, char** argv)
 		//Create Ground
 		Geometry ground = Geometry(glm::mat4(1.0f), Geometry::createInfinitePlane(), infiniGreenMat);
 		//Create map
-		Geometry map = Geometry(glm::translate(glm::mat4(1.0f),glm::vec3(150,0,150))*glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0, 1, 0)), Geometry::createRectangle(300, 300), mapMaterial);
+		Geometry map = Geometry(glm::translate(glm::mat4(1.0f),glm::vec3(150,0,150)), Geometry::createRectangle(300, 300), mapMaterial);
 		//Helper Rectangle for building placment
-		Geometry cameraPlacement = Geometry(glm::mat4(1.0f), Geometry::createRectangle(10.0f, 10.0f), translucentRed);
+		Geometry cameraPlacement = Geometry(glm::mat4(1.0f), Geometry::createRectangle(Building::getLength(), Building::getWidth()), translucentRed);
 		LineGeometry cameraCircle = LineGeometry(glm::mat4(1.0f), LineGeometry::createCircle(30,Building::getRange()), translucentRed);
 		
 		//Skybox
@@ -212,13 +213,13 @@ int main(int argc, char** argv)
 		//Create School building
 		Geometry school = Geometry(glm::translate(glm::mat4(1.0f), glm::vec3(340, -15, 240)),
 									Geometry::createCubeGeometry(45, 30, 70),
-									earthMaterial);
+									brickMaterial);
 		school.addChild(std::make_unique<Geometry>(glm::translate(glm::mat4(1.0f), glm::vec3(-5, -5, 40)), 
 													Geometry::createCylinderGeometry(14, 45, 10),
-													earthMaterial));
+													brickMaterial));
 
 		//create Wave
-		Wave wave = Wave(std::list<wavetuple>({wavetuple(10,0.5,1),wavetuple(5,0.1,1),wavetuple(10,1,0.1),wavetuple(20,0.2,1)}));
+		Wave wave = Wave(std::list<wavetuple>({wavetuple(10,2,1),wavetuple(10,0.5,1),wavetuple(5,0.1,1),wavetuple(10,1,0.1),wavetuple(20,0.25,1)}));
 		//if the left click is still pressed
 		bool pressing = false;
 
@@ -234,12 +235,15 @@ int main(int argc, char** argv)
 		float t = float(glfwGetTime());
 		float dt = 0.0f;
 		float t_sum = 0.0f;
+		float t_framecounter = 0.0f;
 		int buildingColCounter = 0;
 		int streetColCounter = 0;
 		bool start = false;
 		bool end = false;
 		int buildingLimit = 0;
 		int placeMinCounter = 0;
+		int frameCounter = 0;
+
 		while (!glfwWindowShouldClose(window)) {
 
 			// Clear backbuffer
@@ -389,8 +393,18 @@ int main(int argc, char** argv)
 			dt = t;
 			t = float(glfwGetTime());
 			dt = t - dt;
+			t_framecounter += dt;
 			t_sum += dt;
-
+			frameCounter++;
+			/* 
+			//FPS (0.5sec avarage)
+			if (t_framecounter > 0.5) 
+			{
+				std::cout << frameCounter / t_framecounter << std::endl;
+				frameCounter = 0;
+				t_framecounter = 0.0f;
+			}
+			*/
 			// Poll events and swap buffers
 			glfwPollEvents();
 			glfwSwapBuffers(window);

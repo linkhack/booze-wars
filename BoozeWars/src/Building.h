@@ -11,7 +11,7 @@ private:
 
 public:
 	Building();
-	Building::Building(int x, int z, std::shared_ptr<Material> material);
+	Building::Building(float x, float z, std::shared_ptr<Material> material);
 	~Building();
 
 	Building(Building&&) = default;
