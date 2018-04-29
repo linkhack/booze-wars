@@ -2,6 +2,7 @@
 
 int width = 15;
 int length = 15;
+int range = 70;
 
 Building::Building()
 {
@@ -10,8 +11,6 @@ Building::Building()
 Building::Building(int x, int z, std::shared_ptr<Material> material)
 {
 	this->damage = 20;
-	this->range = 700;
-
 	glm::mat4 position = glm::translate(glm::mat4(1.0f), glm::vec3(x, -10.0f, z));
 	this->x = position[3][0];
 	this->z = position[3][2];

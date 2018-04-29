@@ -8,7 +8,7 @@ private:
 	int x;
 	int z;
 	float damage;//demage per second
-	int range;
+
 public:
 	Building();
 	Building::Building(int x, int z, std::shared_ptr<Material> material);
@@ -22,8 +22,8 @@ public:
 	int getZ();
 	static int getWidth();
 	static int getLength();
+	static int getRange();
 	float getDamage();
-	int getRange();
 
 	void draw();
 };

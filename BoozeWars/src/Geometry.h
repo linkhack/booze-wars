@@ -56,7 +56,7 @@ public:
 	Geometry(Geometry&&) = default;
 	Geometry& operator=(Geometry&&) = default;
 
-	void draw(glm::mat4 matrix = glm::mat4(1.0f));
+	virtual void draw(glm::mat4 matrix = glm::mat4(1.0f));
 
 	void transform(glm::mat4 transformation);
 	void setTransformMatrix(glm::mat4 transformMatrix);

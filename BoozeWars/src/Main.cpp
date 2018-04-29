@@ -10,7 +10,7 @@
 #include <sstream>
 
 #include "Geometry.h"
-
+#include "LineGeometry.h"
 #include "myCamera.h"
 #include "Shader.h"
 
@@ -150,6 +150,8 @@ int main(int argc, char** argv)
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glLineWidth(4.5f);
+	glEnable(GL_LINE_SMOOTH);
 
 	// set up TrueType
 	
@@ -193,6 +195,8 @@ int main(int argc, char** argv)
 		Geometry map = Geometry(glm::translate(glm::mat4(1.0f),glm::vec3(150,0,150))*glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0, 1, 0)), Geometry::createRectangle(300, 300), mapMaterial);
 		//Helper Rectangle for building placment
 		Geometry cameraPlacement = Geometry(glm::mat4(1.0f), Geometry::createRectangle(10.0f, 10.0f), translucentRed);
+		LineGeometry cameraCircle = LineGeometry(glm::mat4(1.0f), LineGeometry::createCircle(30,Building::getRange()), translucentRed);
+		
 		//Skybox
 		std::vector<std::string> skymapTextureLoc =
 		{
@@ -259,7 +263,9 @@ int main(int argc, char** argv)
 			map.draw();
 			if (camera.getGroundIntersection() != glm::vec3(0, 1, 0)) {
 				cameraPlacement.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection()+glm::vec3(0.0f,-0.01f,0.0f)));
+				cameraCircle.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection() + glm::vec3(0.0f, -0.01f, 0.0f)));
 			}
+			//cameraCircle.draw();
 			school.draw();
 			worldModel.draw();
 			
