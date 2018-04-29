@@ -13,7 +13,7 @@ Enemy::Enemy(std::shared_ptr<Material> material,std::shared_ptr<Street> street)
 	z = 5;
 	y = part[0][1]+ 0.5*(street->getStreetWidth());
 	this->street = street;
-	movementspeed = 25.0f;
+	movementspeed = 20.0f;
 	hp = 100;
 	damageTeens = 5;
 }
@@ -57,7 +57,6 @@ float Enemy::getDamage() {
 void Enemy::hit(float damage)
 {	
 	hp -= damage;
-	std::cout << hp << std::endl;
 }
 
 void Enemy::selfDestruct()

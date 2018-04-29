@@ -7,7 +7,7 @@ myCamera::myCamera(float fov, float aspect, float near, float far)
 {
 
 	projMatrix = glm::perspective(-glm::radians(fov), aspect, near, far);
-	movementSpeed = 30;
+	movementSpeed = 50;
 	position = glm::vec3(0.0f, -10.0f, 150.0f);
 	rotationMatrix = glm::mat4(1.0f);
 	yaw = glm::radians(0.0f);
