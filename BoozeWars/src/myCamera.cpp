@@ -10,7 +10,7 @@ myCamera::myCamera(float fov, float aspect, float near, float far)
 	movementSpeed = 50;
 	position = glm::vec3(0.0f, -10.0f, 150.0f);
 	rotationMatrix = glm::mat4(1.0f);
-	yaw = glm::radians(0.0f);
+	yaw = glm::radians(90.0f);
 	pitch  =0;
 	roll = 0;
 }
@@ -107,7 +107,7 @@ void myCamera::updatePosition(int key, float dT)
 
 void myCamera::updateDirection(int x, int y)
 {
-	yaw = 0.1*x;
+	yaw =180 -0.1*x;
 	pitch = 0.1*y;
 	if (pitch >= 88) {
 		pitch = 88;
