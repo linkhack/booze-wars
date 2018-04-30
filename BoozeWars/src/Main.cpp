@@ -191,9 +191,9 @@ int main(int argc, char** argv)
 		// Create materials
 		std::shared_ptr<Material> sunMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, sunTexture);
 		std::shared_ptr<Material> earthMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.05f, 0.9f, 0.1f), 5.0f, earthTexture);
-		std::shared_ptr<Material> moonMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.05f, 0.9f, 0.05f), 2.0f, woodTexture);
-		std::shared_ptr<Material> brickMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.05f, 0.9f, 0.05f), 2.0f, brickTexture);
-		std::shared_ptr<Material> infiniGreenMat = std::make_shared<Material>(infiniGreen, glm::vec3(1.0f, 0.0f, 0.0f), 10.0f);
+		std::shared_ptr<Material> moonMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.3f, 0.6f, 0.3f), 2.0f, woodTexture);
+		std::shared_ptr<Material> brickMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.3f, 0.6f, 0.3f), 2.0f, brickTexture);
+		std::shared_ptr<Material> infiniGreenMat = std::make_shared<Material>(infiniGreen, glm::vec3(0.3f, 0.6f, 0.3f), 10.0f);
 		std::shared_ptr<Material> translucentRed = std::make_shared<Material>(translucent, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f);
 		std::shared_ptr<Material> mapMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, mapTexture);
 		
@@ -236,8 +236,8 @@ int main(int argc, char** argv)
 		//Geometry worldModel = Geometry(glm::mat4(1.0f), Geometry::createCubeGeometry(x, y, z), material);
 		// Initialize camera
 		myCamera camera(fov, float(window_width) / float(window_height), nearZ, farZ);
-		PointLight pointL(glm::vec3(1, 1, 1), glm::vec3(0), glm::vec3(1, 0, 0));
-		DirectionalLight dirL(glm::vec3(1.0f,1.0f,1.0f), glm::vec3(0,1.0f,0));
+		PointLight pointL(glm::vec3(0, 0, 0), glm::vec3(0), glm::vec3(100, 100, 100));
+		DirectionalLight dirL(glm::vec3(1.0f,1.0f,1.0f), glm::vec3(1.0f,1.0f,1.0f));
 		world.addEnemy(sunMaterial);
 
 		// Render loop
@@ -406,7 +406,7 @@ int main(int argc, char** argv)
 			t_framecounter += dt;
 			t_sum += dt;
 			frameCounter++;
-			/* 
+			 
 			//FPS (0.5sec avarage)
 			if (t_framecounter > 0.5) 
 			{
@@ -414,7 +414,7 @@ int main(int argc, char** argv)
 				frameCounter = 0;
 				t_framecounter = 0.0f;
 			}
-			*/
+			
 			// Poll events and swap buffers
 			glfwPollEvents();
 			glfwSwapBuffers(window);
