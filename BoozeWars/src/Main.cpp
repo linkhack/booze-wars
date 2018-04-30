@@ -83,6 +83,8 @@ int main(int argc, char** argv)
 	float fov = float(reader.GetReal("camera", "fov", 60.0f));
 	float nearZ = float(reader.GetReal("camera", "near", 0.1f));
 	float farZ = float(reader.GetReal("camera", "far", 1000.0f));
+	bool fullscreen = bool(reader.GetBoolean("window", "fullscreen", false));
+	int refreshRate = reader.GetInteger("window", "refreshRate", 60);
 
 	/* --------------------------------------------- */
 	// Create context
@@ -92,12 +94,13 @@ int main(int argc, char** argv)
 		EXIT_WITH_ERROR("Failed to init GLFW")
 	}
 
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4); // Request OpenGL version 4.3
+
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // Request OpenGL version 3.3
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3); 
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // Request core profile													  
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);  // Create an OpenGL debug context 
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); // Prevent window resizing because viewport would have to resize as well (-> not needed in this course)
-	
+	glfwWindowHint(GLFW_REFRESH_RATE, refreshRate);
 	// Open window
 	GLFWwindow* window = glfwCreateWindow(window_width, window_height, window_title.c_str(), nullptr, nullptr);
 
@@ -111,6 +114,13 @@ int main(int argc, char** argv)
 
 	//Delegate Cursor calculations to glfw
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	
+	//Fullscreen or windowed
+	if (fullscreen) 
+	{
+		glfwSetWindowMonitor(window, glfwGetPrimaryMonitor(), 0, 0, window_width, window_height, refreshRate);
+	}
+	
 
 	// Initialize GLEW
 	glewExperimental = true;
