@@ -13,6 +13,7 @@ myCamera::myCamera(float fov, float aspect, float near, float far)
 	yaw = glm::radians(90.0f);
 	pitch  =0;
 	roll = 0;
+	oldX = oldY = 0;
 }
 
 
@@ -106,17 +107,22 @@ void myCamera::updatePosition(int key, float dT)
 }
 
 void myCamera::updateDirection(int x, int y)
-{
-	yaw =180 -0.1*x;
-	pitch = 0.1*y;
-	if (pitch >= 88) {
-		pitch = 88;
+{	
+	int dx = x - oldX;
+	int dy = y - oldY;
+
+	yaw -= 0.001*dx;
+	pitch += 0.001*dy;
+	if (pitch >= glm::radians(88.0f)) {
+		pitch = glm::radians(88.0f);
 	}
-	if (pitch <= -88) {
-		pitch = -88;
+	if (pitch <= glm::radians(-88.0f)) {
+		pitch = glm::radians(-88.0f);
 	}
-	yaw = glm::radians(yaw);
-	pitch = glm::radians(pitch);
+	//yaw = glm::radians(yaw);
+	//pitch = glm::radians(pitch);
+	oldX = x;
+	oldY = y;
 }
 
 /**Return intersection of look direction and y=0 plane, if no such point can be found or it is

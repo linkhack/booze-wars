@@ -15,6 +15,7 @@ private:
 	glm::vec3 position;
 	float movementSpeed;
 	float rotationSpeed;
+	int oldX, oldY;
 
 public:
 	myCamera(float fov, float aspect, float near, float far);

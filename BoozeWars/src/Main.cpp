@@ -260,7 +260,31 @@ int main(int argc, char** argv)
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			// Update camera
 			glfwGetCursorPos(window, &mouse_x, &mouse_y);
-			camera.updatePosition(_key_pressed,dt);
+			//camera.updatePosition(_key_pressed,dt);
+			//front
+			if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+				camera.updatePosition(GLFW_KEY_W, dt);
+			}
+			//back
+			if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+				camera.updatePosition(GLFW_KEY_S, dt);
+			}
+			//right
+			if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+				camera.updatePosition(GLFW_KEY_D, dt);
+			}
+			//left
+			if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+				camera.updatePosition(GLFW_KEY_A, dt);
+			}
+			//up
+			if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
+				camera.updatePosition(GLFW_KEY_R, dt);
+			}
+			//down
+			if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
+				camera.updatePosition(GLFW_KEY_F, dt);
+			}
 			camera.updateDirection(int(mouse_x), int(mouse_y));
 
 			// Set per-frame uniforms
