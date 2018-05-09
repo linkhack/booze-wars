@@ -54,7 +54,6 @@ static bool _culling = true;
 static bool _dragging = false;
 static bool _strafing = false;
 static float _zoom = 12.0f;
-static int _key_pressed = GLFW_KEY_UNKNOWN;
 unsigned char **tex;
 static int width = 800;
 static int height = 800;
@@ -513,15 +512,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	// F2 - Culling
 	// Esc - Exit
 
-	if (action == GLFW_REPEAT || action == GLFW_PRESS)
-	{
-		_key_pressed = key;
-		return;
-	}
-
 	if (action != GLFW_RELEASE) return;
 
-	_key_pressed = GLFW_KEY_UNKNOWN;
 	switch (key)
 	{
 		case GLFW_KEY_ESCAPE:
