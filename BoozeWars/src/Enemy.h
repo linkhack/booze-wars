@@ -32,6 +32,7 @@ public:
 
 	glm::mat4 getModelMatrix();
 
+	void drawShadows(Shader& shader);
 	void draw();
 	void selfDestruct(); // delete model from world
 };

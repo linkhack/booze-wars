@@ -38,6 +38,7 @@ public:
 	DrunkCity& operator=(DrunkCity&&) = default;
 
 	int getHP();
+	void drawShadows(Shader & shader);
 	void zeichne();
 	void fight(float dT);
 	void walk(float dT);

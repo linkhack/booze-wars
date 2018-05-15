@@ -67,7 +67,20 @@ Geometry::~Geometry()
 		glDeleteVertexArrays(1, &_vao);
 	}
 }
+void Geometry::drawShadow(Shader & shadowShader, glm::mat4 matrix)
+{
+	glm::mat4 accumModel = matrix * _transformMatrix * _modelMatrix;
+	if (!_isEmpty) {
+		shadowShader.use( );
 
+		shadowShader.setUniform("modelMatrix", accumModel);
+
+		glBindVertexArray(_vao);
+		glDrawElements(GL_TRIANGLES, _elements, GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+}
 void Geometry::draw(glm::mat4 matrix)
 {
 	glm::mat4 accumModel = matrix * _transformMatrix * _modelMatrix;
@@ -90,6 +103,8 @@ void Geometry::draw(glm::mat4 matrix)
 		_children[i]->draw(accumModel);
 	}
 }
+
+
 
 void Geometry::transform(glm::mat4 transformation)
 {

@@ -29,6 +29,11 @@ glm::mat4 Enemy::getModelMatrix()
 	return glm::translate(glm::mat4(1.0f), glm::vec3(x, -z, y));
 }
 
+void Enemy::drawShadows(Shader & shader)
+{
+	model->drawShadow(shader, getModelMatrix());
+}
+
 void Enemy::draw() {
 
 	model->draw(getModelMatrix());

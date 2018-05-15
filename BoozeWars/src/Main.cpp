@@ -297,7 +297,6 @@ int main(int argc, char** argv)
 
 			// Render
 			ground.draw(glm::translate(glm::mat4(1.0f),glm::vec3(0.0f,0.1f,0.0f)));
-
 			world.zeichne();
 			map.draw();
 			if (camera.getGroundIntersection() != glm::vec3(0, 1, 0)) {
@@ -433,7 +432,7 @@ int main(int argc, char** argv)
 			frameCounter++;
 			 
 			//FPS (0.5sec avarage)
-			if (t_framecounter > 0.5) 
+			if (t_framecounter > 0.1) 
 			{
 				std::cout << frameCounter / t_framecounter << std::endl;
 				frameCounter = 0;

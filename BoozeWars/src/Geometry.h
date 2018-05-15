@@ -52,10 +52,13 @@ public:
 	Geometry(glm::mat4 modelMatrix = glm::mat4(1.0f));
 
 	~Geometry();
+
+
 	
 	Geometry(Geometry&&) = default;
 	Geometry& operator=(Geometry&&) = default;
 
+	void drawShadow(Shader& shadowShader,glm::mat4 matrix = glm::mat4(1.0f));
 	virtual void draw(glm::mat4 matrix = glm::mat4(1.0f));
 
 	void transform(glm::mat4 transformation);

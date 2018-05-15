@@ -25,6 +25,7 @@ public:
 	static int getRange();
 	float getDamage();
 
+	void drawShadows(Shader& shader);
 	void draw();
 };
 

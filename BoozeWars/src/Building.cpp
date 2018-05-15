@@ -54,7 +54,12 @@ int Building::getRange()
 	return range;
 }
 
-void Building::draw() 
+void Building::drawShadows(Shader & shader)
+{
+	model->drawShadow(shader);
+}
+
+void Building::draw()
 {
 	model->draw();
 }

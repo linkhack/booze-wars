@@ -23,7 +23,17 @@ DrunkCity::~DrunkCity()
 int DrunkCity::getHP() {
 	return hp;
 }
+void DrunkCity::drawShadows(Shader& shader) {
+	for (std::list<Enemy*>::iterator it = enemiesAlive.begin(); it != enemiesAlive.end(); ++it)
+	{
+		(*it)->drawShadows(shader);
+	}
 
+	for (std::list<Building*>::iterator it = buildings.begin(); it != buildings.end(); ++it)
+	{
+		(*it)->drawShadows(shader);
+	}
+}
 void DrunkCity::zeichne() 
 {
 	for (std::list<Enemy*>::iterator it = enemiesAlive.begin(); it != enemiesAlive.end(); ++it)
