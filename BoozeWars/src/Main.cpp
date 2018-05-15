@@ -13,7 +13,7 @@
 #include "LineGeometry.h"
 #include "myCamera.h"
 #include "Shader.h"
-
+#include "ShadowMapSimple.h"
 #include "Material.h"
 #include "Light.h"
 
@@ -221,6 +221,11 @@ int main(int argc, char** argv)
 		};
 		Skybox worldModel = Skybox(skyboxShader, skymapTextureLoc);
 
+		//ShadowMap
+		
+		ShadowMapSimple directionalLightShadow = ShadowMapSimple();
+
+
 		//Create School building
 		Geometry school = Geometry(glm::translate(glm::mat4(1.0f), glm::vec3(340, -15, 240)),
 									Geometry::createCubeGeometry(45, 30, 70),
@@ -297,14 +302,14 @@ int main(int argc, char** argv)
 
 			// Render
 			ground.draw(glm::translate(glm::mat4(1.0f),glm::vec3(0.0f,0.1f,0.0f)));
-			world.zeichne();
+			world.zeichne(); //needs shadow
 			map.draw();
 			if (camera.getGroundIntersection() != glm::vec3(0, 1, 0)) {
 				cameraPlacement.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection()+glm::vec3(0.0f,-0.01f,0.0f)));
 				cameraCircle.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection() + glm::vec3(0.0f, -0.01f, 0.0f)));
 			}
 			//cameraCircle.draw();
-			school.draw();
+			school.draw(); //
 			worldModel.draw();
 			
 			// Placement logic
