@@ -4,7 +4,7 @@
 class Enemy
 {
 private:
-	Geometry *model;
+	std::shared_ptr<Geometry> model;
 	float x;
 	float y;
 	float z;
@@ -15,7 +15,7 @@ private:
 
 public:
 	Enemy();
-	Enemy(std::shared_ptr<Material> material,std::shared_ptr<Street> Street);
+	Enemy(std::shared_ptr<Street> Street,std::shared_ptr<Geometry> model);
 	~Enemy();
 
 	Enemy(Enemy&&) = default;

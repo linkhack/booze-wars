@@ -206,6 +206,8 @@ int main(int argc, char** argv)
 		//Helper Rectangle for building placment
 		Geometry cameraPlacement = Geometry(glm::mat4(1.0f), Geometry::createRectangle(Building::getLength(), Building::getWidth()), translucentRed);
 		LineGeometry cameraCircle = LineGeometry(glm::mat4(1.0f), LineGeometry::createCircle(30,Building::getRange()), translucentRed);
+		//Enemy
+		std::shared_ptr<Geometry> enemyModel = std::make_shared<Geometry>(glm::mat4(1.0f), Geometry::createCubeGeometry(4, 6, 4), sunMaterial);
 		
 		//Skybox
 		std::vector<std::string> skymapTextureLoc =
@@ -237,7 +239,7 @@ int main(int argc, char** argv)
 		myCamera camera(fov, float(window_width) / float(window_height), nearZ, farZ);
 		PointLight pointL(glm::vec3(0, 0, 0), glm::vec3(0), glm::vec3(100, 100, 100));
 		DirectionalLight dirL(glm::vec3(1.0f,1.0f,1.0f), glm::vec3(1.0f,1.0f,1.0f));
-		world.addEnemy(sunMaterial);
+		world.addEnemy(enemyModel);
 
 		// Render loop
 		double mouse_x, mouse_y;
@@ -376,7 +378,7 @@ int main(int argc, char** argv)
 				}
 				if (wave.spawnEnemy(dt)) 
 				{
-					world.addEnemy(sunMaterial);
+					world.addEnemy(enemyModel);
 				}
 				try {
 					world.fight(dt);				
@@ -404,7 +406,7 @@ int main(int argc, char** argv)
 			else {
 				color = glm::vec3(0.0, 0.0, 1.0);
 			}
-			charactorService->renderText(life.c_str(), 100, 100, 0.8f, color);
+			//charactorService->renderText(life.c_str(), 100, 100, 0.8f, color);
 
 			std::string buildings = "BUILDINGS: ";
 			std::ostringstream left;
@@ -416,7 +418,7 @@ int main(int argc, char** argv)
 			else {
 				color = glm::vec3(0.0, 0.0, 1.0);
 			}
-			charactorService->renderText(buildings.c_str(), 450, 100, 0.8f, color);
+			//charactorService->renderText(buildings.c_str(), 450, 100, 0.8f, color);
 
 			if (!start && world.hasMinOneBuildings()) {
 				charactorService->renderText("PRESS ENTER TO START WAVE", 20, window_height-50, 0.5f, glm::vec3(0.0,0.5,0.5));

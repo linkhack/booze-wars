@@ -5,9 +5,9 @@ Enemy::Enemy()
 
 }
 
-Enemy::Enemy(std::shared_ptr<Material> material,std::shared_ptr<Street> street)
+Enemy::Enemy(std::shared_ptr<Street> street, std::shared_ptr<Geometry> model)
 {
-	model = new Geometry(glm::mat4(1.0f), Geometry::createCubeGeometry(4, 6, 4), material);
+	this->model = model;
 	glm::mat2 part = street->getPart1();
 	x = part[0][0];
 	z = 3;
@@ -61,11 +61,6 @@ void Enemy::hit(float damage)
 
 void Enemy::selfDestruct()
 {
-	if (model != NULL)
-	{
-		delete model;
-		model = NULL;
-	}
 }
 
 void Enemy::walk(float dT)

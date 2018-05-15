@@ -44,7 +44,7 @@ public:
 	void placeBuilding(float x, float z, std::shared_ptr<Material> material);
 	bool hasMinOneBuildings();
 	int getBuildingsLeft();
-	void addEnemy(std::shared_ptr<Material> material);
+	void addEnemy(std::shared_ptr<Geometry> model);
 
 };
 

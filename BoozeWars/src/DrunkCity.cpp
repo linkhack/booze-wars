@@ -12,7 +12,6 @@ DrunkCity::DrunkCity(float x, float y, float z)
 	limitBuildings = 3;
 	citySizeX = x;
 	citySizeZ = z;
-	
 	hp = 100;
 	highway = std::make_shared<Street>(x, z);
 }
@@ -71,9 +70,9 @@ Enemy* DrunkCity::getNearestEnemy(Building* building)
 	return nearestEnemy;
 }
 
-void DrunkCity::addEnemy(std::shared_ptr<Material> material)
+void DrunkCity::addEnemy(std::shared_ptr<Geometry> model)
 {
-	enemiesAlive.push_back(new Enemy(material,highway));
+	enemiesAlive.push_back(new Enemy(highway,model));
 }
 
 
