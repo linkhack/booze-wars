@@ -41,7 +41,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
-void setPerFrameUniforms(Shader* shader, myCamera& camera, DirectionalLight& dirL, PointLight& pointL);
+void setPerFrameUniforms(Shader* shader, myCamera& camera, DirectionalLight& dirL, PointLight& pointL, glm::mat4& lightMatrix);
 void setPerFrameUniformsSkybox(Shader* shader, myCamera& camera);
 
 
@@ -178,6 +178,7 @@ int main(int argc, char** argv)
 		std::shared_ptr<Shader> skyboxShader = std::make_shared<Shader>("skybox.vert", "skybox.frag");
 		std::shared_ptr<Shader> infiniGreen = std::make_shared<Shader>("texture.vert", "infiniGreen.frag");
 		std::shared_ptr<Shader> translucent = std::make_shared<Shader>("texture.vert", "translucentRed.frag");
+		Shader shadowShader = Shader("shadowShader.vert", "shadowShader.frag");
 		//Textures
 		std::shared_ptr<Texture> sunTexture = std::make_shared<Texture>("sun.dds");
 		std::shared_ptr<Texture> moonTexture = std::make_shared<Texture>("moon.dds");
@@ -188,13 +189,13 @@ int main(int argc, char** argv)
 		mapTexture->loadImage("map.png");
 
 		// Create materials
-		std::shared_ptr<Material> sunMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, sunTexture);
+		std::shared_ptr<Material> sunMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.1f, 0.9f, 0.0f), 1.0f, sunTexture);
 		std::shared_ptr<Material> earthMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.05f, 0.9f, 0.1f), 5.0f, earthTexture);
-		std::shared_ptr<Material> moonMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.3f, 0.6f, 0.3f), 2.0f, woodTexture);
-		std::shared_ptr<Material> brickMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.3f, 0.6f, 0.3f), 2.0f, brickTexture);
-		std::shared_ptr<Material> infiniGreenMat = std::make_shared<Material>(infiniGreen, glm::vec3(0.3f, 0.6f, 0.3f), 10.0f);
+		std::shared_ptr<Material> moonMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.1f, 0.9f, 0.3f), 2.0f, woodTexture);
+		std::shared_ptr<Material> brickMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.5f, 0.5f, 0.3f), 2.0f, brickTexture);
+		std::shared_ptr<Material> infiniGreenMat = std::make_shared<Material>(infiniGreen, glm::vec3(0.5f, 0.5f, 0.3f), 10.0f);
 		std::shared_ptr<Material> translucentRed = std::make_shared<Material>(translucent, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f);
-		std::shared_ptr<Material> mapMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, mapTexture);
+		std::shared_ptr<Material> mapMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.1f, 0.9f, 0.1f), 1.0f, mapTexture);
 		
 		//Geometries
 		//Create World
@@ -222,9 +223,8 @@ int main(int argc, char** argv)
 		Skybox worldModel = Skybox(skyboxShader, skymapTextureLoc);
 
 		//ShadowMap
-		
 		ShadowMapSimple directionalLightShadow = ShadowMapSimple();
-
+		directionalLightShadow.init(512, 512);
 
 		//Create School building
 		Geometry school = Geometry(glm::translate(glm::mat4(1.0f), glm::vec3(340, -15, 240)),
@@ -243,8 +243,20 @@ int main(int argc, char** argv)
 		// Initialize camera
 		myCamera camera(fov, float(window_width) / float(window_height), nearZ, farZ);
 		PointLight pointL(glm::vec3(0, 0, 0), glm::vec3(0), glm::vec3(100, 100, 100));
-		DirectionalLight dirL(glm::vec3(1.0f,1.0f,1.0f), glm::vec3(1.0f,1.0f,1.0f));
+		DirectionalLight dirL(glm::vec3(1.0f,1.0f,1.0f), glm::vec3(4.0f,4.0f,4.0f));
+		
+		//Matrices for non moving lights for shadow map
+		glm::mat4 dirLMatrix = glm::ortho(-500.0f, 500.0f, -500.0f, 500.0f,-500.0f,500.0f);
+		
+		glm::mat4 dirLViewM = glm::lookAt(dirL.direction,glm::vec3(501.0f, 0.01, 501.0f), glm::vec3(0.0f, -1.0f, 0.0f));
+		glm::mat4 dirLProjView = dirLMatrix * dirLViewM;
+
+		//set Uniforms for shadow Map
+
+
+		//Test or indicator for start position
 		world.addEnemy(enemyModel);
+
 
 		// Render loop
 		double mouse_x, mouse_y;
@@ -261,46 +273,62 @@ int main(int argc, char** argv)
 		int frameCounter = 0;
 
 		while (!glfwWindowShouldClose(window)) {
-
-			// Clear backbuffer
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			// Update camera
-			glfwGetCursorPos(window, &mouse_x, &mouse_y);
-			//camera.updatePosition(_key_pressed,dt);
-			//front
-			if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-				camera.updatePosition(GLFW_KEY_W, dt);
+			{
+				glfwGetCursorPos(window, &mouse_x, &mouse_y);
+				//camera.updatePosition(_key_pressed,dt);
+				//front
+				if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+					camera.updatePosition(GLFW_KEY_W, dt);
+				}
+				//back
+				if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+					camera.updatePosition(GLFW_KEY_S, dt);
+				}
+				//right
+				if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+					camera.updatePosition(GLFW_KEY_D, dt);
+				}
+				//left
+				if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+					camera.updatePosition(GLFW_KEY_A, dt);
+				}
+				//up
+				if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
+					camera.updatePosition(GLFW_KEY_R, dt);
+				}
+				//down
+				if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
+					camera.updatePosition(GLFW_KEY_F, dt);
+				}
+				camera.updateDirection(int(mouse_x), int(mouse_y));
 			}
-			//back
-			if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-				camera.updatePosition(GLFW_KEY_S, dt);
-			}
-			//right
-			if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-				camera.updatePosition(GLFW_KEY_D, dt);
-			}
-			//left
-			if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-				camera.updatePosition(GLFW_KEY_A, dt);
-			}
-			//up
-			if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
-				camera.updatePosition(GLFW_KEY_R, dt);
-			}
-			//down
-			if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
-				camera.updatePosition(GLFW_KEY_F, dt);
-			}
-			camera.updateDirection(int(mouse_x), int(mouse_y));
-
 			// Set per-frame uniforms
-			setPerFrameUniforms(textureShader.get(), camera, dirL, pointL);
-			setPerFrameUniforms(infiniGreen.get(), camera, dirL, pointL);
-			setPerFrameUniforms(translucent.get(), camera, dirL, pointL);
+			setPerFrameUniforms(textureShader.get(), camera, dirL, pointL,dirLProjView);
+			setPerFrameUniforms(infiniGreen.get(), camera, dirL, pointL,dirLProjView);
+			setPerFrameUniforms(translucent.get(), camera, dirL, pointL,dirLProjView);
 			setPerFrameUniformsSkybox(skyboxShader.get(), camera);
 
-
+			shadowShader.use();
+			shadowShader.setUniform("vieProjMatrix", dirLProjView);
 			// Render
+			//Shadowmap pass
+			glViewport(0, 0, 512, 512);
+			directionalLightShadow.bindForWriting();
+			glClear(GL_DEPTH_BUFFER_BIT);
+
+			shadowShader.use();		
+			world.drawShadows(shadowShader);
+			school.drawShadow(shadowShader);
+			//map.drawShadow(shadowShader, glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.1f, 0.0f)));
+
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			
+			directionalLightShadow.bindForReading();
+
+			//Render scene
+			glViewport(0, 0, window_width, window_height);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			ground.draw(glm::translate(glm::mat4(1.0f),glm::vec3(0.0f,0.1f,0.0f)));
 			world.zeichne(); //needs shadow
 			map.draw();
@@ -410,7 +438,7 @@ int main(int argc, char** argv)
 			else {
 				color = glm::vec3(0.0, 0.0, 1.0);
 			}
-			//charactorService->renderText(life.c_str(), 100, 100, 0.8f, color);
+			charactorService->renderText(life.c_str(), 100, 100, 0.8f, color);
 
 			std::string buildings = "BUILDINGS: ";
 			std::ostringstream left;
@@ -422,7 +450,7 @@ int main(int argc, char** argv)
 			else {
 				color = glm::vec3(0.0, 0.0, 1.0);
 			}
-			//charactorService->renderText(buildings.c_str(), 450, 100, 0.8f, color);
+			charactorService->renderText(buildings.c_str(), 450, 100, 0.8f, color);
 
 			if (!start && world.hasMinOneBuildings()) {
 				charactorService->renderText("PRESS ENTER TO START WAVE", 20, window_height-50, 0.5f, glm::vec3(0.0,0.5,0.5));
@@ -474,17 +502,20 @@ int main(int argc, char** argv)
 }
 
 
-void setPerFrameUniforms(Shader* shader, myCamera& camera, DirectionalLight& dirL, PointLight& pointL)
+void setPerFrameUniforms(Shader* shader, myCamera& camera, DirectionalLight& dirL, PointLight& pointL,glm::mat4& lightMatrix)
 {
 	shader->use();
 	shader->setUniform("viewProjMatrix", camera.getViewProjectionMatrix());
 	shader->setUniform("camera_world", camera.getPosition());
+	shader->setUniform("lightMatrix", lightMatrix);
 
 	shader->setUniform("dirL.color", dirL.color);
 	shader->setUniform("dirL.direction", dirL.direction);
 	shader->setUniform("pointL.color", pointL.color);
 	shader->setUniform("pointL.position", pointL.position);
 	shader->setUniform("pointL.attenuation", pointL.attenuation);
+
+
 }
 
 void setPerFrameUniformsSkybox(Shader* shader, myCamera& camera)

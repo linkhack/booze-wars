@@ -507,5 +507,69 @@ namespace glm
 		return scale(Result, tvec3<T, P>(static_cast<T>(viewport[2]) / delta.x, static_cast<T>(viewport[3]) / delta.y, static_cast<T>(1)));
 	}
 
-	
+	template <typename T, precision P>
+	GLM_FUNC_QUALIFIER tmat4x4<T, P> lookAt(tvec3<T, P> const & eye, tvec3<T, P> const & center, tvec3<T, P> const & up)
+	{
+#		if GLM_COORDINATE_SYSTEM == GLM_LEFT_HANDED
+			return lookAtLH(eye, center, up);
+#		else
+			return lookAtRH(eye, center, up);
+#		endif
+	}
+
+	template <typename T, precision P>
+	GLM_FUNC_QUALIFIER tmat4x4<T, P> lookAtRH
+	(
+		tvec3<T, P> const & eye,
+		tvec3<T, P> const & center,
+		tvec3<T, P> const & up
+	)
+	{
+		tvec3<T, P> const f(normalize(center - eye));
+		tvec3<T, P> const s(normalize(cross(f, up)));
+		tvec3<T, P> const u(cross(s, f));
+
+		tmat4x4<T, P> Result(1);
+		Result[0][0] = s.x;
+		Result[1][0] = s.y;
+		Result[2][0] = s.z;
+		Result[0][1] = u.x;
+		Result[1][1] = u.y;
+		Result[2][1] = u.z;
+		Result[0][2] =-f.x;
+		Result[1][2] =-f.y;
+		Result[2][2] =-f.z;
+		Result[3][0] =-dot(s, eye);
+		Result[3][1] =-dot(u, eye);
+		Result[3][2] = dot(f, eye);
+		return Result;
+	}
+
+	template <typename T, precision P>
+	GLM_FUNC_QUALIFIER tmat4x4<T, P> lookAtLH
+	(
+		tvec3<T, P> const & eye,
+		tvec3<T, P> const & center,
+		tvec3<T, P> const & up
+	)
+	{
+		tvec3<T, P> const f(normalize(center - eye));
+		tvec3<T, P> const s(normalize(cross(up, f)));
+		tvec3<T, P> const u(cross(f, s));
+
+		tmat4x4<T, P> Result(1);
+		Result[0][0] = s.x;
+		Result[1][0] = s.y;
+		Result[2][0] = s.z;
+		Result[0][1] = u.x;
+		Result[1][1] = u.y;
+		Result[2][1] = u.z;
+		Result[0][2] = f.x;
+		Result[1][2] = f.y;
+		Result[2][2] = f.z;
+		Result[3][0] = -dot(s, eye);
+		Result[3][1] = -dot(u, eye);
+		Result[3][2] = -dot(f, eye);
+		return Result;
+	}
 }//namespace glm

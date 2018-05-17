@@ -1,14 +1,18 @@
-#version 330 core
+#version 430 core
 /*
 * Copyright 2010 Vienna University of Technology.
 * Institute of Computer Graphics and Algorithms.
 * This file is part of the ECG Lab Framework and must not be redistributed.
 */
 
+uniform sampler2D diffuseTexture;
+uniform sampler2D shadowMap;
+
 in VertexData {
 	vec3 position_world;
 	vec3 normal_world;
 	vec2 uv;
+	vec4 shadowCoords;
 } vert;
 
 out vec4 color;
@@ -17,7 +21,7 @@ uniform vec3 camera_world;
 
 uniform vec3 materialCoefficients; // x = ambient, y = diffuse, z = specular 
 uniform float specularAlpha;
-uniform sampler2D diffuseTexture;
+
 
 uniform struct DirectionalLight {
 	vec3 color;
@@ -52,16 +56,22 @@ void main() {
 	color = vec4(texColor * materialCoefficients.x, 1); // ambient
 	vec4 fogColor = vec4(0.45,0.45,0.6,1);
 	
+	//Shadow Calculations
+	vec3 shadowUv = 0.5*(vert.shadowCoords.xyz)/vert.shadowCoords.w + 0.5;
+	vec3 closestD = texture(shadowMap,shadowUv.xy).xyz;
+	float actualD = shadowUv.z;
+	float shadowDir = (actualD>closestD.x)? 0.0 : 1.0;
 	// add directional light contribution
-	color.rgb += phong(n, -dirL.direction, v, dirL.color * texColor, materialCoefficients.y, dirL.color, materialCoefficients.z, specularAlpha, false, vec3(0));
+	color.rgb += shadowDir*phong(n, -dirL.direction, v, dirL.color * texColor, materialCoefficients.y, dirL.color, materialCoefficients.z, specularAlpha, false, vec3(0));
 			
 	// add point light contribution
-	color.rgb += phong(n, pointL.position - vert.position_world, v, pointL.color * texColor, materialCoefficients.y, pointL.color, materialCoefficients.z, specularAlpha, true, pointL.attenuation);
+	color.rgb += shadowDir*phong(n, pointL.position - vert.position_world, v, pointL.color * texColor, materialCoefficients.y, pointL.color, materialCoefficients.z, specularAlpha, true, pointL.attenuation);
 	
 	float fogDistance = gl_FragCoord.z/gl_FragCoord.w;
 	float fogAmount = fogFunction(fogDistance,100,450);
 	
-	color = mix(color, fogColor,fogAmount);
+	//color = mix(color, fogColor,fogAmount);
+	color=vec4(closestD,1);
 	
 }
 

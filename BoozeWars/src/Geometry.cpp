@@ -67,18 +67,20 @@ Geometry::~Geometry()
 		glDeleteVertexArrays(1, &_vao);
 	}
 }
-void Geometry::drawShadow(Shader & shadowShader, glm::mat4 matrix)
+void Geometry::drawShadow(Shader& shadowShader, glm::mat4 matrix)
 {
 	glm::mat4 accumModel = matrix * _transformMatrix * _modelMatrix;
 	if (!_isEmpty) {
-		shadowShader.use( );
-
+		//shadowShader.use( );
 		shadowShader.setUniform("modelMatrix", accumModel);
-
 		glBindVertexArray(_vao);
 		glDrawElements(GL_TRIANGLES, _elements, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+
+	for (size_t i = 0; i < _children.size(); i++) {
+		_children[i]->drawShadow(shadowShader,accumModel);
 	}
 }
 void Geometry::draw(glm::mat4 matrix)
@@ -87,6 +89,7 @@ void Geometry::draw(glm::mat4 matrix)
 	if (!_isEmpty) {
 		Shader* shader = _material->getShader();
 		shader->use();
+		shader->setUniform("shadowMap", 2);
 
 		shader->setUniform("modelMatrix", accumModel);
 		shader->setUniform("normalMatrix", glm::mat3(glm::transpose(glm::inverse(accumModel))));
@@ -480,10 +483,10 @@ GeometryData Geometry::createRectangle(float width, float height)
 
 	data.normals =
 	{
-		glm::vec3(0.0f,1.0f,0.0f),
-		glm::vec3(0.0f,1.0f,0.0f),
-		glm::vec3(0.0f,1.0f,0.0f),
-		glm::vec3(0.0f,1.0f,0.0f)
+		glm::vec3(0.0f,-1.0f,0.0f),
+		glm::vec3(0.0f,-1.0f,0.0f),
+		glm::vec3(0.0f,-1.0f,0.0f),
+		glm::vec3(0.0f,-1.0f,0.0f)
 	};
 
 	data.uvs =

@@ -12,12 +12,14 @@ out VertexData {
 	vec3 position_world;
 	vec3 normal_world;
 	vec2 uv;
+	vec4 shadowCoords;
 } vert;
 
 
 uniform mat4 modelMatrix;
 uniform mat4 viewProjMatrix;
 uniform mat3 normalMatrix;
+uniform mat4 lightMatrix;	
 
 
 void main() {
@@ -25,5 +27,6 @@ void main() {
 	vert.uv = uv;
 	vec4 position_world_ = modelMatrix * position;
 	vert.position_world = position_world_.xyz;
+	vert.shadowCoords = lightMatrix * position_world_;
 	gl_Position = viewProjMatrix * position_world_;
 }
