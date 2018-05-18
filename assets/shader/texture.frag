@@ -1,4 +1,4 @@
-#version 430 core
+#version 450 core
 /*
 * Copyright 2010 Vienna University of Technology.
 * Institute of Computer Graphics and Algorithms.
@@ -6,7 +6,7 @@
 */
 
 uniform sampler2D diffuseTexture;
-uniform sampler2D shadowMap;
+uniform sampler2DShadow shadowMap;
 
 in VertexData {
 	vec3 position_world;
@@ -34,6 +34,31 @@ uniform struct PointLight {
 	vec3 attenuation;
 } pointL;
 
+vec3 poissonDisk[16] = vec3[]( 
+   vec3( -0.94201624, -0.39906216 , 0 ), 
+   vec3( 0.94558609, -0.76890725 , 0 ), 
+   vec3( -0.094184101, -0.92938870 , 0 ), 
+   vec3( 0.34495938, 0.29387760 , 0 ), 
+   vec3( -0.91588581, 0.45771432 , 0 ), 
+   vec3( -0.81544232, -0.87912464 , 0 ), 
+   vec3( -0.38277543, 0.27676845 , 0 ), 
+   vec3( 0.97484398, 0.75648379 , 0 ), 
+   vec3( 0.44323325, -0.97511554 , 0 ), 
+   vec3( 0.53742981, -0.47373420 , 0 ), 
+   vec3( -0.26496911, -0.41893023 , 0 ), 
+   vec3( 0.79197514, 0.19090188 , 0 ), 
+   vec3( -0.24188840, 0.99706507 , 0 ), 
+   vec3( -0.81409955, 0.91437590 , 0 ), 
+   vec3( 0.19984126, 0.78641367 , 0 ), 
+   vec3( 0.14383161, -0.14100790 , 0 ) 
+);
+
+float random(vec3 seed, int i){
+	vec4 seed4 = vec4(seed,i);
+	float dot_product = dot(seed4, vec4(12.9898,78.233,45.164,94.673));
+	return fract(sin(dot_product) * 43758.5453);
+}
+
 float fogFunction(float distance, float start, float end)
 {
 	return clamp((distance-start)/(end-start),0,1);
@@ -57,10 +82,15 @@ void main() {
 	vec4 fogColor = vec4(0.45,0.45,0.6,1);
 	
 	//Shadow Calculations
-	vec3 shadowUv = 0.5*(vert.shadowCoords.xyz)/vert.shadowCoords.w + 0.5;
-	float closestD = texture(shadowMap,shadowUv.xy).x;
-	float actualD = shadowUv.z;
-	float shadowDir = (actualD>closestD)? 0.0 : 1.0;
+
+	float shadowDir = 0.0f;
+	vec3 shadowUv = 0.5*(vert.shadowCoords.xyz)/vert.shadowCoords.w + 0.5;	
+	for(int i=0;i<8;i++)
+	{
+		int index = int(16.0*random(floor(vert.position_world*1000.0), i))%16;
+		//shadowDir += texture(shadowMap,shadowUv+poissonDisk[i]/700.0f)/16; //non random no noise but jaggies
+		shadowDir += texture(shadowMap,shadowUv+poissonDisk[index]/700.0f)/8; //random sampling noise but smoother
+	}
 	// add directional light contribution
 	color.rgb += shadowDir*phong(n, -dirL.direction, v, dirL.color * texColor, materialCoefficients.y, dirL.color, materialCoefficients.z, specularAlpha, false, vec3(0));
 			

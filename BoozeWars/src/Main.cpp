@@ -224,7 +224,7 @@ int main(int argc, char** argv)
 
 		//ShadowMap
 		ShadowMapSimple directionalLightShadow = ShadowMapSimple();
-		directionalLightShadow.init(512, 512);
+		directionalLightShadow.init(1024, 1024);
 
 		//Create School building
 		Geometry school = Geometry(glm::translate(glm::mat4(1.0f), glm::vec3(340, -15, 240)),
@@ -317,7 +317,7 @@ int main(int argc, char** argv)
 			directionalLightShadow.bindForWriting();
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			glViewport(0, 0, 512, 512);
+			glViewport(0, 0, 1024, 1024);
 
 
 			shadowShader.use();
@@ -325,7 +325,7 @@ int main(int argc, char** argv)
 			glCullFace(GL_FRONT);
 			world.drawShadows(shadowShader);
 			school.drawShadow(shadowShader);
-			//map.drawShadow(shadowShader, glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.1f, 0.0f)));
+			
 			glCullFace(GL_BACK);
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 			
