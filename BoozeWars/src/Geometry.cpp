@@ -89,8 +89,6 @@ void Geometry::draw(glm::mat4 matrix)
 	if (!_isEmpty) {
 		Shader* shader = _material->getShader();
 		shader->use();
-		shader->setUniform("shadowMap", 2);
-
 		shader->setUniform("modelMatrix", accumModel);
 		shader->setUniform("normalMatrix", glm::mat3(glm::transpose(glm::inverse(accumModel))));
 		_material->setUniforms();
@@ -107,7 +105,7 @@ void Geometry::draw(glm::mat4 matrix)
 	}
 }
 
-
+ 
 
 void Geometry::transform(glm::mat4 transformation)
 {

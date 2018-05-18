@@ -58,9 +58,9 @@ void main() {
 	
 	//Shadow Calculations
 	vec3 shadowUv = 0.5*(vert.shadowCoords.xyz)/vert.shadowCoords.w + 0.5;
-	vec3 closestD = texture(shadowMap,shadowUv.xy).xyz;
+	float closestD = texture(shadowMap,shadowUv.xy).x;
 	float actualD = shadowUv.z;
-	float shadowDir = (actualD>closestD.x)? 0.0 : 1.0;
+	float shadowDir = (actualD>closestD)? 0.0 : 1.0;
 	// add directional light contribution
 	color.rgb += shadowDir*phong(n, -dirL.direction, v, dirL.color * texColor, materialCoefficients.y, dirL.color, materialCoefficients.z, specularAlpha, false, vec3(0));
 			
@@ -70,8 +70,8 @@ void main() {
 	float fogDistance = gl_FragCoord.z/gl_FragCoord.w;
 	float fogAmount = fogFunction(fogDistance,100,450);
 	
-	//color = mix(color, fogColor,fogAmount);
-	color=vec4(closestD,1);
-	
+	color = mix(color, fogColor,fogAmount);
+	//color=vec4(vec3(closestD),1);
+	//color = vec4(vec3(shadowDir),1);
 }
 

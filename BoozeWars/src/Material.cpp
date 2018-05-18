@@ -50,5 +50,6 @@ void TextureMaterial::setUniforms()
 
 	_diffuseTexture->bind(0);
 	_shader->setUniform("diffuseTexture", 0);
+	_shader->setUniform("shadowMap", 2);
 }
 

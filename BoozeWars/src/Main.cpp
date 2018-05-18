@@ -246,9 +246,9 @@ int main(int argc, char** argv)
 		DirectionalLight dirL(glm::vec3(1.0f,1.0f,1.0f), glm::vec3(4.0f,4.0f,4.0f));
 		
 		//Matrices for non moving lights for shadow map
-		glm::mat4 dirLMatrix = glm::ortho(-500.0f, 500.0f, -500.0f, 500.0f,-500.0f,500.0f);
+		glm::mat4 dirLMatrix = glm::ortho(-200.0f, 200.0f, -200.0f, 200.0f,-200.0f,200.0f);
 		
-		glm::mat4 dirLViewM = glm::lookAt(dirL.direction,glm::vec3(501.0f, 0.01, 501.0f), glm::vec3(0.0f, -1.0f, 0.0f));
+		glm::mat4 dirLViewM = glm::lookAt(glm::vec3(150.0f,0.0f,150.0f), glm::vec3(150.0f, 0.0f, 150.0f)+dirL.direction, glm::vec3(0.0f, -1.0f, 0.0f));
 		glm::mat4 dirLProjView = dirLMatrix * dirLViewM;
 
 		//set Uniforms for shadow Map
@@ -272,7 +272,7 @@ int main(int argc, char** argv)
 		int placeMinCounter = 0;
 		int frameCounter = 0;
 
-		while (!glfwWindowShouldClose(window))
+		while   (!glfwWindowShouldClose(window))
 		{
 			// Update camera
 			{
@@ -316,36 +316,34 @@ int main(int argc, char** argv)
 
 			directionalLightShadow.bindForWriting();
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			//glClear(GL_DEPTH_BUFFER_BIT);
+
 			glViewport(0, 0, 512, 512);
 
 
 			shadowShader.use();
-			shadowShader.setUniform("vieProjMatrix", dirLProjView);
+			shadowShader.setUniform("viewProjMatrix", dirLProjView);
+			glCullFace(GL_FRONT);
 			world.drawShadows(shadowShader);
 			school.drawShadow(shadowShader);
 			//map.drawShadow(shadowShader, glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.1f, 0.0f)));
-			GLfloat* fbo_test = new GLfloat[512 * 512];
-
-			glReadPixels(0,0,512,512,GL_DEPTH_COMPONENT ,GL_FRAMEBUFFER,fbo_test);
-			GLfloat fbo_array[512*512]=;
-			= fbo_test * ;
+			glCullFace(GL_BACK);
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 			
-			directionalLightShadow.bindForReading();
+			
 
 			//Render scene
 			glViewport(0, 0, window_width, window_height);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			directionalLightShadow.bindForReading();
 			ground.draw(glm::translate(glm::mat4(1.0f),glm::vec3(0.0f,0.1f,0.0f)));
+			directionalLightShadow.bindForReading();
 			world.zeichne(); //needs shadow
 			map.draw();
 			if (camera.getGroundIntersection() != glm::vec3(0, 1, 0)) {
 				cameraPlacement.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection()+glm::vec3(0.0f,-0.01f,0.0f)));
 				cameraCircle.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection() + glm::vec3(0.0f, -0.01f, 0.0f)));
 			}
-			//cameraCircle.draw();
-			school.draw(); //
+			school.draw(); 
 			worldModel.draw();
 			
 			// Placement logic
