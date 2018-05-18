@@ -34,7 +34,7 @@ bool ShadowMapSimple::init(unsigned int window_width, unsigned int window_height
 
 void ShadowMapSimple::bindForWriting()
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, _fbo);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _fbo);
 	
 }
 

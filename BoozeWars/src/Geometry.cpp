@@ -71,12 +71,12 @@ void Geometry::drawShadow(Shader& shadowShader, glm::mat4 matrix)
 {
 	glm::mat4 accumModel = matrix * _transformMatrix * _modelMatrix;
 	if (!_isEmpty) {
-		//shadowShader.use( );
+		shadowShader.use( );
 		shadowShader.setUniform("modelMatrix", accumModel);
 		glBindVertexArray(_vao);
 		glDrawElements(GL_TRIANGLES, _elements, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
-		glBindTexture(GL_TEXTURE_2D, 0);
+		//glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	for (size_t i = 0; i < _children.size(); i++) {

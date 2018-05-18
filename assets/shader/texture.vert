@@ -1,4 +1,4 @@
-#version 330 core
+#version 450 core
 /*
 * Copyright 2010 Vienna University of Technology.
 * Institute of Computer Graphics and Algorithms.

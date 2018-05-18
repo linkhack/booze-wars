@@ -99,7 +99,7 @@ int main(int argc, char** argv)
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // Request core profile													  
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);  // Create an OpenGL debug context 
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); // Prevent window resizing because viewport would have to resize as well (-> not needed in this course)
-	glfwWindowHint(GLFW_REFRESH_RATE, refreshRate);
+	//glfwWindowHint(GLFW_REFRESH_RATE, refreshRate);
 	// Open window
 	GLFWwindow* window = glfwCreateWindow(window_width, window_height, window_title.c_str(), nullptr, nullptr);
 
@@ -272,7 +272,8 @@ int main(int argc, char** argv)
 		int placeMinCounter = 0;
 		int frameCounter = 0;
 
-		while (!glfwWindowShouldClose(window)) {
+		while (!glfwWindowShouldClose(window))
+		{
 			// Update camera
 			{
 				glfwGetCursorPos(window, &mouse_x, &mouse_y);
@@ -309,19 +310,26 @@ int main(int argc, char** argv)
 			setPerFrameUniforms(translucent.get(), camera, dirL, pointL,dirLProjView);
 			setPerFrameUniformsSkybox(skyboxShader.get(), camera);
 
-			shadowShader.use();
-			shadowShader.setUniform("vieProjMatrix", dirLProjView);
+
 			// Render
 			//Shadowmap pass
-			glViewport(0, 0, 512, 512);
-			directionalLightShadow.bindForWriting();
-			glClear(GL_DEPTH_BUFFER_BIT);
 
-			shadowShader.use();		
+			directionalLightShadow.bindForWriting();
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			//glClear(GL_DEPTH_BUFFER_BIT);
+			glViewport(0, 0, 512, 512);
+
+
+			shadowShader.use();
+			shadowShader.setUniform("vieProjMatrix", dirLProjView);
 			world.drawShadows(shadowShader);
 			school.drawShadow(shadowShader);
 			//map.drawShadow(shadowShader, glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.1f, 0.0f)));
+			GLfloat* fbo_test = new GLfloat[512 * 512];
 
+			glReadPixels(0,0,512,512,GL_DEPTH_COMPONENT ,GL_FRAMEBUFFER,fbo_test);
+			GLfloat fbo_array[512*512]=;
+			= fbo_test * ;
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 			
 			directionalLightShadow.bindForReading();
