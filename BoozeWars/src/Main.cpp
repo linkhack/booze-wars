@@ -184,6 +184,7 @@ int main(int argc, char** argv)
 	}
 
 
+
 	/* --------------------------------------------- */
 	// Initialize scene and render loop
 	/* --------------------------------------------- */
@@ -215,10 +216,17 @@ int main(int argc, char** argv)
 		//Geometries
 		//Create World
 		DrunkCity world = DrunkCity(300.0f, 9000.0f, 300.0f);
+		//Create Physx scene
+		PxScene* gScene = world.initPhysics(gPhysicsSDK);
 		//Create Ground
 		Geometry ground = Geometry(glm::mat4(1.0f), Geometry::createInfinitePlane(), infiniGreenMat);
 		//Create map
 		Geometry map = Geometry(glm::translate(glm::mat4(1.0f),glm::vec3(150,0,150)), Geometry::createRectangle(300, 300), mapMaterial);
+		PxTransform groundPos(PxVec3(0.0f, 0.0f, 0.0f), PxQuat(PxHalfPi, PxVec3(0.0f, 0.0f, 1.0f)));
+		PxRigidStatic* groundPhysicsPlane = gPhysicsSDK->createRigidStatic(groundPos);
+		PxMaterial* mMaterial = gPhysicsSDK->createMaterial(0.5f, 0.5f, 0.5f);
+		groundPhysicsPlane->createShape(PxPlaneGeometry(), *mMaterial);
+		gScene->addActor(*groundPhysicsPlane);
 		//Helper Rectangle for building placment
 		Geometry cameraPlacement = Geometry(glm::mat4(1.0f), Geometry::createRectangle(Building::getLength(), Building::getWidth()), translucentRed);
 		LineGeometry cameraCircle = LineGeometry(glm::mat4(1.0f), LineGeometry::createCircle(30,Building::getRange()), translucentRed);
@@ -508,10 +516,12 @@ int main(int argc, char** argv)
 	/* --------------------------------------------- */
 	// Destroy PhysX
 	/* --------------------------------------------- */
+	
 	gPhysicsSDK->release();
 	if (gFoundation != nullptr) {
 		gFoundation->release();
 	}
+	
 	/* --------------------------------------------- */
 	// Destroy framework
 	/* --------------------------------------------- */

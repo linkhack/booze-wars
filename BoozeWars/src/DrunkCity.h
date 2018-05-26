@@ -7,7 +7,8 @@
 #include "Material.h"
 #include "Skybox.h"
 #include "Wave.h"
-
+#include <PhysX/PxPhysicsAPI.h>
+using namespace physx;
 
 class DrunkCity
 {
@@ -22,11 +23,14 @@ private:
 	int citySizeX;
 	int citySizeZ;
 	int hp;
+	PxPhysics* gPhysicsSDK;
+	PxScene* gScene;
 
 	Enemy* getNearestEnemy(Building* building);
 	void addBuilding(Building* building);
 	bool isColliding(glm::mat2x2 placed, glm::mat2x2 toPlace);
 
+	
 	
 public:
 
@@ -46,6 +50,7 @@ public:
 	bool hasMinOneBuildings();
 	int getBuildingsLeft();
 	void addEnemy(std::shared_ptr<Geometry> model);
+	PxScene* initPhysics(PxPhysics* gPhysicsSDK);
 
 };
 

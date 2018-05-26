@@ -18,6 +18,7 @@ DrunkCity::DrunkCity(float x, float y, float z)
 
 DrunkCity::~DrunkCity()
 {
+	gScene->release();
 }
 
 int DrunkCity::getHP() {
@@ -83,6 +84,17 @@ Enemy* DrunkCity::getNearestEnemy(Building* building)
 void DrunkCity::addEnemy(std::shared_ptr<Geometry> model)
 {
 	enemiesAlive.push_back(new Enemy(highway,model));
+}
+
+PxScene* DrunkCity::initPhysics(PxPhysics* gPhysicsSDK)
+{
+	this->gPhysicsSDK = gPhysicsSDK;
+	PxSceneDesc sceneDesc(gPhysicsSDK->getTolerancesScale());
+	sceneDesc.gravity = PxVec3(0.0f, -9.81f, 0.0f);
+	sceneDesc.cpuDispatcher = PxDefaultCpuDispatcherCreate(1);
+	sceneDesc.filterShader = PxDefaultSimulationFilterShader;
+	gScene = gPhysicsSDK->createScene(sceneDesc);
+	return gScene;
 }
 
 
