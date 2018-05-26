@@ -31,6 +31,9 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+#include <PhysX/PxPhysicsAPI.h>
+using namespace physx;
+
 /* --------------------------------------------- */
 // Prototypes
 /* --------------------------------------------- */
@@ -162,12 +165,24 @@ int main(int argc, char** argv)
 
 
 	// set up TrueType
-	
 
 	Character* charactorService = new Character(window);
 	charactorService->setFontSize(54);
 
-	//std::map<GLchar, Character> Characters;
+	// set up Physx
+	//Foundation
+	PxDefaultErrorCallback gDefaultErrorCallback;
+	PxDefaultAllocator gDefaultAllocatorCallback;
+	PxFoundation* gFoundation = nullptr;
+	gFoundation = PxCreateFoundation(PX_FOUNDATION_VERSION, gDefaultAllocatorCallback, gDefaultErrorCallback);
+
+	//SDK
+	PxPhysics* gPhysicsSDK = nullptr;
+	gPhysicsSDK = PxCreatePhysics(PX_PHYSICS_VERSION, *gFoundation, PxTolerancesScale());
+	if (gPhysicsSDK == nullptr) {
+		std::cout << "Failed to create Physx SDK" << std::endl;
+	}
+
 
 	/* --------------------------------------------- */
 	// Initialize scene and render loop
@@ -246,7 +261,7 @@ int main(int argc, char** argv)
 		DirectionalLight dirL(glm::vec3(1.0f,1.0f,1.0f), glm::vec3(4.0f,4.0f,4.0f));
 		
 		//Matrices for non moving lights for shadow map
-		glm::mat4 dirLMatrix = glm::ortho(-200.0f, 200.0f, -200.0f, 200.0f,-200.0f,200.0f);
+		glm::mat4 dirLMatrix = glm::ortho(-300.0f, 300.0f, -200.0f, 200.0f,-300.0f,300.0f);
 		
 		glm::mat4 dirLViewM = glm::lookAt(glm::vec3(150.0f,0.0f,150.0f), glm::vec3(150.0f, 0.0f, 150.0f)+dirL.direction, glm::vec3(0.0f, -1.0f, 0.0f));
 		glm::mat4 dirLProjView = dirLMatrix * dirLViewM;
@@ -490,7 +505,13 @@ int main(int argc, char** argv)
 		}
 	}
 
-
+	/* --------------------------------------------- */
+	// Destroy PhysX
+	/* --------------------------------------------- */
+	gPhysicsSDK->release();
+	if (gFoundation != nullptr) {
+		gFoundation->release();
+	}
 	/* --------------------------------------------- */
 	// Destroy framework
 	/* --------------------------------------------- */
