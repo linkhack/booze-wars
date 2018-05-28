@@ -14,6 +14,8 @@ private:
 	float hp;
 	float movementspeed; //max speed in meter/second
 	float damageTeens; //Amount of drunken teens per bottle
+
+	int streetPart;
 	std::shared_ptr<Street> street;
 	
 	PxRigidDynamic* physxActor;

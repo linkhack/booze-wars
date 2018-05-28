@@ -228,7 +228,7 @@ int main(int argc, char** argv)
 		Geometry map = Geometry(glm::translate(glm::mat4(1.0f),glm::vec3(150,0,150)), Geometry::createRectangle(300, 300), mapMaterial);
 		PxTransform groundPos(PxVec3(0.0f, 0.0f, 0.0f), PxQuat(PxHalfPi, PxVec3(0.0f, -1.0f, 0.0f)));
 		PxRigidStatic* groundPhysicsPlane = gPhysicsSDK->createRigidStatic(groundPos);
-		PxMaterial* mMaterial = gPhysicsSDK->createMaterial(0.5f, 0.5f, 0.5f);
+		PxMaterial* mMaterial = gPhysicsSDK->createMaterial(0.2f, 0.1f, 0.5f);
 		groundPhysicsPlane->createShape(PxPlaneGeometry(), *mMaterial);
 		gScene->addActor(*groundPhysicsPlane);
 		//Helper Rectangle for building placment
@@ -263,6 +263,7 @@ int main(int argc, char** argv)
 
 		//create Wave
 		Wave wave = Wave(std::list<wavetuple>({wavetuple(10,2,1),wavetuple(10,0.5,1),wavetuple(5,0.1,1),wavetuple(10,1,0.1),wavetuple(20,0.25,1)}));
+		//Wave wave = Wave(std::list<wavetuple>({ wavetuple(0,2,1)}));
 		//if the left click is still pressed
 		bool pressing = false;
 
