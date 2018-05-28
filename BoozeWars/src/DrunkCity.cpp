@@ -75,9 +75,7 @@ Enemy* DrunkCity::getNearestEnemy(Building* building)
 			}
 		}
 	}
-	if (!nearestEnemy) {
-		throw NO_ENEMIES_IN_RANGE;
-	}
+
 	return nearestEnemy;
 }
 
@@ -115,13 +113,16 @@ void DrunkCity::fight(float dT)
 	{
 		Building* building = *it;
 		Enemy* enemy = getNearestEnemy(building);
-		enemy->hit(building->getDamage()*dT);
-		if (enemy->getHP() <= 0) {
-			limitBuildings += 0.1;
-			enemy->selfDestruct();
-			enemiesAlive.remove(enemy);
-			delete enemy;
-			enemy = NULL;
+		if(enemy!=nullptr)
+		{
+			enemy->hit(building->getDamage()*dT);
+			if (enemy->getHP() <= 0) {
+				limitBuildings += 0.1;
+				enemy->selfDestruct();
+				enemiesAlive.remove(enemy);
+				delete enemy;
+				enemy = NULL;
+			}
 		}
 	}
 }

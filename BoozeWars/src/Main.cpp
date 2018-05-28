@@ -262,7 +262,7 @@ int main(int argc, char** argv)
 													brickMaterial));
 
 		//create Wave
-		Wave wave = Wave(std::list<wavetuple>({wavetuple(10,2,1),wavetuple(10,0.5,1),wavetuple(5,0.1,1),wavetuple(10,1,0.1),wavetuple(20,0.25,1)}));
+		Wave wave = Wave(std::list<wavetuple>({wavetuple(10,2,1),wavetuple(10,0.5,1),wavetuple(5,0.2,1),wavetuple(10,1,0.1),wavetuple(20,0.25,1)}));
 		//Wave wave = Wave(std::list<wavetuple>({ wavetuple(0,2,1)}));
 		//if the left click is still pressed
 		bool pressing = false;
@@ -298,6 +298,7 @@ int main(int argc, char** argv)
 		int streetColCounter = 0;
 		bool start = false;
 		bool end = false;
+		bool won = false;
 		int buildingLimit = 0;
 		int placeMinCounter = 0;
 		int frameCounter = 0;
@@ -367,11 +368,9 @@ int main(int argc, char** argv)
 				}
 				catch (int e) {
 					if (e == ALL_ENEMIES_DESTROYED && wave.waveIsFinished()) {
-						charactorService->renderText("YOU WIN", 20, 600, 3.0f, glm::vec3(1.0, 0.0, 0.0));
-					}
-
-					if (e == NO_ENEMIES_IN_RANGE) {
-						// DO NOTHING
+						won = true;
+						end = true;
+						
 					}
 				}
 				physxTime += dt;
@@ -462,8 +461,16 @@ int main(int argc, char** argv)
 				buildingLimit--;
 			}
 
-			if (end) {
-				charactorService->renderText("YOU LOSE!", 20, 600, 2.5f, glm::vec3(1.0, 0.0, 0.0));
+			if (end) 
+			{
+				if (won) 
+				{
+					charactorService->renderText("YOU WIN", 20, 600, 3.0f, glm::vec3(1.0, 0.0, 0.0));
+				}
+				else 
+				{
+					charactorService->renderText("YOU LOSE!", 20, 600, 2.5f, glm::vec3(1.0, 0.0, 0.0));
+				}
 			}
 
 			if (!_dragging && pressing) {
@@ -512,11 +519,11 @@ int main(int argc, char** argv)
 
 			 
 			//FPS (0.5sec avarage)
-			if (t_framecounter > 0.1) 
+			if (t_framecounter > 1.0f) 
 			{
 				std::cout << frameCounter / t_framecounter << std::endl;
 				frameCounter = 0;
-				t_framecounter = 0.0f;
+				t_framecounter -= 1.0f;
 			}
 			
 			// Poll events and swap buffers
