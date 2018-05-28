@@ -1,6 +1,9 @@
 #pragma once
 #include "Geometry.h"
 #include "Street.h"
+#include <PhysX/PxPhysicsAPI.h>
+
+using namespace physx;
 class Enemy
 {
 private:
@@ -12,6 +15,8 @@ private:
 	float movementspeed; //max speed in meter/second
 	float damageTeens; //Amount of drunken teens per bottle
 	std::shared_ptr<Street> street;
+	
+	PxRigidDynamic* physxActor;
 
 public:
 	Enemy();
@@ -26,8 +31,9 @@ public:
 	float getZ();
 	float getHP();
 	float getDamage();
+	float getDistanceSquared(Enemy&otherEnemy );
 	
-	void walk(float dT);
+	PxVec3 getDesiredDirection();
 	void hit(float damage);
 
 	glm::mat4 getModelMatrix();
@@ -35,5 +41,9 @@ public:
 	void drawShadows(Shader& shader);
 	void draw();
 	void selfDestruct(); // delete model from world
+
+	PxRigidDynamic* createPhysics(PxPhysics* physicsSDK);
+	void applyForce(PxVec3 force);
+	void updatePosition();
 };
 

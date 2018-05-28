@@ -29,7 +29,7 @@ private:
 	Enemy* getNearestEnemy(Building* building);
 	void addBuilding(Building* building);
 	bool isColliding(glm::mat2x2 placed, glm::mat2x2 toPlace);
-
+	
 	
 	
 public:
@@ -45,7 +45,8 @@ public:
 	void drawShadows(Shader & shader);
 	void zeichne();
 	void fight(float dT);
-	void walk(float dT);
+	void walk();
+	void calculateForces();
 	void placeBuilding(float x, float z, std::shared_ptr<Material> material);
 	bool hasMinOneBuildings();
 	int getBuildingsLeft();

@@ -59,6 +59,26 @@ float Enemy::getHP()
 float Enemy::getDamage() {
 	return damageTeens;
 }
+float Enemy::getDistanceSquared(Enemy & otherEnemy)
+{
+	return (x-otherEnemy.x)*(x - otherEnemy.x)+ (y - otherEnemy.y)*(y - otherEnemy.y)+ (z - otherEnemy.z)*(z - otherEnemy.z);
+}
+PxVec3 Enemy::getDesiredDirection()
+{
+	PxVec3 direction;
+
+	if (x < street->getPart1()[1][0] + 0.5*street->getStreetWidth()) {
+
+		direction = PxVec3(1000.0f, 0, 0);
+	}
+	else if (y < street->getPart2()[1][1] - 0.6*street->getStreetWidth()) {
+		direction = PxVec3(0.0f, 10.0f, 0.0f);
+	}
+	else {
+		direction = PxVec3(10.0f, 0.0f, 0.0f);
+	}
+	return direction;
+}
 void Enemy::hit(float damage)
 {	
 	hp -= damage;
@@ -68,8 +88,27 @@ void Enemy::selfDestruct()
 {
 }
 
-void Enemy::walk(float dT)
+PxRigidDynamic* Enemy::createPhysics(PxPhysics* physicsSDK)
 {
+	PxMaterial* enemyMaterial;
+	enemyMaterial = physicsSDK->createMaterial(0.5f, 0.5f, 0.5f);
+	physxActor = PxCreateDynamic(*physicsSDK, PxTransform(PxVec3(x, y, z+0.001f)), PxBoxGeometry(3, 3, 3), *enemyMaterial,1.0f);
+	physxActor->setLinearVelocity(PxVec3(20.0f, 0.0f, 0.0f));
+	return physxActor;
+}
+
+void Enemy::applyForce(PxVec3 force)
+{
+	physxActor->addForce(force);
+}
+
+void Enemy::updatePosition()
+{	
+	PxVec3 transform = physxActor->getGlobalPose().p;
+	x = transform.x;
+	y = transform.y;
+	z = transform.z;
+	/*
 	if (x < street->getPart1()[1][0] + 0.5*street->getStreetWidth()) {
 		x += movementspeed * dT;
 	}
@@ -79,4 +118,5 @@ void Enemy::walk(float dT)
 	else {
 		x += movementspeed * dT;
 	}
+	*/
 }

@@ -83,14 +83,17 @@ Enemy* DrunkCity::getNearestEnemy(Building* building)
 
 void DrunkCity::addEnemy(std::shared_ptr<Geometry> model)
 {
-	enemiesAlive.push_back(new Enemy(highway,model));
+	Enemy* enemyToAdd = new Enemy(highway, model);
+	PxRigidDynamic* dyn = enemyToAdd->createPhysics(gPhysicsSDK);
+	enemiesAlive.push_back(enemyToAdd);
+	gScene->addActor(*dyn);
 }
 
 PxScene* DrunkCity::initPhysics(PxPhysics* gPhysicsSDK)
 {
 	this->gPhysicsSDK = gPhysicsSDK;
 	PxSceneDesc sceneDesc(gPhysicsSDK->getTolerancesScale());
-	sceneDesc.gravity = PxVec3(0.0f, -9.81f, 0.0f);
+	sceneDesc.gravity = PxVec3(0.0f, 0.0f, -9.81f);
 	sceneDesc.cpuDispatcher = PxDefaultCpuDispatcherCreate(1);
 	sceneDesc.filterShader = PxDefaultSimulationFilterShader;
 	gScene = gPhysicsSDK->createScene(sceneDesc);
@@ -123,7 +126,7 @@ void DrunkCity::fight(float dT)
 	}
 }
 
-void DrunkCity::walk(float dT)
+void DrunkCity::walk()
 {
 	std::list<Enemy*>::iterator it = enemiesAlive.begin();
 	while(it != enemiesAlive.end())	
@@ -131,7 +134,7 @@ void DrunkCity::walk(float dT)
 		Enemy* iterEnemy = *it;
 		if (iterEnemy != NULL) 
 		{
-			iterEnemy->walk(dT);
+			iterEnemy->updatePosition();
 			if (iterEnemy->getX() >= 300 || iterEnemy->getZ()>=300)
 			{
 				hp -= iterEnemy->getDamage();
@@ -149,6 +152,27 @@ void DrunkCity::walk(float dT)
 				++it;
 			}
 		}
+	}
+}
+
+void DrunkCity::calculateForces()
+{
+	std::list<Enemy*>::iterator it = enemiesAlive.begin();
+	while(it != enemiesAlive.end())	
+	{
+		Enemy* iterEnemy = *it;
+		iterEnemy->applyForce(iterEnemy->getDesiredDirection());
+		/*
+		std::list<Enemy*>::iterator otherEnemyIt = enemiesAlive.begin();
+		while (otherEnemyIt != enemiesAlive.end())
+		{
+			if (otherEnemyIt != it) {
+				Enemy* otherEnemy = *otherEnemyIt;
+
+			}
+		}
+		*/
+		++it;
 	}
 }
 

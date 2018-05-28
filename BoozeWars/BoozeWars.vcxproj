@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClCompile Include="src\EnemyPhysxCallback.cpp" />
     <ClCompile Include="src\ShadowMapSimple.cpp" />
     <ClCompile Include="src\LineGeometry.cpp" />
     <ClCompile Include="src\Character.cpp" />
@@ -13,6 +14,7 @@
     <ClCompile Include="src\Street.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\Wave.cpp" />
+    <ClInclude Include="src\EnemyPhysxCallback.h" />
     <ClInclude Include="src\ShadowMapSimple.h" />
     <ClInclude Include="src\LineGeometry.h" />
     <ClInclude Include="src\Character.h" />
@@ -124,7 +126,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)external\lib;$(SolutionDir)external\lib\PhysX_DEBUG;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;FreeImage.lib;glew32s.lib;glfw3.lib;freetype.lib;ECG_Library_Debug.lib;LowLevelAABBDEBUG.lib;LowLevelDEBUG.lib;LowLevelClothDEBUG.lib;LowLevelDynamicsDEBUG.lib;LowLevelParticlesDEBUG.lib;PhysX3CharacterKinematicDEBUG_x86.lib;PhysX3DEBUG_x86.lib;PhysX3CommonDEBUG_x86.lib;PhysX3CookingDEBUG_x86.lib;PhysX3ExtensionsDEBUG.lib;PhysX3VehicleDEBUG.lib;PxFoundationDEBUG_x86.lib;SceneQueryDEBUG.lib;SimulationControllerDEBUG.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;FreeImage.lib;glew32s.lib;glfw3.lib;freetype.lib;ECG_Library_Debug.lib;LowLevelAABBDEBUG.lib;LowLevelDEBUG.lib;LowLevelClothDEBUG.lib;LowLevelDynamicsDEBUG.lib;LowLevelParticlesDEBUG.lib;PhysX3CharacterKinematicDEBUG_x86.lib;PhysX3DEBUG_x86.lib;PhysX3CommonDEBUG_x86.lib;PhysX3CookingDEBUG_x86.lib;PhysX3ExtensionsDEBUG.lib;PhysX3VehicleDEBUG.lib;PxFoundationDEBUG_x86.lib;SceneQueryDEBUG.lib;SimulationControllerDEBUG.lib;PxPvdSDKDEBUG_x86.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>LIBCMT;MSVCRT</IgnoreSpecificDefaultLibraries>
     </Link>
     <PostBuildEvent>
@@ -150,7 +152,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)external\lib;$(SolutionDir)external\lib\PhysX_CHECKED;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;FreeImage.lib;glew32s.lib;glfw3.lib;freetype.lib;ECG_Library_Release.lib;LowLevelAABBCHECKED.lib;LowLevelCHECKED.lib;LowLevelClothCHECKED.lib;LowLevelDynamicsCHECKED.lib;LowLevelParticlesCHECKED.lib;PhysX3CharacterKinematicCHECKED_x86.lib;PhysX3CHECKED_x86.lib;PhysX3CommonCHECKED_x86.lib;PhysX3CookingCHECKED_x86.lib;PhysX3ExtensionsCHECKED.lib;PhysX3VehicleCHECKED.lib;PxFoundationCHECKED_x86.lib;SceneQueryCHECKED.lib;SimulationControllerCHECKED.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;FreeImage.lib;glew32s.lib;glfw3.lib;freetype.lib;ECG_Library_Release.lib;LowLevelAABBCHECKED.lib;LowLevelCHECKED.lib;LowLevelClothCHECKED.lib;LowLevelDynamicsCHECKED.lib;LowLevelParticlesCHECKED.lib;PhysX3CharacterKinematicCHECKED_x86.lib;PhysX3CHECKED_x86.lib;PhysX3CommonCHECKED_x86.lib;PhysX3CookingCHECKED_x86.lib;PhysX3ExtensionsCHECKED.lib;PhysX3VehicleCHECKED.lib;PxFoundationCHECKED_x86.lib;SceneQueryCHECKED.lib;SimulationControllerCHECKED.lib;PxPvdSDKCHECKED_x86.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>LIBCMT</IgnoreSpecificDefaultLibraries>
       <AdditionalOptions>/LTCG:off</AdditionalOptions>
     </Link>

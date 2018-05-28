@@ -175,15 +175,19 @@ int main(int argc, char** argv)
 	PxDefaultAllocator gDefaultAllocatorCallback;
 	PxFoundation* gFoundation = nullptr;
 	gFoundation = PxCreateFoundation(PX_FOUNDATION_VERSION, gDefaultAllocatorCallback, gDefaultErrorCallback);
-
+	PxPvdTransport* mTransport = PxDefaultPvdSocketTransportCreate("127.0.0.1", 5425, 10000);
+	PxPvdInstrumentationFlags mPvdFlags = PxPvdInstrumentationFlag::eALL;
+	PxPvd* mPvd = PxCreatePvd(*gFoundation);
 	//SDK
 	PxPhysics* gPhysicsSDK = nullptr;
-	gPhysicsSDK = PxCreatePhysics(PX_PHYSICS_VERSION, *gFoundation, PxTolerancesScale());
+	gPhysicsSDK = PxCreatePhysics(PX_PHYSICS_VERSION, *gFoundation, PxTolerancesScale(),false,mPvd);
 	if (gPhysicsSDK == nullptr) {
 		std::cout << "Failed to create Physx SDK" << std::endl;
 	}
+	
 
-
+	if (!mPvd->connect(*mTransport, mPvdFlags)) { std::cout << "Error connecting" << std::endl; }
+	
 
 	/* --------------------------------------------- */
 	// Initialize scene and render loop
@@ -222,7 +226,7 @@ int main(int argc, char** argv)
 		Geometry ground = Geometry(glm::mat4(1.0f), Geometry::createInfinitePlane(), infiniGreenMat);
 		//Create map
 		Geometry map = Geometry(glm::translate(glm::mat4(1.0f),glm::vec3(150,0,150)), Geometry::createRectangle(300, 300), mapMaterial);
-		PxTransform groundPos(PxVec3(0.0f, 0.0f, 0.0f), PxQuat(PxHalfPi, PxVec3(0.0f, 0.0f, 1.0f)));
+		PxTransform groundPos(PxVec3(0.0f, 0.0f, 0.0f), PxQuat(PxHalfPi, PxVec3(0.0f, -1.0f, 0.0f)));
 		PxRigidStatic* groundPhysicsPlane = gPhysicsSDK->createRigidStatic(groundPos);
 		PxMaterial* mMaterial = gPhysicsSDK->createMaterial(0.5f, 0.5f, 0.5f);
 		groundPhysicsPlane->createShape(PxPlaneGeometry(), *mMaterial);
@@ -335,6 +339,42 @@ int main(int argc, char** argv)
 			setPerFrameUniforms(translucent.get(), camera, dirL, pointL,dirLProjView);
 			setPerFrameUniformsSkybox(skyboxShader.get(), camera);
 
+			//GameLogic
+			// Play logic
+			if (start && !end) {
+				try {
+					if (physxTime >= physxTimestep)
+					{
+						physxTime -= physxTimestep;
+						world.calculateForces();
+						gScene->simulate(physxTimestep);
+						gScene->fetchResults(true);
+						world.walk();
+					}
+				}
+				catch (int e) {
+					if (e == GAME_END) {
+						end = true;
+					}
+				}
+				if (wave.spawnEnemy(dt))
+				{
+					world.addEnemy(enemyModel);
+				}
+				try {
+					world.fight(dt);
+				}
+				catch (int e) {
+					if (e == ALL_ENEMIES_DESTROYED && wave.waveIsFinished()) {
+						charactorService->renderText("YOU WIN", 20, 600, 3.0f, glm::vec3(1.0, 0.0, 0.0));
+					}
+
+					if (e == NO_ENEMIES_IN_RANGE) {
+						// DO NOTHING
+					}
+				}
+				physxTime += dt;
+			}
 
 			// Render
 			//Shadowmap pass
@@ -429,33 +469,7 @@ int main(int argc, char** argv)
 				pressing = false;
 			}
 
-			// Play logic
-			if (start && !end) {
-				try {
-					world.walk(dt);
-				}
-				catch (int e) {
-					if (e == GAME_END) {
-						end = true;
-					}
-				}
-				if (wave.spawnEnemy(dt)) 
-				{
-					world.addEnemy(enemyModel);
-				}
-				try {
-					world.fight(dt);				
-				}
-				catch (int e) {
-					if (e == ALL_ENEMIES_DESTROYED && wave.waveIsFinished()) {
-						charactorService->renderText("YOU WIN", 20, 600, 3.0f, glm::vec3(1.0, 0.0, 0.0));
-					}
 
-					if (e == NO_ENEMIES_IN_RANGE) {
-						// DO NOTHING
-					}
-				}
-			}
 
 			// player informations
 			std::string life = "LIFE: ";
@@ -494,6 +508,7 @@ int main(int argc, char** argv)
 			t_framecounter += dt;
 			t_sum += dt;
 			frameCounter++;
+
 			 
 			//FPS (0.5sec avarage)
 			if (t_framecounter > 0.1) 
