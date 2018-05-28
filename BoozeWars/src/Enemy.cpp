@@ -80,7 +80,7 @@ PxVec3 Enemy::getDesiredDirection()
 		streetPart = 1;
 	}
 	else {
-		if (streetPart == 0) {
+		if (streetPart == 1) {
 			physxActor->addForce(PxVec3(20.0f, -20.0f, 0.0f), PxForceMode::eVELOCITY_CHANGE);
 		}
 		streetPart = 2;
