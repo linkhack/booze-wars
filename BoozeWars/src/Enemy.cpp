@@ -91,9 +91,11 @@ void Enemy::selfDestruct()
 PxRigidDynamic* Enemy::createPhysics(PxPhysics* physicsSDK)
 {
 	PxMaterial* enemyMaterial;
-	enemyMaterial = physicsSDK->createMaterial(0.5f, 0.5f, 0.5f);
+	enemyMaterial = physicsSDK->createMaterial(0.0f, 0.0f, 1.0f);
 	physxActor = PxCreateDynamic(*physicsSDK, PxTransform(PxVec3(x, y, z+0.001f)), PxBoxGeometry(3, 3, 3), *enemyMaterial,1.0f);
 	physxActor->setLinearVelocity(PxVec3(20.0f, 0.0f, 0.0f));
+	physxActor->setMaxAngularVelocity(0.0f);
+	
 	return physxActor;
 }
 
