@@ -33,9 +33,10 @@ public:
 	float getZ();
 	float getHP();
 	float getDamage();
-	float getDistanceSquared(Enemy&otherEnemy );
+	float getDistanceSquared(const Enemy& otherEnemy );
 	
 	PxVec3 getDesiredDirection();
+	PxVec3 getDirectionVector(const Enemy& otherEnemy);
 	void hit(float damage);
 
 	glm::mat4 getModelMatrix();

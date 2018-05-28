@@ -228,7 +228,7 @@ int main(int argc, char** argv)
 		Geometry map = Geometry(glm::translate(glm::mat4(1.0f),glm::vec3(150,0,150)), Geometry::createRectangle(300, 300), mapMaterial);
 		PxTransform groundPos(PxVec3(0.0f, 0.0f, 0.0f), PxQuat(PxHalfPi, PxVec3(0.0f, -1.0f, 0.0f)));
 		PxRigidStatic* groundPhysicsPlane = gPhysicsSDK->createRigidStatic(groundPos);
-		PxMaterial* mMaterial = gPhysicsSDK->createMaterial(0.2f, 0.1f, 0.5f);
+		PxMaterial* mMaterial = gPhysicsSDK->createMaterial(0.0f, 0.1f, 0.5f);
 		groundPhysicsPlane->createShape(PxPlaneGeometry(), *mMaterial);
 		gScene->addActor(*groundPhysicsPlane);
 		//Helper Rectangle for building placment

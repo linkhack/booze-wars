@@ -60,7 +60,7 @@ float Enemy::getHP()
 float Enemy::getDamage() {
 	return damageTeens;
 }
-float Enemy::getDistanceSquared(Enemy & otherEnemy)
+float Enemy::getDistanceSquared(const Enemy& otherEnemy)
 {
 	return (x-otherEnemy.x)*(x - otherEnemy.x)+ (y - otherEnemy.y)*(y - otherEnemy.y)+ (z - otherEnemy.z)*(z - otherEnemy.z);
 }
@@ -100,6 +100,11 @@ PxVec3 Enemy::getDesiredDirection()
 		break;
 	}
 	return direction;
+}
+
+PxVec3 Enemy::getDirectionVector(const Enemy & otherEnemy)
+{
+	return PxVec3(otherEnemy.x-x,otherEnemy.y-y,otherEnemy.z-z);
 }
 
 void Enemy::hit(float damage)
