@@ -109,6 +109,7 @@ void Enemy::hit(float damage)
 
 void Enemy::selfDestruct()
 {
+	physxActor->release();
 }
 
 PxRigidDynamic* Enemy::createPhysics(PxPhysics* physicsSDK)
