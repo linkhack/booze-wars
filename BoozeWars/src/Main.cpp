@@ -287,6 +287,8 @@ int main(int argc, char** argv)
 		float dt = 0.0f;
 		float t_sum = 0.0f;
 		float t_framecounter = 0.0f;
+		float physxTime = 0.0f;
+		const float physxTimestep = 1.0f / 60.0f;
 		int buildingColCounter = 0;
 		int streetColCounter = 0;
 		bool start = false;
