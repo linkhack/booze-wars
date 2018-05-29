@@ -65,10 +65,10 @@ vec3 phong(vec3 n, vec3 l, vec3 v, vec3 diffuseC, float diffuseF, vec3 specularC
 	float att = 1.0;	
 	if(attenuate) att = 1.0f / (attenuation.x + d * attenuation.y + d * d * attenuation.z);
 	vec3 r = reflect(-l, n);
-	float cosAngleNormal = max(0,dor(n,l));
-	float cosAngleReflect = max(0,dot(r, v));
+	float cosAngleNormal = max(0,dot(n,l));
+	float specularToon = (0.5*floor(2*pow(max(0, dot(r, v)), alpha))>=0.5)?0.8:0;
 
-	return (diffuseF * diffuseC * 4*floor(cosAngleNormal/4)- + specularF * specularC * pow(4*floor(cosAngleReflect/4), alpha)) * att; 
+	return (diffuseF * diffuseC * min(floor(4*cosAngleNormal)/3,1) + specularF * specularC * specularToon) * att; 
 }
 
 void main() {	
@@ -93,13 +93,12 @@ void main() {
 	color.rgb += shadowDir*phong(n, -dirL.direction, v, dirL.color * texColor, materialCoefficients.y, dirL.color, materialCoefficients.z, specularAlpha, false, vec3(0));
 			
 	// add point light contribution
-	color.rgb += shadowDir*phong(n, pointL.position - vert.position_world, v, pointL.color * texColor, materialCoefficients.y, pointL.color, materialCoefficients.z, specularAlpha, true, pointL.attenuation);
+	//color.rgb += shadowDir*phong(n, pointL.position - vert.position_world, v, pointL.color * texColor, materialCoefficients.y, pointL.color, materialCoefficients.z, specularAlpha, true, pointL.attenuation);
 	
 	float fogDistance = gl_FragCoord.z/gl_FragCoord.w;
 	float fogAmount = fogFunction(fogDistance,100,450);
 	
 	color = mix(color, fogColor,fogAmount);
-	//color=vec4(vec3(closestD),1);
-	//color = vec4(vec3(shadowDir),1);
+	//color = vec4(vec3(0.5*floor(2*pow(max(0, dot(r, v)), alpha))),1);
 }
 

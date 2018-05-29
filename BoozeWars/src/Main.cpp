@@ -194,7 +194,7 @@ int main(int argc, char** argv)
 	/* --------------------------------------------- */
 	{
 		//Shaders
-		std::shared_ptr<Shader> textureShader = std::make_shared<Shader>("texture.vert", "texture.frag");
+		std::shared_ptr<Shader> textureShader = std::make_shared<Shader>("texture.vert", "textureCell.frag");
 		std::shared_ptr<Shader> skyboxShader = std::make_shared<Shader>("skybox.vert", "skybox.frag");
 		std::shared_ptr<Shader> infiniGreen = std::make_shared<Shader>("texture.vert", "infiniGreen.frag");
 		std::shared_ptr<Shader> translucent = std::make_shared<Shader>("texture.vert", "translucentRed.frag");
@@ -209,13 +209,13 @@ int main(int argc, char** argv)
 		mapTexture->loadImage("map.png");
 
 		// Create materials
-		std::shared_ptr<Material> sunMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.1f, 0.9f, 0.0f), 1.0f, sunTexture);
-		std::shared_ptr<Material> earthMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.05f, 0.9f, 0.1f), 5.0f, earthTexture);
-		std::shared_ptr<Material> moonMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.1f, 0.9f, 0.3f), 2.0f, woodTexture);
-		std::shared_ptr<Material> brickMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.5f, 0.5f, 0.3f), 2.0f, brickTexture);
-		std::shared_ptr<Material> infiniGreenMat = std::make_shared<Material>(infiniGreen, glm::vec3(0.5f, 0.5f, 0.3f), 10.0f);
+		std::shared_ptr<Material> sunMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.1f, 0.9f, 0.4f), 15.0f, sunTexture);
+		std::shared_ptr<Material> earthMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.05f, 0.9f, 0.5f), 5.0f, earthTexture);
+		std::shared_ptr<Material> moonMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.1f, 0.9f, 0.5f), 5.0f, woodTexture);
+		std::shared_ptr<Material> brickMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.2f, 0.8f, 0.5f), 5.0f, brickTexture);
+		std::shared_ptr<Material> infiniGreenMat = std::make_shared<Material>(infiniGreen, glm::vec3(0.5f, 0.5f, 0.5f), 3.0f);
 		std::shared_ptr<Material> translucentRed = std::make_shared<Material>(translucent, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f);
-		std::shared_ptr<Material> mapMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.1f, 0.9f, 0.1f), 1.0f, mapTexture);
+		std::shared_ptr<Material> mapMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.1f, 0.9f, 0.0f), 50.0f, mapTexture);
 		
 		//Geometries
 		//Create World
@@ -235,8 +235,8 @@ int main(int argc, char** argv)
 		Geometry cameraPlacement = Geometry(glm::mat4(1.0f), Geometry::createRectangle(Building::getLength(), Building::getWidth()), translucentRed);
 		LineGeometry cameraCircle = LineGeometry(glm::mat4(1.0f), LineGeometry::createCircle(30,Building::getRange()), translucentRed);
 		//Enemy
-		std::shared_ptr<Geometry> enemyModel = std::make_shared<Geometry>(glm::mat4(1.0f), Geometry::createCubeGeometry(4, 6, 4), sunMaterial);
-		
+		//std::shared_ptr<Geometry> enemyModel = std::make_shared<Geometry>(glm::mat4(1.0f), Geometry::createCubeGeometry(4, 6, 4), sunMaterial);
+		std::shared_ptr<Geometry> enemyModel = std::make_shared<Geometry>(glm::scale(glm::mat4(1.0f),glm::vec3(2.0f,3.0f,2.0f)), Geometry::createSphereGeometry(20,20,1), sunMaterial);
 		//Skybox
 		std::vector<std::string> skymapTextureLoc =
 		{
