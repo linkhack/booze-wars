@@ -66,7 +66,7 @@ vec3 phong(vec3 n, vec3 l, vec3 v, vec3 diffuseC, float diffuseF, vec3 specularC
 	if(attenuate) att = 1.0f / (attenuation.x + d * attenuation.y + d * d * attenuation.z);
 	vec3 r = reflect(-l, n);
 	float cosAngleNormal = max(0,dot(n,l));
-	float specularToon = (0.5*floor(2*pow(max(0, dot(r, v)), alpha))>=0.5)?0.8:0;
+	float specularToon = (pow(max(0, dot(r, v)), alpha)>=0.8)?1:0;
 
 	return (diffuseF * diffuseC * min(floor(4*cosAngleNormal)/3,1) + specularF * specularC * specularToon) * att; 
 }
