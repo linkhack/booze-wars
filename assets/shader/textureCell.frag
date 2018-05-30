@@ -68,6 +68,7 @@ vec3 phong(vec3 n, vec3 l, vec3 v, vec3 diffuseC, float diffuseF, vec3 specularC
 	float cosAngleNormal = max(0,dot(n,l));
 	float specularToon = (pow(max(0, dot(r, v)), alpha)>=0.8)?1:0;
 
+	return (diffuseF * diffuseC * min(floor(5*cosAngleNormal)/4,1) + specularF * specularC * specularToon) * att; 
 }
 
 void main() {	
