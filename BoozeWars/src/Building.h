@@ -29,6 +29,6 @@ public:
 	float getDamage();
 
 	void drawShadows(Shader& shader);
-	void draw(Shader& shader, myCamera& camera);
+	void draw(Shader& shader);
 };
 

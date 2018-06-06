@@ -131,10 +131,7 @@ std::vector<Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType 
 	return textures;
 }
 
-void Model::draw(Shader& shader, myCamera& camera) {
-	shader.setUniform("projection", camera.getProjectionMatrix());
-	shader.setUniform("view", camera.getViewProjectionMatrix());
-
+void Model::draw(Shader& shader) {
 	// render the loaded model
 	//glm::mat4 model;
 	//model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f)); // translate it down so it's at the center of the scene

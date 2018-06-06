@@ -409,7 +409,7 @@ int main(int argc, char** argv)
 			ground.draw(glm::translate(glm::mat4(1.0f),glm::vec3(0.0f,0.1f,0.0f)));
 			directionalLightShadow.bindForReading();
 
-			world.zeichne(objectShader, camera); //needs shadow
+			world.zeichne(textureShader.get()); //needs shadow
 
 			map.draw();
 			if (camera.getGroundIntersection() != glm::vec3(0, 1, 0)) {
