@@ -49,7 +49,7 @@ void Mesh::setupMesh()
 	glDeleteBuffers(1, &EBO);
 }
 
-void Mesh::draw(Shader& shader)
+void Mesh::draw(std::shared_ptr<Shader> shader)
 {
 	GLuint diffuseNr = 0;
 	GLuint specularNr = 5;
@@ -66,12 +66,12 @@ void Mesh::draw(Shader& shader)
 
 		if (name == "texture_diffuse")
 		{
-			shader.setUniform("diffuseTexture", diffuseNr);
+			shader->setUniform("diffuseTexture", diffuseNr);
 			textureUnit = diffuseNr;
 		}
 		else if (name == "texture_specular")
 		{
-			shader.setUniform("specularTexture", specularNr);
+			shader->setUniform("specularTexture", specularNr);
 			textureUnit = specularNr;
 		}
 		GLuint textid = textures[i].id;

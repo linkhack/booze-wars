@@ -29,6 +29,6 @@ public:
 	float getDamage();
 
 	void drawShadows(Shader& shader);
-	void draw(Shader& shader);
+	void draw(std::shared_ptr<Shader> shader);
 };
 
