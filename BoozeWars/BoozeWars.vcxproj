@@ -179,8 +179,8 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)external\lib;$(SolutionDir)external\lib\PhysX_CHECKED;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;FreeImage.lib;glew32s.lib;glfw3.lib;freetype.lib;ECG_Library_Release.lib;LowLevelAABBCHECKED.lib;LowLevelCHECKED.lib;LowLevelClothCHECKED.lib;LowLevelDynamicsCHECKED.lib;LowLevelParticlesCHECKED.lib;PhysX3CharacterKinematicCHECKED_x86.lib;PhysX3CHECKED_x86.lib;PhysX3CommonCHECKED_x86.lib;PhysX3CookingCHECKED_x86.lib;PhysX3ExtensionsCHECKED.lib;PhysX3VehicleCHECKED.lib;PxFoundationCHECKED_x86.lib;SceneQueryCHECKED.lib;SimulationControllerCHECKED.lib;PxPvdSDKCHECKED_x86.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <IgnoreSpecificDefaultLibraries>LIBCMT</IgnoreSpecificDefaultLibraries>
+      <AdditionalDependencies>opengl32.lib;FreeImage.lib;glew32s.lib;glfw3.lib;freetype.lib;ECG_Library_Release.lib;LowLevelAABBCHECKED.lib;LowLevelCHECKED.lib;LowLevelClothCHECKED.lib;LowLevelDynamicsCHECKED.lib;LowLevelParticlesCHECKED.lib;PhysX3CharacterKinematicCHECKED_x86.lib;PhysX3CHECKED_x86.lib;PhysX3CommonCHECKED_x86.lib;PhysX3CookingCHECKED_x86.lib;PhysX3ExtensionsCHECKED.lib;PhysX3VehicleCHECKED.lib;PxFoundationCHECKED_x86.lib;SceneQueryCHECKED.lib;SimulationControllerCHECKED.lib;PxPvdSDKCHECKED_x86.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>LIBCMT;</IgnoreSpecificDefaultLibraries>
       <AdditionalOptions>/LTCG:off</AdditionalOptions>
     </Link>
     <PostBuildEvent>
