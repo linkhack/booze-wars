@@ -1,17 +1,20 @@
 #pragma once
 #include "Geometry.h"
 #include "Enemy.h"
+#include "Model.h"
+#include "ModelFactory.h"
+
 class Building
 {
 private:
-	Geometry * model;
+	Model* model;
 	int x;
 	int z;
 	float damage;//demage per second
 
 public:
 	Building();
-	Building::Building(float x, float z, std::shared_ptr<Material> material);
+	Building::Building(float x, float z);
 	~Building();
 
 	Building(Building&&) = default;
@@ -26,6 +29,6 @@ public:
 	float getDamage();
 
 	void drawShadows(Shader& shader);
-	void draw();
+	void draw(Shader shader);
 };
 

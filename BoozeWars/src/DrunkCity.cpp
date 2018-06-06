@@ -35,7 +35,7 @@ void DrunkCity::drawShadows(Shader& shader) {
 		(*it)->drawShadows(shader);
 	}
 }
-void DrunkCity::zeichne() 
+void DrunkCity::zeichne(Shader shader) 
 {
 	for (std::list<Enemy*>::iterator it = enemiesAlive.begin(); it != enemiesAlive.end(); ++it)
 	{
@@ -46,7 +46,7 @@ void DrunkCity::zeichne()
 	for (std::list<Building*>::iterator it = buildings.begin(); it != buildings.end(); ++it)
 	{
 		Building* iteratingBuilding = *it;
-		iteratingBuilding->draw();
+		iteratingBuilding->draw(shader);
 	}
 }
 
@@ -176,7 +176,7 @@ void DrunkCity::calculateForces()
 	}
 }
 
-void DrunkCity::placeBuilding(float x, float z, std::shared_ptr<Material> material) {
+void DrunkCity::placeBuilding(float x, float z) {
 	glm::mat2x2 toPlace = glm::mat2x2(x - Building::getWidth() / 2, z - Building::getLength() / 2, x + Building::getWidth()/2, z + Building::getLength()/2);
 	std::list<Building*>::iterator it = buildings.begin();
 	if (isColliding(highway->getPart1(), toPlace) || 
@@ -196,7 +196,7 @@ void DrunkCity::placeBuilding(float x, float z, std::shared_ptr<Material> materi
 		}
 		++it;
 	}
-	addBuilding(new Building(x, z, material));
+	addBuilding(new Building(x, z));
 }
 
 bool DrunkCity::isColliding(glm::mat2x2 placed, glm::mat2x2 toPlace)

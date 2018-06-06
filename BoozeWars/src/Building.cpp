@@ -8,13 +8,14 @@ Building::Building()
 {
 }
 
-Building::Building(float x, float z, std::shared_ptr<Material> material)
+Building::Building(float x, float z)
 {
 	this->damage = 45;
 	glm::mat4 position = glm::translate(glm::mat4(1.0f), glm::vec3(x, -15.0f, z));
 	this->x = position[3][0];
 	this->z = position[3][2];
-	model = new Geometry(position, Geometry::createCubeGeometry(width, 30, length), material);
+	ModelFactory* factory = ModelFactory::Instance();
+	model = factory->getModel(ModelFactory::DEFAULT_BUILDING);
 }
 
 
@@ -56,10 +57,10 @@ int Building::getRange()
 
 void Building::drawShadows(Shader & shader)
 {
-	model->drawShadow(shader);
+	//model->drawShadow(shader);
 }
 
-void Building::draw()
+void Building::draw(Shader shader)
 {
-	model->draw();
+	model->draw(shader);
 }

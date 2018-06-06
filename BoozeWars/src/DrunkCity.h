@@ -43,11 +43,11 @@ public:
 
 	int getHP();
 	void drawShadows(Shader & shader);
-	void zeichne();
+	void zeichne(Shader shader);
 	void fight(float dT);
 	void walk();
 	void calculateForces();
-	void placeBuilding(float x, float z, std::shared_ptr<Material> material);
+	void placeBuilding(float x, float z);
 	bool hasMinOneBuildings();
 	int getBuildingsLeft();
 	void addEnemy(std::shared_ptr<Geometry> model);

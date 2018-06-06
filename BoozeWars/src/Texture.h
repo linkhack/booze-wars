@@ -10,6 +10,9 @@
 #include <GL/glew.h>
 #include "Utils.h"
 #include <vector>
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 #include "FreeImage.h"
 #include <iostream>
 
@@ -26,6 +29,9 @@ private:
 	bool _init;
 
 public:
+	GLuint id;
+	std::string type;
+	aiString path;
 	Texture();
 	Texture(std::string file);
 	~Texture();
