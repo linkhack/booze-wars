@@ -80,7 +80,6 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
 	for (GLuint i = 0; i < mesh->mNumFaces; i++)
 	{
 		aiFace face = mesh->mFaces[i];
-
 		for (GLuint j = 0; j < face.mNumIndices; j++)
 			indices.push_back(face.mIndices[j]);
 	}
@@ -139,7 +138,7 @@ void Model::draw(std::shared_ptr<Shader> shader, glm::mat4 matrix) {
 	//model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f)); // translate it down so it's at the center of the scene
 	model = glm::scale(model, glm::vec3(0.2f, -0.2f, 0.2f));	// it's a bit too big for our scene, so scale it down and reflect
 	shader->setUniform("modelMatrix", model);
-
+	shader->setUniform("normalMatrix", glm::mat3(glm::transpose(glm::inverse(model))));
 	for (GLuint i = 0; i < this->meshes.size(); i++)
 		this->meshes[i].draw(shader);
 }
@@ -175,6 +174,7 @@ GLint Model::loadTexture(const char* filename)
 		return false;
 
 	glGenTextures(1, &gl_texID);
+	glBindTexture(GL_TEXTURE_2D,gl_texID);
 	glTexImage2D(GL_TEXTURE_2D, level, internal_format, width, height,
 		border, image_format, GL_UNSIGNED_BYTE, bits);
 	glGenerateMipmap(GL_TEXTURE_2D);

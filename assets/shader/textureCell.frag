@@ -99,6 +99,7 @@ void main() {
 	float fogAmount = fogFunction(fogDistance,100,450);
 	
 	color = mix(color, fogColor,fogAmount);
+		//color=vec4(vert.uv.x,1,1,1);
 	//color = vec4(vec3(0.5*floor(2*pow(max(0, dot(r, v)), alpha))),1);
 }
 

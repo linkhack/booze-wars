@@ -209,6 +209,7 @@ int main(int argc, char** argv)
 		std::shared_ptr<Texture> saloonTexture = std::make_shared<Texture>("objects/saloon.mtl");
 		std::shared_ptr<Texture> woodTexture = std::make_shared<Texture>("wood_texture.dds");
 		std::shared_ptr<Texture> mapTexture = std::make_shared<Texture>();
+		mapTexture->loadImage("map.png");
 
 		// instancing ModelFactory and loading Models
 		ModelFactory::Instance();
@@ -410,7 +411,7 @@ int main(int argc, char** argv)
 
 			world.zeichne(textureShader); //needs shadow
 
-			mapTexture->loadImage("map.png");
+			//mapTexture->loadImage("map.png");
 			map.draw();
 			if (camera.getGroundIntersection() != glm::vec3(0, 1, 0)) {
 				cameraPlacement.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection()+glm::vec3(0.0f,-0.01f,0.0f)));

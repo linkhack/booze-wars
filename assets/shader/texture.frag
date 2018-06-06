@@ -101,8 +101,8 @@ void main() {
 	float fogDistance = gl_FragCoord.z/gl_FragCoord.w;
 	float fogAmount = fogFunction(fogDistance,100,450);
 	
-	color = mix(color, fogColor,fogAmount);
-	//color=vec4(vec3(closestD),1);
+	//color = mix(color, fogColor,fogAmount);
+	color=vec4(1,1,1,1);
 	//color = vec4(vec3(shadowDir),1);
 }
 
