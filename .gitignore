@@ -262,4 +262,4 @@ __pycache__/
 *.ipch
 
 # except asset folder
-!assets/
+!assets/objects/*.obj
