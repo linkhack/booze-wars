@@ -51,30 +51,31 @@ void Mesh::setupMesh()
 
 void Mesh::draw(Shader& shader)
 {
-	GLuint diffuseNr = 1;
-	GLuint specularNr = 1;
+	GLuint diffuseNr = 0;
+	GLuint specularNr = 5;
+	/*
 	GLint backgroundlocation = glGetUniformLocation(shader.getID(), "colorTexture");
-	GLint location = glGetUniformLocation(shader.getID(), "colorTexture");
+	GLint specularlocation = glGetUniformLocation(shader.getID(), "colorTexture");
 	GLint lightColorLoc = glGetUniformLocation(shader.getID(), "lightColor");
 	GLint objectColorLoc = glGetUniformLocation(shader.getID(), "objectColor");
-	glUniform1i(location, 1);
-	glUniform1i(backgroundlocation, 1);
-	glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f);
-	glUniform3f(objectColorLoc, 1.0f, 0.5f, 0.31f);
+	*/
 	for (GLuint i = 0; i < this->textures.size(); i++)
 	{
-		glActiveTexture(GL_TEXTURE0 + i);
-		std::stringstream ss;
-		std::string number;
+		GLuint textureUnit;
 		std::string name = this->textures[i].type;
+
 		if (name == "texture_diffuse")
-			ss << diffuseNr++;
+		{
+			shader.setUniform("diffuseTexture", diffuseNr);
+			textureUnit = diffuseNr;
+		}
 		else if (name == "texture_specular")
-			ss << specularNr++;
-		number = ss.str();
+		{
+			shader.setUniform("specularTexture", specularNr);
+			textureUnit = specularNr;
+		}
 		GLuint textid = textures[i].id;
-		glUniform1f(glGetUniformLocation(shader.getID(), ("material." + name + number).c_str()), i);
-		//glUniform1f(glGetUniformLocation(shader.getID(), (name+number).c_str()), i);
+		glActiveTexture(GL_TEXTURE0 + textureUnit);
 		glBindTexture(GL_TEXTURE_2D, textid);
 	}
 
