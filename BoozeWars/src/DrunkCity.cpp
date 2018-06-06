@@ -35,7 +35,7 @@ void DrunkCity::drawShadows(Shader& shader) {
 		(*it)->drawShadows(shader);
 	}
 }
-void DrunkCity::zeichne(Shader shader) 
+void DrunkCity::zeichne(Shader& shader) 
 {
 	for (std::list<Enemy*>::iterator it = enemiesAlive.begin(); it != enemiesAlive.end(); ++it)
 	{

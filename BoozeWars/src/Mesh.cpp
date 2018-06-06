@@ -49,7 +49,7 @@ void Mesh::setupMesh()
 	glDeleteBuffers(1, &EBO);
 }
 
-void Mesh::draw(Shader shader)
+void Mesh::draw(Shader& shader)
 {
 	GLuint diffuseNr = 1;
 	GLuint specularNr = 1;

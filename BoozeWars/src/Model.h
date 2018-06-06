@@ -42,7 +42,7 @@ protected:
 public:
 	Model();
 	Model(std::string path);
-	void draw(Shader shader);
+	void draw(Shader& shader);
 	GLint loadTexture(const char* filename);
 
 	//void Move(GLfloat x, GLfloat y);
