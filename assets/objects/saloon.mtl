@@ -12,5 +12,5 @@ newmtl 06___Default
 	Kd 0.5882 0.5882 0.5882
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka G:\Users\Ant\Desktop\saloon_defuse.jpg
-	map_Kd G:\Users\Ant\Desktop\saloon_defuse.jpg
+	map_Ka saloon_defuse.jpg
+	map_Kd saloon_defuse.jpg

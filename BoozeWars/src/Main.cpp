@@ -201,7 +201,7 @@ int main(int argc, char** argv)
 		std::shared_ptr<Shader> infiniGreen = std::make_shared<Shader>("texture.vert", "infiniGreen.frag");
 		std::shared_ptr<Shader> translucent = std::make_shared<Shader>("texture.vert", "translucentRed.frag");
 		Shader shadowShader = Shader("shadowShader.vert", "shadowShader.frag");
-		Shader objectShader = Shader("texture.vert", "textureCell.frag");
+		Shader objectShader = Shader("texture.vert", "texture.frag");
 		//Textures
 		std::shared_ptr<Texture> sunTexture = std::make_shared<Texture>("sun.dds");
 		std::shared_ptr<Texture> moonTexture = std::make_shared<Texture>("moon.dds");
