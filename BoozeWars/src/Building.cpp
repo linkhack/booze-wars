@@ -60,7 +60,7 @@ void Building::drawShadows(Shader & shader)
 	//model->drawShadow(shader);
 }
 
-void Building::draw(Shader& shader)
+void Building::draw(Shader& shader, myCamera& camera)
 {
-	model->draw(shader);
+	model->draw(shader, camera);
 }

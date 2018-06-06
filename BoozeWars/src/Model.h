@@ -22,6 +22,8 @@
 
 #include "Shader.h"
 
+#include "myCamera.h"
+
 class Model
 {
 private:
@@ -42,7 +44,7 @@ protected:
 public:
 	Model();
 	Model(std::string path);
-	void draw(Shader& shader);
+	void draw(Shader& shader, myCamera& camera);
 	GLint loadTexture(const char* filename);
 
 	//void Move(GLfloat x, GLfloat y);

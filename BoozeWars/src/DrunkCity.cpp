@@ -35,8 +35,9 @@ void DrunkCity::drawShadows(Shader& shader) {
 		(*it)->drawShadows(shader);
 	}
 }
-void DrunkCity::zeichne(Shader& shader) 
+void DrunkCity::zeichne(Shader& shader, myCamera& camera) 
 {
+
 	for (std::list<Enemy*>::iterator it = enemiesAlive.begin(); it != enemiesAlive.end(); ++it)
 	{
 		Enemy* iteratingEnemy = *it;
@@ -46,7 +47,7 @@ void DrunkCity::zeichne(Shader& shader)
 	for (std::list<Building*>::iterator it = buildings.begin(); it != buildings.end(); ++it)
 	{
 		Building* iteratingBuilding = *it;
-		iteratingBuilding->draw(shader);
+		iteratingBuilding->draw(shader, camera);
 	}
 }
 
