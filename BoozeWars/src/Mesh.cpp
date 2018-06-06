@@ -53,6 +53,7 @@ void Mesh::draw(std::shared_ptr<Shader> shader)
 {
 	GLuint diffuseNr = 0;
 	GLuint specularNr = 5;
+	shader->setUniform("materialCoefficients", glm::vec3(0.5f, 0.5f, 0.5f));
 	/*
 	GLint backgroundlocation = glGetUniformLocation(shader.getID(), "colorTexture");
 	GLint specularlocation = glGetUniformLocation(shader.getID(), "colorTexture");
@@ -61,22 +62,22 @@ void Mesh::draw(std::shared_ptr<Shader> shader)
 	*/
 	for (GLuint i = 0; i < this->textures.size(); i++)
 	{
-		GLuint textureUnit;
 		std::string name = this->textures[i].type;
+		GLuint textid = textures[i].id;
 
 		if (name == "texture_diffuse")
 		{
+			glActiveTexture(GL_TEXTURE0 + diffuseNr);
+			glBindTexture(GL_TEXTURE_2D, textid);
 			shader->setUniform("diffuseTexture", diffuseNr);
-			textureUnit = diffuseNr;
 		}
 		else if (name == "texture_specular")
 		{
-			shader->setUniform("specularTexture", specularNr);
-			textureUnit = specularNr;
+
+			//shader->setUniform("specularTexture", specularNr);
+			//textureUnit = specularNr;
 		}
-		GLuint textid = textures[i].id;
-		glActiveTexture(GL_TEXTURE0 + textureUnit);
-		glBindTexture(GL_TEXTURE_2D, textid);
+
 	}
 
 	glGenerateMipmap(GL_TEXTURE_2D);

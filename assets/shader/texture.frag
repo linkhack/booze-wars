@@ -7,6 +7,7 @@
 
 uniform sampler2D diffuseTexture;
 uniform sampler2DShadow shadowMap;
+//uniform sampler2D specularTexture;
 
 in VertexData {
 	vec3 position_world;

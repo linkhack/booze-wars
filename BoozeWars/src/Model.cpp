@@ -133,10 +133,12 @@ std::vector<Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType 
 
 void Model::draw(std::shared_ptr<Shader> shader) {
 	// render the loaded model
-	//glm::mat4 model;
-	//model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f)); // translate it down so it's at the center of the scene
-	//model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));	// it's a bit too big for our scene, so scale it down
-	//shader.setUniform("model", model);
+	shader->use();
+
+	glm::mat4 model;
+	model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f)); // translate it down so it's at the center of the scene
+	model = glm::scale(model, glm::vec3(0.2f, -0.2f, 0.2f));	// it's a bit too big for our scene, so scale it down and reflect
+	shader->setUniform("modelMatrix", model);
 
 	for (GLuint i = 0; i < this->meshes.size(); i++)
 		this->meshes[i].draw(shader);
