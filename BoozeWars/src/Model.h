@@ -44,7 +44,7 @@ protected:
 public:
 	Model();
 	Model(std::string path);
-	void draw(std::shared_ptr<Shader> shader);
+	void draw(std::shared_ptr<Shader> shader, glm::mat4 matrix);
 	GLint loadTexture(const char* filename);
 
 	//void Move(GLfloat x, GLfloat y);

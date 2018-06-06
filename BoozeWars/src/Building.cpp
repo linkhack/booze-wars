@@ -62,5 +62,9 @@ void Building::drawShadows(Shader & shader)
 
 void Building::draw(std::shared_ptr<Shader> shader)
 {
-	model->draw(shader);
+	
+	glm::mat4 matrix = glm::mat4(1.0f);
+	matrix[3][0] = this->x;
+	matrix[3][2] = this->z;
+	model->draw(shader, matrix);
 }
