@@ -51,7 +51,6 @@ void Mesh::setupMesh()
 
 void Mesh::draw(Shader& shader)
 {
-	shader.use();
 	GLuint diffuseNr = 1;
 	GLuint specularNr = 1;
 	GLint backgroundlocation = glGetUniformLocation(shader.getID(), "colorTexture");
