@@ -11,7 +11,9 @@ Building::Building()
 Building::Building(float x, float z)
 {
 	this->damage = 45;
-	glm::mat4 position = glm::translate(glm::mat4(1.0f), glm::vec3(x, -15.0f, z));
+	glm::mat4 position = glm::translate(glm::mat4(1.0f), glm::vec3(x, -1.0f, z));
+	glm::mat4 randomRotation = glm::rotate(glm::mat4(1.0f), (rand() % 4)*glm::pi<float>() / 2, glm::vec3(0, 1, 0));
+	modelMatrix = position * randomRotation;
 	this->x = position[3][0];
 	this->z = position[3][2];
 	ModelFactory* factory = ModelFactory::Instance();
@@ -62,9 +64,5 @@ void Building::drawShadows(Shader & shader)
 
 void Building::draw(std::shared_ptr<Shader> shader)
 {	
-	glm::mat4 matrix = glm::mat4(1.0f);
-	matrix[3][0] = this->x;
-	matrix[3][1] = -1.0f;
-	matrix[3][2] = this->z;
-	model->draw(shader, matrix);
+	model->draw(shader, modelMatrix);
 }

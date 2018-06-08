@@ -54,7 +54,7 @@ void Mesh::draw(std::shared_ptr<Shader> shader)
 	shader->use();
 	int diffuseNr = 0;
 	GLuint specularNr = 5;
-	shader->setUniform("materialCoefficients", glm::vec3(0.5f, 0.5f, 0.5f));
+	shader->setUniform("materialCoefficients", glm::vec3(0.2f, 0.8f, 0.1f));
 	shader->setUniform("specularAlpha", 20.0f);
 	/*
 	GLint backgroundlocation = glGetUniformLocation(shader.getID(), "colorTexture");

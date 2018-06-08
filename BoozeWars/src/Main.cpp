@@ -207,6 +207,7 @@ int main(int argc, char** argv)
 		std::shared_ptr<Texture> moonTexture = std::make_shared<Texture>("moon.dds");
 		std::shared_ptr<Texture> earthTexture = std::make_shared<Texture>("earth.dds");
 		std::shared_ptr<Texture> saloonTexture = std::make_shared<Texture>("objects/saloon.mtl");
+		std::shared_ptr<Texture> brickTexture = std::make_shared<Texture>("bricks_diffuse.dds");
 		std::shared_ptr<Texture> woodTexture = std::make_shared<Texture>("wood_texture.dds");
 		std::shared_ptr<Texture> mapTexture = std::make_shared<Texture>();
 		mapTexture->loadImage("map.png");
@@ -218,7 +219,7 @@ int main(int argc, char** argv)
 		std::shared_ptr<Material> sunMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.1f, 0.9f, 0.4f), 8.0f, sunTexture);
 		std::shared_ptr<Material> earthMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.05f, 0.9f, 0.5f), 5.0f, earthTexture);
 		std::shared_ptr<Material> moonMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.1f, 0.9f, 0.0f), 1.0f, woodTexture);
-		std::shared_ptr<Material> brickMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.2f, 0.8f, 0.5f), 5.0f, saloonTexture);
+		std::shared_ptr<Material> brickMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.2f, 0.8f, 0.5f), 5.0f, brickTexture);
 		std::shared_ptr<Material> infiniGreenMat = std::make_shared<Material>(infiniGreen, glm::vec3(0.5f, 0.5f, 0.5f), 3.0f);
 		std::shared_ptr<Material> translucentRed = std::make_shared<Material>(translucent, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f);
 		std::shared_ptr<Material> mapMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.1f, 0.9f, 0.0f), 50.0f, mapTexture);

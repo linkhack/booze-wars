@@ -35,7 +35,7 @@ public:
 	float getDamage();
 	float getDistanceSquared(const Enemy& otherEnemy );
 	
-	PxVec3 getDesiredDirection();
+	virtual PxVec3 getDesiredDirection();
 	PxVec3 getDirectionVector(const Enemy& otherEnemy);
 	void hit(float damage);
 
@@ -45,7 +45,7 @@ public:
 	void draw();
 	void selfDestruct(); // delete model from world
 
-	PxRigidDynamic* createPhysics(PxPhysics* physicsSDK);
+	virtual PxRigidDynamic* createPhysics(PxPhysics* physicsSDK);
 	void applyForce(PxVec3 force);
 	void updatePosition();
 };

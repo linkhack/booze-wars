@@ -14,7 +14,7 @@ ModelFactory* ModelFactory::Instance()
 
 ModelFactory::ModelFactory()
 {
-	this->defaultBuilding = new Model("assets/objects/saloon.obj");
+	this->defaultBuilding = new Model("assets/objects/saloon2.obj");
 }
 
 ModelFactory::~ModelFactory()

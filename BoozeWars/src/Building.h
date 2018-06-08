@@ -3,7 +3,7 @@
 #include "Enemy.h"
 #include "Model.h"
 #include "ModelFactory.h"
-
+#include <cstdlib>
 class Building
 {
 private:
@@ -11,7 +11,7 @@ private:
 	int x;
 	int z;
 	float damage;//demage per second
-
+	glm::mat4 modelMatrix;
 public:
 	Building();
 	Building::Building(float x, float z);

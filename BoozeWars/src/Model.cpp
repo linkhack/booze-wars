@@ -13,7 +13,7 @@ Model::Model(std::string path)
 void Model::loadModel(std::string path) {
 
 	Assimp::Importer importer;
-	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate);
 
 	if (!scene || scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
@@ -136,7 +136,7 @@ void Model::draw(std::shared_ptr<Shader> shader, glm::mat4 matrix) {
 	model = matrix;
 
 	//model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f)); // translate it down so it's at the center of the scene
-	model = glm::scale(model, glm::vec3(0.2f, -0.2f, 0.2f));	// it's a bit too big for our scene, so scale it down and reflect
+	model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));	// it's a bit too big for our scene, so scale it down and reflect
 	shader->setUniform("modelMatrix", model);
 	shader->setUniform("normalMatrix", glm::mat3(glm::transpose(glm::inverse(model))));
 	for (GLuint i = 0; i < this->meshes.size(); i++)
