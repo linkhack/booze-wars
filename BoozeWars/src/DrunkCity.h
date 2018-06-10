@@ -43,7 +43,7 @@ public:
 
 	int getHP();
 	void drawShadows(Shader & shader);
-	void zeichne(Shader* shader);
+	void zeichne(Shader* shader, float time);
 	void fight(float dT);
 	void walk();
 	void calculateForces();

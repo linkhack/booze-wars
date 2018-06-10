@@ -35,7 +35,7 @@ void DrunkCity::drawShadows(Shader& shader) {
 		(*it)->drawShadows(shader);
 	}
 }
-void DrunkCity::zeichne(Shader* shader)
+void DrunkCity::zeichne(Shader* shader, float time)
 {
 
 	for (std::list<Enemy*>::iterator it = enemiesAlive.begin(); it != enemiesAlive.end(); ++it)
@@ -47,7 +47,7 @@ void DrunkCity::zeichne(Shader* shader)
 	for (std::list<Building*>::iterator it = buildings.begin(); it != buildings.end(); ++it)
 	{
 		Building* iteratingBuilding = *it;
-		iteratingBuilding->draw(shader);
+		iteratingBuilding->draw(shader, time);
 	}
 }
 
@@ -113,7 +113,7 @@ void DrunkCity::fight(float dT)
 	for (std::list<Building*>::iterator it = buildings.begin(); it != buildings.end(); ++it)
 	{
 		Building* building = *it;
-		Enemy* enemy = getNearestEnemy(building);
+		/*Enemy* enemy = getNearestEnemy(building);
 		if(enemy!=nullptr)
 		{
 			enemy->hit(building->getDamage()*dT);
@@ -125,6 +125,9 @@ void DrunkCity::fight(float dT)
 				enemy = NULL;
 			}
 		}
+		*/
+
+		building->shoot(dT);
 	}
 }
 

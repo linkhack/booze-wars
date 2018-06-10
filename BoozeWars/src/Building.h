@@ -1,6 +1,7 @@
 #pragma once
 #include "Geometry.h"
 #include "Enemy.h"
+#include "Weapon.h"
 #include "Model.h"
 #include "ModelFactory.h"
 #include <cstdlib>
@@ -12,6 +13,9 @@ private:
 	int z;
 	float damage;//demage per second
 	glm::mat4 modelMatrix;
+	std::list<Weapon*> activeWeapons;
+	float shootIntervall;
+	float time;
 public:
 	Building();
 	Building::Building(float x, float z);
@@ -29,6 +33,7 @@ public:
 	float getDamage();
 
 	void drawShadows(Shader& shader);
-	void draw(Shader* shader);
+	void draw(Shader* shader, float time);
+	void shoot(float time);
 };
 

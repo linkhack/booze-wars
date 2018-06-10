@@ -18,6 +18,7 @@
     <ClCompile Include="src\Street.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\Wave.cpp" />
+    <ClCompile Include="src\Weapon.cpp" />
     <ClInclude Include="src\JumpingEnemy.h" />
     <ClInclude Include="src\ModelFactory.h" />
     <ClInclude Include="src\Model.h" />
@@ -47,6 +48,7 @@
     <ClInclude Include="src\Utils.h" />
     <ClInclude Include="src\Street.h" />
     <ClInclude Include="src\Wave.h" />
+    <ClInclude Include="src\Weapon.h" />
   </ItemGroup>
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">

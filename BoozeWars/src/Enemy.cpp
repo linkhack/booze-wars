@@ -36,8 +36,8 @@ void Enemy::drawShadows(Shader& shader)
 	//model->drawShadow(shader, getModelMatrix());
 }
 
-void Enemy::draw(Shader* shader) {
-
+void Enemy::draw(Shader* shader) 
+{
 	model->draw(shader, getModelMatrix());
 }
 

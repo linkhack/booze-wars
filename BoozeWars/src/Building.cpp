@@ -19,6 +19,8 @@ Building::Building(float x, float z)
 	this->z = position[3][2];
 	ModelFactory* factory = ModelFactory::Instance();
 	model = factory->getModel(ModelFactory::DEFAULT_BUILDING);
+	this->shootIntervall = 3000.0;
+	this->time = 0.0;
 }
 
 
@@ -63,7 +65,35 @@ void Building::drawShadows(Shader & shader)
 	//model->drawShadow(shader);
 }
 
-void Building::draw(Shader* shader)
+void Building::draw(Shader* shader, float time)
 {	
 	model->draw(shader, modelMatrix);
+	for (std::list<Weapon*>::iterator it = activeWeapons.begin(); it != activeWeapons.end(); ++it)
+	{
+		Weapon* weapon = *it;
+		if (weapon->draw(shader, time)) {
+			weapon->implode();
+			it = activeWeapons.erase(it);
+			delete weapon;
+			weapon = NULL;
+		}
+	}
+}
+
+void Building::shoot(float time) {
+	if (this->time == 0.0) {
+		Weapon* weapon1 = new Weapon(modelMatrix, 0);
+		activeWeapons.push_back(weapon1);
+		Weapon* weapon2 = new Weapon(modelMatrix, 100);
+		activeWeapons.push_back(weapon2);
+		Weapon* weapon3 = new Weapon(modelMatrix, 200);
+		activeWeapons.push_back(weapon3);
+		this->time = time;
+	}
+	else {
+		this->time += time;
+		if (this->time > this->shootIntervall) {
+			this->time = 0.0;
+		}
+	}
 }
