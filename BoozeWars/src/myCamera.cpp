@@ -6,9 +6,9 @@
 myCamera::myCamera(float fov, float aspect, float near, float far)
 {
 
-	projMatrix = glm::perspective(-glm::radians(fov), aspect, near, far);
+	projMatrix = glm::perspective(glm::radians(fov), aspect, near, far);
 	movementSpeed = 50;
-	position = glm::vec3(0.0f, -10.0f, 150.0f);
+	position = glm::vec3(0.0f, 10.0f, 150.0f);
 	rotationMatrix = glm::mat4(1.0f);
 	yaw = glm::radians(90.0f);
 	pitch  =0;
@@ -84,20 +84,20 @@ void myCamera::updatePosition(int key, float dT)
 		position += movementSpeed * lookDirection*dT;
 		break;
 	case GLFW_KEY_A:
-		position += movementSpeed * orthoDirection*dT;
+		position -= movementSpeed * orthoDirection*dT;
 		break;
 	case GLFW_KEY_S:
 		position -= movementSpeed * lookDirection*dT;
 		break;
 	case GLFW_KEY_D:
-		position -= movementSpeed * orthoDirection*dT;
+		position += movementSpeed * orthoDirection*dT;
 		break;
 	case GLFW_KEY_R:
-		position.y -= movementSpeed * dT;
+		position.y += movementSpeed * dT;
 		break;
 	case GLFW_KEY_F:
-		if (position.y + movementSpeed * dT <= -1) {
-			position.y += movementSpeed * dT;
+		if (position.y - movementSpeed * dT >= 1) {
+			position.y -= movementSpeed * dT;
 		}
 		break;
 	default:
@@ -111,7 +111,7 @@ void myCamera::updateDirection(int x, int y)
 	int dx = x - oldX;
 	int dy = y - oldY;
 
-	yaw -= 0.001*dx;
+	yaw += 0.001*dx;
 	pitch += 0.001*dy;
 	if (pitch >= glm::radians(88.0f)) {
 		pitch = glm::radians(88.0f);
