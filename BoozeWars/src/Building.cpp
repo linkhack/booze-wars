@@ -13,7 +13,7 @@ Building::Building(float x, float z)
 	this->damage = 45;
 	glm::mat4 position = glm::translate(glm::mat4(1.0f), glm::vec3(x, 0.0f, z));
 	glm::mat4 randomRotation = glm::rotate(glm::mat4(1.0f), (rand() % 4)*glm::pi<float>() / 2, glm::vec3(0, 1, 0));
-	glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.2f, -0.2f, 0.2f));
+	glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.2f, 0.2f, 0.2f));
 	modelMatrix = position * randomRotation*scale;
 	this->x = position[3][0];
 	this->z = position[3][2];

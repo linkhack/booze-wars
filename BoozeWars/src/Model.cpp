@@ -13,7 +13,7 @@ Model::Model(std::string path)
 void Model::loadModel(std::string path) {
 
 	Assimp::Importer importer;
-	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipWindingOrder);
+	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate);
 
 	if (!scene || scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{

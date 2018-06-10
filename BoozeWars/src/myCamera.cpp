@@ -131,7 +131,7 @@ void myCamera::updateDirection(int x, int y)
 */
 glm::vec3 myCamera::getGroundIntersection()
 {
-	glm::vec3 lookDirecrtion = myCamera::getLookDirection();
+	glm::vec3 lookDirecrtion = -myCamera::getLookDirection();
 	glm::vec3 position = myCamera::getPosition();
 	float yChange = lookDirecrtion.y;
 	float yPosition = position.y;

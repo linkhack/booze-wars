@@ -29,7 +29,7 @@ Enemy::~Enemy()
 
 glm::mat4 Enemy::getModelMatrix()
 {
-	return glm::translate(glm::mat4(1.0f), glm::vec3(x, -z+1, y))*glm::scale(glm::mat4(1.0f), glm::vec3(10, -10, 10));
+	return glm::translate(glm::mat4(1.0f), glm::vec3(x, z-1, y))*glm::scale(glm::mat4(1.0f), glm::vec3(10, 10, 10));
 }
 void Enemy::drawShadows(Shader& shader)
 {

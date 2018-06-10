@@ -261,10 +261,10 @@ int main(int argc, char** argv)
 		directionalLightShadow.init(1024, 1024);
 
 		//Create School building
-		Geometry school = Geometry(glm::translate(glm::mat4(1.0f), glm::vec3(340, -15, 240)),
+		Geometry school = Geometry(glm::translate(glm::mat4(1.0f), glm::vec3(340, 15, 240)),
 									Geometry::createCubeGeometry(45, 30, 70),
 									brickMaterial);
-		school.addChild(std::make_unique<Geometry>(glm::translate(glm::mat4(1.0f), glm::vec3(-5, -5, 40)), 
+		school.addChild(std::make_unique<Geometry>(glm::translate(glm::mat4(1.0f), glm::vec3(-5, 5, 40)), 
 													Geometry::createCylinderGeometry(14, 45, 10),
 													brickMaterial));
 
@@ -278,7 +278,7 @@ int main(int argc, char** argv)
 		// Initialize camera
 		myCamera camera(fov, float(window_width) / float(window_height), nearZ, farZ);
 		PointLight pointL(glm::vec3(0, 0, 0), glm::vec3(0), glm::vec3(100, 100, 100));
-		DirectionalLight dirL(glm::vec3(1.0f,1.0f,1.0f), glm::vec3(4.0f,4.0f,4.0f));
+		DirectionalLight dirL(glm::vec3(1.0f,1.0f,1.0f), -glm::vec3(4.0f,4.0f,4.0f));
 		
 		//Matrices for non moving lights for shadow map
 		glm::mat4 dirLMatrix = glm::ortho(-300.0f, 300.0f, -200.0f, 200.0f,-300.0f,300.0f);
@@ -407,14 +407,14 @@ int main(int argc, char** argv)
 			glViewport(0, 0, window_width, window_height);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			directionalLightShadow.bindForReading();
-			ground.draw(glm::translate(glm::mat4(1.0f),glm::vec3(0.0f,0.1f,0.0f)));
+			ground.draw(glm::translate(glm::mat4(1.0f),glm::vec3(0.0f,-0.1f,0.0f)));
 			world.zeichne(textureShader.get()); //needs shadow
 
 			//mapTexture->loadImage("map.png");
 			map.draw();
 			if (camera.getGroundIntersection() != glm::vec3(0, 1, 0)) {
-				cameraPlacement.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection()+glm::vec3(0.0f,-0.01f,0.0f)));
-				cameraCircle.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection() + glm::vec3(0.0f, -0.01f, 0.0f)));
+				cameraPlacement.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection()+glm::vec3(0.0f,0.01f,0.0f)));
+				cameraCircle.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection() + glm::vec3(0.0f, 0.01f, 0.0f)));
 			}
 			school.draw(); 
 			worldModel.draw();
