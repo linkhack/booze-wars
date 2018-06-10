@@ -80,8 +80,8 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
 	for (GLuint i = 0; i < mesh->mNumFaces; i++)
 	{
 		aiFace face = mesh->mFaces[i];
-		for (GLuint j = 1; j <= face.mNumIndices; j++)
-			indices.push_back(face.mIndices[face.mNumIndices-j]);
+		for (GLuint j = 0; j < face.mNumIndices; j++)
+			indices.push_back(face.mIndices[j]);
 	}
 
 	if (mesh->mMaterialIndex >= 0)

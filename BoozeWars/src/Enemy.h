@@ -40,6 +40,7 @@ public:
 	float getDistanceSquared(const Enemy& otherEnemy );
 
 	virtual PxVec3 getDesiredDirection();
+
 	PxVec3 getDirectionVector(const Enemy& otherEnemy);
 	void hit(float damage);
 
@@ -51,6 +52,7 @@ public:
 
 	virtual PxRigidDynamic* createPhysics(PxPhysics* physicsSDK);
 	void applyForce(PxVec3 force);
+	void applyDrivingForce();
 	void updatePosition();
 };
 

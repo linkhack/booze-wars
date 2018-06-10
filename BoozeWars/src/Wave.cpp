@@ -17,7 +17,7 @@ Wave::~Wave()
 
 bool Wave::waveIsFinished() 
 {
-	return waveParts.empty();
+	return waveParts.empty()&&currentEnemies==0;
 }
 
 bool Wave::spawnEnemy(float dT)

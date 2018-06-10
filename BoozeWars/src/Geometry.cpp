@@ -432,10 +432,10 @@ GeometryData Geometry::createInfinitePlane()
 	data.positions =
 	{
 		glm::vec4(0.0f, 0.0f ,0.0f, 1.0f),
-		glm::vec4(1.0f,0.0f,0.0f,0.0f),
 		glm::vec4(0.0f,0.0f,1.0f,0.0f),
-		glm::vec4(-1.0f,0.0f,0.0f,0.0f),
-		glm::vec4(0.0f, 0.0f,-1.0f, 0.0f)
+		glm::vec4(1.0f,0.0f,0.0f,0.0f),
+		glm::vec4(0.0f, 0.0f,-1.0f, 0.0f),
+		glm::vec4(-1.0f,0.0f,0.0f,0.0f)
 	};
 
 	data.normals =
@@ -480,10 +480,10 @@ GeometryData Geometry::createRectangle(float width, float height)
 
 	data.normals =
 	{
-		glm::vec3(0.0f,-1.0f,0.0f),
-		glm::vec3(0.0f,-1.0f,0.0f),
-		glm::vec3(0.0f,-1.0f,0.0f),
-		glm::vec3(0.0f,-1.0f,0.0f)
+		glm::vec3(0.0f,1.0f,0.0f),
+		glm::vec3(0.0f,1.0f,0.0f),
+		glm::vec3(0.0f,1.0f,0.0f),
+		glm::vec3(0.0f,1.0f,0.0f)
 	};
 
 	data.uvs =
@@ -496,8 +496,8 @@ GeometryData Geometry::createRectangle(float width, float height)
 
 	data.indices =
 	{
-		0,3,2,
-		2,1,0
+		0, 1, 2,
+		2, 3, 0
 	};
 	return std::move(data);
 }
