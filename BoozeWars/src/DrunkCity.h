@@ -43,14 +43,14 @@ public:
 
 	int getHP();
 	void drawShadows(Shader & shader);
-	void zeichne(std::shared_ptr<Shader> shader);
+	void zeichne(Shader* shader);
 	void fight(float dT);
 	void walk();
 	void calculateForces();
 	void placeBuilding(float x, float z);
 	bool hasMinOneBuildings();
 	int getBuildingsLeft();
-	void addEnemy(std::shared_ptr<Geometry> model);
+	void addEnemy(const int modelNr=ModelFactory::DEFAULT_ENEMY);
 	PxScene* initPhysics(PxPhysics* gPhysicsSDK);
 
 };

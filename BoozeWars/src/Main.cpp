@@ -290,7 +290,7 @@ int main(int argc, char** argv)
 
 
 		//Test or indicator for start position
-		world.addEnemy(enemyModel);
+		world.addEnemy(ModelFactory::DEFAULT_BUILDING);
 
 
 		// Render loop
@@ -368,7 +368,7 @@ int main(int argc, char** argv)
 				}
 				if (wave.spawnEnemy(dt))
 				{
-					world.addEnemy(enemyModel);
+					world.addEnemy(ModelFactory::DEFAULT_ENEMY);
 				}
 				try {
 					world.fight(dt);
@@ -395,7 +395,7 @@ int main(int argc, char** argv)
 			shadowShader.use();
 			shadowShader.setUniform("viewProjMatrix", dirLProjView);
 			glCullFace(GL_FRONT);
-			world.drawShadows(shadowShader);
+			world.zeichne(&shadowShader);
 			school.drawShadow(shadowShader);
 			
 			glCullFace(GL_BACK);
@@ -410,7 +410,7 @@ int main(int argc, char** argv)
 			ground.draw(glm::translate(glm::mat4(1.0f),glm::vec3(0.0f,0.1f,0.0f)));
 			directionalLightShadow.bindForReading();
 
-			world.zeichne(textureShader); //needs shadow
+			world.zeichne(textureShader.get()); //needs shadow
 
 			//mapTexture->loadImage("map.png");
 			map.draw();

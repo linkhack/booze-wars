@@ -62,7 +62,7 @@ void Building::drawShadows(Shader & shader)
 	//model->drawShadow(shader);
 }
 
-void Building::draw(std::shared_ptr<Shader> shader)
+void Building::draw(Shader* shader)
 {	
 	model->draw(shader, modelMatrix);
 }

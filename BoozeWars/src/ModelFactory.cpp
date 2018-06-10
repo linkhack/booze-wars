@@ -15,16 +15,24 @@ ModelFactory* ModelFactory::Instance()
 ModelFactory::ModelFactory()
 {
 	this->defaultBuilding = new Model("assets/objects/saloon2.obj");
+	this->defaultEnemy = new Model("assets/objects/jarracerbezaLow.obj");
 }
 
 ModelFactory::~ModelFactory()
 {
 }
 
-Model* ModelFactory::getModel(int model) {
+Model* ModelFactory::getModel(const int model) {
 	switch (model) {
 	case DEFAULT_BUILDING:
 		return this->defaultBuilding;
+		break;
+	case DEFAULT_ENEMY:
+		return this->defaultEnemy;
+		break;
+	default:
+		std::cout << "Model not founnd" << std::endl;
+		return nullptr;
 		break;
 	}
 }

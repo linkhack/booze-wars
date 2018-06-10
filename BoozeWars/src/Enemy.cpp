@@ -5,14 +5,16 @@ Enemy::Enemy()
 
 }
 
-Enemy::Enemy(std::shared_ptr<Street> street, std::shared_ptr<Geometry> model)
+Enemy::Enemy(std::shared_ptr<Street> street, const int modelNr)
 {
 	this->model = model;
 	glm::mat2 part = street->getPart1();
 	x = part[0][0];
-	z = 3;
+	z = 0;
 	y = part[0][1]+ 0.5*(street->getStreetWidth());
 	this->street = street;
+	ModelFactory* factory = ModelFactory::Instance();
+	model = factory->getModel(modelNr);
 	movementspeed = 20.0f;
 	hp = 100;
 	damageTeens = 5;
@@ -27,17 +29,16 @@ Enemy::~Enemy()
 
 glm::mat4 Enemy::getModelMatrix()
 {
-	return glm::translate(glm::mat4(1.0f), glm::vec3(x, -z, y));
+	return glm::translate(glm::mat4(1.0f), glm::vec3(x, -z, y))*glm::scale(glm::mat4(1.0f), glm::vec3(10, -10, 10));
 }
-
-void Enemy::drawShadows(Shader & shader)
+void Enemy::drawShadows(Shader& shader)
 {
-	model->drawShadow(shader, getModelMatrix());
+	//model->drawShadow(shader, getModelMatrix());
 }
 
-void Enemy::draw() {
+void Enemy::draw(Shader* shader) {
 
-	model->draw(getModelMatrix());
+	model->draw(shader, getModelMatrix());
 }
 
 float Enemy::getX() 

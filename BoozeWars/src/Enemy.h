@@ -2,12 +2,14 @@
 #include "Geometry.h"
 #include "Street.h"
 #include <PhysX/PxPhysicsAPI.h>
+#include "Model.h"
+#include "ModelFactory.h"
 
 using namespace physx;
 class Enemy
 {
-private:
-	std::shared_ptr<Geometry> model;
+protected:
+	Model* model;
 	float x;
 	float y;
 	float z;
@@ -20,9 +22,11 @@ private:
 	
 	PxRigidDynamic* physxActor;
 
+
+
 public:
 	Enemy();
-	Enemy(std::shared_ptr<Street> Street,std::shared_ptr<Geometry> model);
+	Enemy(std::shared_ptr<Street> Street,const int modelNr);
 	~Enemy();
 
 	Enemy(Enemy&&) = default;
@@ -34,7 +38,7 @@ public:
 	float getHP();
 	float getDamage();
 	float getDistanceSquared(const Enemy& otherEnemy );
-	
+
 	virtual PxVec3 getDesiredDirection();
 	PxVec3 getDirectionVector(const Enemy& otherEnemy);
 	void hit(float damage);
@@ -42,7 +46,7 @@ public:
 	glm::mat4 getModelMatrix();
 
 	void drawShadows(Shader& shader);
-	void draw();
+	void draw(Shader* shader);
 	void selfDestruct(); // delete model from world
 
 	virtual PxRigidDynamic* createPhysics(PxPhysics* physicsSDK);

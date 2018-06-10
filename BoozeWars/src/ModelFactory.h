@@ -8,6 +8,7 @@ private:
 	static ModelFactory* _instance;
 
 	Model* defaultBuilding;
+	Model* defaultEnemy;
 
 	ModelFactory();
 	~ModelFactory();
@@ -16,8 +17,9 @@ private:
 
 public:
 	static const int ModelFactory::DEFAULT_BUILDING = 1;
+	static const int ModelFactory::DEFAULT_ENEMY = 2;
 
-	Model* getModel(int model);
+	Model* getModel(const int model);
 
 	static ModelFactory* Instance();
 

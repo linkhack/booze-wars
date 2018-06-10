@@ -32,7 +32,7 @@ public:
 	std::vector<Texture> textures;
 	/*  Functions  */
 	Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices, std::vector<Texture> textures);
-	void draw(std::shared_ptr<Shader> shader);
+	void draw(Shader* shader);
 	//void Move(GLfloat x, GLfloat y);
 
 private:

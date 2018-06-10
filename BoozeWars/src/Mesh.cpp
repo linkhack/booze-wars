@@ -49,7 +49,7 @@ void Mesh::setupMesh()
 	glDeleteBuffers(1, &EBO);
 }
 
-void Mesh::draw(std::shared_ptr<Shader> shader)
+void Mesh::draw(Shader* shader)
 {
 	shader->use();
 	int diffuseNr = 0;

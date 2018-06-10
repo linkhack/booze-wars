@@ -27,7 +27,7 @@ int DrunkCity::getHP() {
 void DrunkCity::drawShadows(Shader& shader) {
 	for (std::list<Enemy*>::iterator it = enemiesAlive.begin(); it != enemiesAlive.end(); ++it)
 	{
-		(*it)->drawShadows(shader);
+		//(*it)->drawShadows(shader);
 	}
 
 	for (std::list<Building*>::iterator it = buildings.begin(); it != buildings.end(); ++it)
@@ -35,13 +35,13 @@ void DrunkCity::drawShadows(Shader& shader) {
 		(*it)->drawShadows(shader);
 	}
 }
-void DrunkCity::zeichne(std::shared_ptr<Shader> shader)
+void DrunkCity::zeichne(Shader* shader)
 {
 
 	for (std::list<Enemy*>::iterator it = enemiesAlive.begin(); it != enemiesAlive.end(); ++it)
 	{
 		Enemy* iteratingEnemy = *it;
-		iteratingEnemy->draw();
+		iteratingEnemy->draw(shader);
 	}
 
 	for (std::list<Building*>::iterator it = buildings.begin(); it != buildings.end(); ++it)
@@ -81,9 +81,9 @@ Enemy* DrunkCity::getNearestEnemy(Building* building)
 	return nearestEnemy;
 }
 
-void DrunkCity::addEnemy(std::shared_ptr<Geometry> model)
+void DrunkCity::addEnemy(const int modelNr)
 {
-	Enemy* enemyToAdd = new Enemy(highway, model);
+	Enemy* enemyToAdd = new Enemy(highway, modelNr);
 	PxRigidDynamic* dyn = enemyToAdd->createPhysics(gPhysicsSDK);
 	enemiesAlive.push_back(enemyToAdd);
 	gScene->addActor(*dyn);
