@@ -58,11 +58,11 @@ GeometryData LineGeometry::createCircle(unsigned int segments, float radius)
 			(circlePos.z / radius) * 0.5f + 0.5f
 		);
 		data.positions.push_back(glm::vec4(circlePos, 1));
-		data.normals.push_back(glm::vec3(0, -1, 0));
+		data.normals.push_back(glm::vec3(0, 1, 0));
 		data.uvs.push_back(squareToCirlceUV);
 		data.indices.push_back(i);
-		data.indices.push_back((i+1)%(segments));
-		data.indices.push_back((i + 2) % (segments));
+		data.indices.push_back((i+2)%(segments));
+		data.indices.push_back((i + 1) % (segments));
 	}
 	return std::move(data);
 }
