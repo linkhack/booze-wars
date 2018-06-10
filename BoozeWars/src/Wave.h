@@ -18,6 +18,7 @@ private:
 	float currentGroupDelay;
 	float time;
 	bool spawningEnemies;
+	bool isFinished;
 public:
 	Wave(std::list<wavetuple> waveList);
 	~Wave();

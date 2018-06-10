@@ -68,7 +68,7 @@ vec3 phong(vec3 n, vec3 l, vec3 v, vec3 diffuseC, float diffuseF, vec3 specularC
 	float cosAngleNormal = max(0,dot(n,l));
 	float specularToon = (pow(max(0, dot(r, v)), alpha)>=0.8)?1:0;
 
-	return (diffuseF * diffuseC * min(floor(5*cosAngleNormal)/4,1) + specularF * specularC * specularToon) * att; 
+	return (diffuseF * diffuseC * min(floor(3*cosAngleNormal)/2,1) + specularF * specularC * specularToon) * att; 
 }
 
 void main() {	
@@ -86,7 +86,7 @@ void main() {
 	for(int i=0;i<16;i++)
 	{
 		//int index = int(16.0*random(floor(vert.position_world*1000.0), i))%16;
-		shadowDir += texture(shadowMap,shadowUv+poissonDisk[i]/700.0f)/16; //non random no noise but jaggies
+		shadowDir += texture(shadowMap,shadowUv+poissonDisk[i]/800.0f)/16; //non random no noise but jaggies
 		//shadowDir += texture(shadowMap,shadowUv+poissonDisk[index]/1000.0f)/6; //random sampling noise but smoother
 	}
 	// add directional light contribution

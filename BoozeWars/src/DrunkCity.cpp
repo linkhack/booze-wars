@@ -163,13 +163,14 @@ void DrunkCity::calculateForces()
 	while(it != enemiesAlive.end())	
 	{
 		Enemy* iterEnemy = *it;
-		iterEnemy->applyForce(iterEnemy->getDesiredDirection());
+		//iterEnemy->applyForce(iterEnemy->getDesiredDirection());
+		iterEnemy->applyDrivingForce();
 		std::list<Enemy*>::iterator otherEnemyIt = enemiesAlive.begin();
 		while (otherEnemyIt != enemiesAlive.end())
 		{
 			if (otherEnemyIt != it) {
 				Enemy* otherEnemy = *otherEnemyIt;
-				iterEnemy->applyForce(-1.0f*iterEnemy->getDirectionVector(*otherEnemy) / iterEnemy->getDistanceSquared(*otherEnemy));
+				iterEnemy->applyForce(-0.2f*9.6f*iterEnemy->getDirectionVector(*otherEnemy) / iterEnemy->getDistanceSquared(*otherEnemy));
 			}
 			++otherEnemyIt;
 		}
