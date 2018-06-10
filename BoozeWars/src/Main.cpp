@@ -290,7 +290,7 @@ int main(int argc, char** argv)
 
 
 		//Test or indicator for start position
-		world.addEnemy(ModelFactory::DEFAULT_BUILDING);
+		//world.addEnemy(ModelFactory::DEFAULT_BUILDING);
 
 
 		// Render loop
@@ -386,12 +386,12 @@ int main(int argc, char** argv)
 			// Render
 			//Shadowmap pass
 
-			directionalLightShadow.bindForWriting();
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		
+
 
 			glViewport(0, 0, 1024, 1024);
-
-
+			directionalLightShadow.bindForWriting();
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			shadowShader.use();
 			shadowShader.setUniform("viewProjMatrix", dirLProjView);
 			glCullFace(GL_FRONT);
@@ -408,8 +408,6 @@ int main(int argc, char** argv)
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			directionalLightShadow.bindForReading();
 			ground.draw(glm::translate(glm::mat4(1.0f),glm::vec3(0.0f,0.1f,0.0f)));
-			directionalLightShadow.bindForReading();
-
 			world.zeichne(textureShader.get()); //needs shadow
 
 			//mapTexture->loadImage("map.png");
