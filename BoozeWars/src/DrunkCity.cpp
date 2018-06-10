@@ -46,7 +46,6 @@ void DrunkCity::zeichne(Shader* shader)
 
 	for (std::list<Building*>::iterator it = buildings.begin(); it != buildings.end(); ++it)
 	{
-		shader->use();
 		Building* iteratingBuilding = *it;
 		iteratingBuilding->draw(shader);
 	}

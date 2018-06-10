@@ -136,7 +136,8 @@ void Model::draw(Shader* shader, glm::mat4 matrix) {
 	model = matrix;
 
 	//model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f)); // translate it down so it's at the center of the scene
-	model = glm::scale(model, glm::vec3(1.0f, 1.0f,1.0f));	// it's a bit too big for our scene, so scale it down and reflect
+	//model = glm::scale(model, glm::vec3(1.0f, 1.0f,1.0f));	// it's a bit too big for our scene, so scale it down and reflect
+	shader->use();
 	shader->setUniform("modelMatrix", model);
 	shader->setUniform("normalMatrix", glm::mat3(glm::transpose(glm::inverse(model))));
 	for (GLuint i = 0; i < this->meshes.size(); i++)
