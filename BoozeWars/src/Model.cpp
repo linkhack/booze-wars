@@ -174,6 +174,14 @@ GLint Model::loadTexture(const char* filename)
 	if ((bits == 0) || (width == 0) || (height == 0))
 		return false;
 
+	if (fif == FIF_JPEG)
+	{
+		image_format=internal_format = GL_RGB;
+	}
+	if (fif == FIF_PNG)
+	{
+		image_format = internal_format = GL_BGRA;
+	}
 	glGenTextures(1, &gl_texID);
 	glBindTexture(GL_TEXTURE_2D,gl_texID);
 	glTexImage2D(GL_TEXTURE_2D, level, internal_format, width, height,
