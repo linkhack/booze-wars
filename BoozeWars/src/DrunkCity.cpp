@@ -82,7 +82,7 @@ Enemy* DrunkCity::getNearestEnemy(Building* building)
 
 void DrunkCity::addEnemy(const int modelNr)
 {
-	Enemy* enemyToAdd = new Enemy(highway, modelNr);
+	Enemy* enemyToAdd = new JumpingEnemy(highway, modelNr);
 	PxRigidDynamic* dyn = enemyToAdd->createPhysics(gPhysicsSDK);
 	enemiesAlive.push_back(enemyToAdd);
 	gScene->addActor(*dyn);

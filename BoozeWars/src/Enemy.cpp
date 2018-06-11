@@ -14,11 +14,12 @@ Enemy::Enemy(std::shared_ptr<Street> street, const int modelNr)
 	y = part[0][1]+ 0.5*(street->getStreetWidth());
 	this->street = street;
 	ModelFactory* factory = ModelFactory::Instance();
-	model = factory->getModel(modelNr);
+	model = factory->getModel(ModelFactory::DEFAULT_ENEMY);
 	movementspeed = 20.0f;
 	hp = 100;
 	damageTeens = 5;
 	streetPart = 0;
+	scale = glm::scale(glm::mat4(1.0f), glm::vec3(8, 8, 8));
 }
 
 
@@ -29,7 +30,7 @@ Enemy::~Enemy()
 
 glm::mat4 Enemy::getModelMatrix()
 {
-	return glm::translate(glm::mat4(1.0f), glm::vec3(x, z-1, y))*glm::scale(glm::mat4(1.0f), glm::vec3(8, 8, 8));
+	return glm::translate(glm::mat4(1.0f), glm::vec3(x, z-1, y))*scale;
 }
 void Enemy::drawShadows(Shader& shader)
 {

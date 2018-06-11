@@ -2,6 +2,7 @@
 #include "Geometry.h"
 #include "Street.h"
 #include "Enemy.h"
+#include "JumpingEnemy.h"
 #include "Building.h"
 #include <glm\glm.hpp>
 #include "Material.h"
