@@ -7,11 +7,12 @@ class PostprocessBuffer
 {
 private:
 	GLuint fboHandle;
+	GLuint depthbuffer;
 	GLuint depthTexture;
 	GLuint colorTexture;
 	GLuint normalTexture;
 
-	void setupTexture(GLuint* handle, int attachment);
+	void setupTexture(GLuint* handle, int attachment, GLenum format);
 	void setupDepthTexture(GLuint* handle);
 
 	int width;

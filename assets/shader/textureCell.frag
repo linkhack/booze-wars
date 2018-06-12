@@ -11,7 +11,7 @@ in VertexData {
 } vert;
 
 layout(location = 0) out vec4 color;
-layout(location = 2) out vec3 normal;
+layout(location = 1) out vec3 normal;
 
 uniform vec3 camera_world;
 
