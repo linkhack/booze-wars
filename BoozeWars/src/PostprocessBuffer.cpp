@@ -61,9 +61,9 @@ PostprocessBuffer::PostprocessBuffer(int width, int height)
 	//Setup textures
 	//setupDepthTexture(&depthTexture); //sets up the depth buffer too
 	setupTexture(&colorTexture, 0, GL_RGBA);
-	//setupTexture(&normalTexture, 1,GL_RGB);
-	GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
-	glDrawBuffers(1, DrawBuffers);
+	setupTexture(&normalTexture, 1,GL_RGBA);
+	GLenum DrawBuffers[2] = {GL_COLOR_ATTACHMENT0,GL_COLOR_ATTACHMENT1};
+	glDrawBuffers(2, DrawBuffers);
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) std::cout << "Framebuffer problem" << glCheckFramebufferStatus(GL_FRAMEBUFFER) << std::endl;
 }
@@ -77,12 +77,12 @@ void PostprocessBuffer::setupTexture(GLuint* handle, int attachment, GLenum form
 {
 	glGenTextures(1, handle);
 	glBindTexture(GL_TEXTURE_2D, *handle);
-	glTexImage2D(GL_TEXTURE_2D, 0, format, this->width, this->height, 0, format, GL_UNSIGNED_BYTE, 0);
+	glTexImage2D(GL_TEXTURE_2D, 0, format, this->width, this->height, 0, format, GL_FLOAT, 0);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, *handle, 0);
+	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0+attachment, *handle, 0);
 }
 
 void PostprocessBuffer::setupDepthTexture(GLuint* handle)
@@ -110,9 +110,9 @@ void PostprocessBuffer::renderToScreen() {
 	glBindTexture(GL_TEXTURE_2D,colorTexture);
 	postprocessShader->setUniform("colorInformation", 0);
 
-	//glActiveTexture(GL_TEXTURE1);
-	//glBindTexture(GL_TEXTURE_2D, normalTexture);
-	//postprocessShader->setUniform("normalInformation", 1);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, normalTexture);
+	postprocessShader->setUniform("normalInformation", 1);
 
 	//glActiveTexture(GL_TEXTURE2);
 	//glBindTexture(GL_TEXTURE_2D, depthTexture);
