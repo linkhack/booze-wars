@@ -59,7 +59,7 @@ PostprocessBuffer::PostprocessBuffer(int width, int height)
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthbuffer);
 	//Setup textures
-	setupDepthTexture(&depthTexture); //sets up the depth buffer too
+	//setupDepthTexture(&depthTexture); //sets up the depth buffer too
 	setupTexture(&colorTexture, 0, GL_RGBA);
 	//setupTexture(&normalTexture, 1,GL_RGB);
 	GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
