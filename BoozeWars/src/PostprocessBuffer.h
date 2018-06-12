@@ -19,12 +19,14 @@ private:
 	//Fullscreen quad rendering
 	Shader* postprocessShader;
 	GLuint quadVAO;
+	GLuint positionVBO;
+	GLuint uvVBO;
 	
 public:
 	PostprocessBuffer(int width, int height);
 	~PostprocessBuffer();
 
-	void bindForReading();
+	void renderToScreen();
 	void bindForWriting();
 };
 

@@ -7,26 +7,57 @@ PostprocessBuffer::PostprocessBuffer(int width, int height)
 	//set constants
 	this->width = width;
 	this->height = height;
-	postprocessShader = new Shader();
+	postprocessShader = new Shader("postprocess.vert","postprocess.frag");
 
 	//full screen quad
 	float vertices[] =
-	{
-		-1.0f, -1.0f, 0.0f,
-		1.0f, -1.0f, 0.0f,
-		-1.0f,  1.0f, 0.0f,
-		-1.0f,  1.0f, 0.0f,
-		1.0f, -1.0f, 0.0f,
-		1.0f,  1.0f, 0.0f,
-	};
+		{
+			-1.0f, -1.0f, 0.0f,
+			1.0f, -1.0f, 0.0f,
+			-1.0f,  1.0f, 0.0f,
+			1.0f,1.0f,0.0f
+		};
 	
+	float uv[] =
+		{
+			0.0f,0.0f,
+			1.0f,0.0f,
+			0.0f,1.0f,
+			1.0f,1.0f
+		};
+	// create VAO
+	glGenVertexArrays(1, &quadVAO);
+	glBindVertexArray(quadVAO);
+
+	// create positions VBO
+	glGenBuffers(1, &positionVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, positionVBO);
+	glBufferData(GL_ARRAY_BUFFER,sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
+	// create uvs VBO
+	glGenBuffers(1, &uvVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, uvVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(uv), uv, GL_STATIC_DRAW);
+
+	// bind uvs to location 1
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
+
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	//Create Framebuffer
 	glGenFramebuffers(1, &fboHandle);
 	glBindFramebuffer(GL_FRAMEBUFFER, fboHandle);
 	
+	//Setup textures
 	setupDepthTexture(&depthTexture);
 	setupTexture(&colorTexture, 0);
 	setupTexture(&normalTexture, 1);
-	GLenum DrawBuffers[3] = {GL_NONE, GL_COLOR_ATTACHMENT0,GL_COLOR_ATTACHMENT1};
+	GLenum DrawBuffers[3] = {GL_NONE,GL_COLOR_ATTACHMENT0,GL_COLOR_ATTACHMENT1};
 	glDrawBuffers(3, DrawBuffers);
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) std::cout << "Framebuffer problem" <<std::endl;
@@ -63,5 +94,28 @@ void PostprocessBuffer::setupDepthTexture(GLuint* handle)
 
 void PostprocessBuffer::bindForWriting() 
 {
+	glBindBuffer(GL_FRAMEBUFFER, fboHandle);
+}
+
+void PostprocessBuffer::renderToScreen() {
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	postprocessShader->use();
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D,colorTexture);
+	postprocessShader->setUniform("colorInformation", 0);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, normalTexture);
+	postprocessShader->setUniform("normalInformation", 1);
+
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, colorTexture);
+	postprocessShader->setUniform("depthInformation", 2);
+
+
+	glBindVertexArray(quadVAO);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	glBindVertexArray(0);
 	
 }
