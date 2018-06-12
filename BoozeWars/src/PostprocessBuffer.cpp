@@ -66,6 +66,8 @@ PostprocessBuffer::PostprocessBuffer(int width, int height)
 	glDrawBuffers(2, DrawBuffers);
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) std::cout << "Framebuffer problem" << glCheckFramebufferStatus(GL_FRAMEBUFFER) << std::endl;
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 

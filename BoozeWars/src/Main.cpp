@@ -60,6 +60,8 @@ static bool _wireframe = false;
 static bool _culling = true;
 static bool _dragging = false;
 static bool _strafing = false;
+static bool _shadows = false;
+static bool _postprocessing = true;
 static float _zoom = 12.0f;
 unsigned char **tex;
 static int width = 800;
@@ -311,8 +313,8 @@ int main(int argc, char** argv)
 		int buildingLimit = 0;
 		int placeMinCounter = 0;
 		int frameCounter = 0;
-
-		while   (!glfwWindowShouldClose(window))
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		while (!glfwWindowShouldClose(window))
 		{
 			// Update camera
 			{
@@ -345,9 +347,9 @@ int main(int argc, char** argv)
 				camera.updateDirection(int(mouse_x), int(mouse_y));
 			}
 			// Set per-frame uniforms
-			setPerFrameUniforms(textureShader.get(), camera, dirL, pointL,dirLProjView);
-			setPerFrameUniforms(infiniGreen.get(), camera, dirL, pointL,dirLProjView);
-			setPerFrameUniforms(translucent.get(), camera, dirL, pointL,dirLProjView);
+			setPerFrameUniforms(textureShader.get(), camera, dirL, pointL, dirLProjView);
+			setPerFrameUniforms(infiniGreen.get(), camera, dirL, pointL, dirLProjView);
+			setPerFrameUniforms(translucent.get(), camera, dirL, pointL, dirLProjView);
 			setPerFrameUniformsSkybox(skyboxShader.get(), camera);
 
 			//GameLogic
@@ -379,7 +381,7 @@ int main(int argc, char** argv)
 					if (e == ALL_ENEMIES_DESTROYED && wave.waveIsFinished()) {
 						won = true;
 						end = true;
-						
+
 					}
 				}
 				physxTime += dt;
@@ -387,38 +389,49 @@ int main(int argc, char** argv)
 
 			// Render
 			//Shadowmap pass
+			if (_shadows) {
+				glViewport(0, 0, 1024, 1024);
+				directionalLightShadow.bindForWriting();
+				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+				shadowShader.use();
+				shadowShader.setUniform("viewProjMatrix", dirLProjView);
+				glCullFace(GL_FRONT);
+				world.zeichne(&shadowShader, dt);
+				school.drawShadow(shadowShader);
 
-			glViewport(0, 0, 1024, 1024);
-			directionalLightShadow.bindForWriting();
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			shadowShader.use();
-			shadowShader.setUniform("viewProjMatrix", dirLProjView);
-			glCullFace(GL_FRONT);
-			world.zeichne(&shadowShader, dt);
-			school.drawShadow(shadowShader);
-			
-			glCullFace(GL_BACK);
-
+				glCullFace(GL_BACK);
+			}
 
 			//Render scene
-			if (_wireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-			directionalLightShadow.bindForReading();
+			if (_wireframe)
+			{
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			}
+			if (_shadows)
+			{
+				directionalLightShadow.bindForReading();	
+			}
 			glViewport(0, 0, window_width, window_height);
-			postprocessing.bindForWriting();
+			if (_postprocessing)
+			{
+				postprocessing.bindForWriting();
+			}
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			ground.draw(glm::translate(glm::mat4(1.0f),glm::vec3(0.0f,-0.1f,0.0f)));
+			ground.draw(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.1f, 0.0f)));
 			world.zeichne(textureShader.get(), dt); //needs shadow
 
 			map.draw();
 			if (camera.getGroundIntersection() != glm::vec3(0, 1, 0)) {
-				cameraPlacement.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection()+glm::vec3(0.0f,0.01f,0.0f)));
+				cameraPlacement.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection() + glm::vec3(0.0f, 0.01f, 0.0f)));
 				cameraCircle.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection() + glm::vec3(0.0f, 0.01f, 0.0f)));
 			}
-			school.draw(); 
+			school.draw();
 			worldModel.draw();
 			
-			postprocessing.renderToScreen();
-
+			if (_postprocessing)
+			{
+				postprocessing.renderToScreen();
+			}
 			// Placement logic
 			if (_dragging && !pressing && !end) {
 				pressing = true;
@@ -634,6 +647,12 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			_culling = !_culling;
 			if (_culling) glEnable(GL_CULL_FACE);
 			else glDisable(GL_CULL_FACE);
+			break;
+		case GLFW_KEY_F3:
+			_shadows = !_shadows;
+			break;
+		case GLFW_KEY_F4:
+			_postprocessing = !_postprocessing;
 			break;
 		case GLFW_KEY_ENTER:
 			_starting = true;

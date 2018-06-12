@@ -44,6 +44,7 @@ void ShadowMapSimple::bindForReading()
 {
 	glActiveTexture(GL_TEXTURE0+2);
 	glBindTexture(GL_TEXTURE_2D, _shadowMap);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 ShadowMapSimple::~ShadowMapSimple()
