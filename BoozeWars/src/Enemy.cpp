@@ -102,7 +102,6 @@ PxVec3 Enemy::getDesiredDirection()
 
 	//calculation of direction goal - position normalized
 	goalDirection = goal - PxVec3(x,y,0);
-	std::cout << goalDirection.x << " / " << goalDirection.y << std::endl;
 	return goalDirection.getNormalized();
 
 }

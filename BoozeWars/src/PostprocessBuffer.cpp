@@ -12,10 +12,10 @@ PostprocessBuffer::PostprocessBuffer(int width, int height)
 	//full screen quad
 	float vertices[] =
 		{
-			-1.0f, -1.0f, 0.0f,
-			1.0f, -1.0f, 0.0f,
-			-1.0f,  1.0f, 0.0f,
-			1.0f,1.0f,0.0f
+			-1.0f, -1.0f, 0.1f,
+			1.0f, -1.0f, 0.1f,
+			-1.0f,  1.0f, 0.1f,
+			1.0f,1.0f,0.1f
 		};
 	
 	float uv[] =
@@ -62,8 +62,8 @@ PostprocessBuffer::PostprocessBuffer(int width, int height)
 	setupDepthTexture(&depthTexture); //sets up the depth buffer too
 	setupTexture(&colorTexture, 0, GL_RGBA);
 	setupTexture(&normalTexture, 1,GL_RGBA);
-	GLenum DrawBuffers[3] = {GL_COLOR_ATTACHMENT0,GL_COLOR_ATTACHMENT1};
-	glDrawBuffers(3, DrawBuffers);
+	GLenum DrawBuffers[2] = {GL_COLOR_ATTACHMENT0,GL_COLOR_ATTACHMENT1};
+	glDrawBuffers(2, DrawBuffers);
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) std::cout << "Framebuffer problem" << glCheckFramebufferStatus(GL_FRAMEBUFFER) << std::endl;
 }
