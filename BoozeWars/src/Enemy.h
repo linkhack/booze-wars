@@ -22,7 +22,7 @@ protected:
 	
 	PxRigidDynamic* physxActor;
 
-	glm::mat4 scale;
+	glm::mat4 modelMatrix;
 
 public:
 	Enemy();

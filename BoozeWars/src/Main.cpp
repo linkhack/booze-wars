@@ -60,7 +60,7 @@ static bool _wireframe = false;
 static bool _culling = true;
 static bool _dragging = false;
 static bool _strafing = false;
-static bool _shadows = false;
+static bool _shadows = true	;
 static bool _postprocessing = true;
 static float _zoom = 12.0f;
 unsigned char **tex;
@@ -295,8 +295,8 @@ int main(int argc, char** argv)
 
 		//Test or indicator for start position
 		//world.addEnemy(ModelFactory::DEFAULT_BUILDING);
-		PostprocessBuffer postprocessing = PostprocessBuffer(window_width, window_height);
-
+		PostprocessBuffer postprocessing = PostprocessBuffer(window_width, window_height,nearZ,farZ);
+		
 		// Render loop
 		double mouse_x, mouse_y;
 		float t = float(glfwGetTime());
