@@ -10,7 +10,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd c:\tmp\1465.jpg
+map_Kd 1465.jpg
 
 newmtl Material_NONE
 Ns 96.078431

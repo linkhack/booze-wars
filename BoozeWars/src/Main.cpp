@@ -291,7 +291,24 @@ int main(int argc, char** argv)
 
 		//Test or indicator for start position
 		//world.addEnemy(ModelFactory::DEFAULT_BUILDING);
+		//Testing cel shading outlines
+		//GLuint outlineBuffer;
+		//glGenFramebuffers(1, &outlineBuffer);
+		//glBindFramebuffer(GL_FRAMEBUFFER, outlineBuffer);
 
+		//GLuint outlineTexture;
+		//glGenTextures(1, &outlineTexture);
+		//glBindTexture(GL_TEXTURE_2D, outlineTexture);
+		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, window_width, window_height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		
+		//glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, 0, 0);
+		//GLenum DrawBuffers[2] = { GL_COLOR_ATTACHMENT0,GL_COLOR_ATTACHMENT2};
+		//glDrawBuffers(2, DrawBuffers);
+
+		//if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) std::cout << "Framebuffer problem" <<std::endl;
 
 		// Render loop
 		double mouse_x, mouse_y;
@@ -400,12 +417,12 @@ int main(int argc, char** argv)
 			
 			glCullFace(GL_BACK);
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
-			
-			
+			//glBindFramebuffer(GL_FRAMEBUFFER, outlineBuffer);
 
 			//Render scene
 			glViewport(0, 0, window_width, window_height);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 			directionalLightShadow.bindForReading();
 			ground.draw(glm::translate(glm::mat4(1.0f),glm::vec3(0.0f,-0.1f,0.0f)));
 			world.zeichne(textureShader.get(), dt); //needs shadow

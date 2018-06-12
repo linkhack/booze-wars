@@ -10,7 +10,8 @@ in VertexData {
 	vec4 shadowCoords;
 } vert;
 
-out vec4 color;
+layout(location = 0) out vec4 color;
+layout(location = 2) out vec3 normal;
 
 uniform vec3 camera_world;
 
@@ -99,6 +100,7 @@ void main() {
 	float fogAmount = fogFunction(fogDistance,100,450);
 	
 	color = mix(color, fogColor,fogAmount);
+	normal =  vert.normal_world;
 	//color=vec4(n,1);
 	//color = vec4(vec3(0.5*floor(2*pow(max(0, dot(r, v)), alpha))),1);
 }
