@@ -401,6 +401,7 @@ int main(int argc, char** argv)
 
 
 			//Render scene
+			if (_wireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 			directionalLightShadow.bindForReading();
 			glViewport(0, 0, window_width, window_height);
 			postprocessing.bindForWriting();
