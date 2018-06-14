@@ -101,7 +101,7 @@ void main() {
 	float fogAmount = fogFunction(fogDistance,100,450);
 	
 	color = mix(color, fogColor,fogAmount);
-	normal =  vec4(vert.normal_world,1);
+	normal =  0.5*vec4(n,1)+0.5;
 	//color=vec4(n,1);
 	//color = vec4(vec3(0.5*floor(2*pow(max(0, dot(r, v)), alpha))),1);
 }
