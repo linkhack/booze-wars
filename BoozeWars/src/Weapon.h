@@ -20,6 +20,7 @@ protected:
 	float x;
 	float z;
 	float y;
+	float rollRotate = 0.0f;
 
 public:
 	int static const Weapon::DELAY_FIRST = 0;

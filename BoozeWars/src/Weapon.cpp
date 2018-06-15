@@ -69,7 +69,9 @@ bool Weapon::draw(Shader* shader, float time)
 		else {
 			rotation = glm::rotate(glm::mat4(1.0f), 1 * glm::pi<float>() / 2, glm::vec3(0, 0, 1));
 		}
-		model->draw(shader, getModelMatrix() * rotation);
+		rollRotate += 10.0;
+		glm::mat4 roll = glm::rotate(glm::mat4(1.0f), rollRotate * time * glm::pi<float>() / 2, glm::vec3(0, 1, 0));
+		model->draw(shader, getModelMatrix() * rotation * roll);
 
 		if (!hitted) {
 			glm::mat4 translate;
@@ -93,6 +95,15 @@ bool Weapon::draw(Shader* shader, float time)
 	}
 	return false;
 }
+
+struct Particle {
+	glm::vec2 Position, Velocity;
+	glm::vec4 Color;
+	GLfloat Life;
+
+	Particle()
+		: Position(0.0f), Velocity(0.0f), Color(1.0f), Life(0.0f) { }
+};
 
 bool Weapon::implode(float time)
 {
