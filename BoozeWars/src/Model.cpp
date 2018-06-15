@@ -180,7 +180,7 @@ GLint Model::loadTexture(const char* filename)
 	}
 	if (fif == FIF_PNG)
 	{
-		image_format = internal_format = GL_BGRA;
+		image_format = internal_format = GL_RGB;
 	}
 	glGenTextures(1, &gl_texID);
 	glBindTexture(GL_TEXTURE_2D,gl_texID);

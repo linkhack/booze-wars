@@ -115,7 +115,6 @@ bool Weapon::implode(float time)
 		implodeScale = 0.2f;
 	}
 	glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(implodeScale, implodeScale, implodeScale));
-	std::cout << this->time << std::endl;
 	this->modelMatrix = this->modelMatrix * scale;
 	if (implodeTime >= 3.0) {
 		return true;
