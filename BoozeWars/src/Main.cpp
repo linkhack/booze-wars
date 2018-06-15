@@ -204,6 +204,7 @@ int main(int argc, char** argv)
 		std::shared_ptr<Shader> skyboxShader = std::make_shared<Shader>("skybox.vert", "skybox.frag");
 		std::shared_ptr<Shader> infiniGreen = std::make_shared<Shader>("texture.vert", "infiniGreen.frag");
 		std::shared_ptr<Shader> translucent = std::make_shared<Shader>("texture.vert", "translucentRed.frag");
+		std::shared_ptr<Shader> proceduralGrass = std::make_shared<Shader>("texture.vert", "procedural.frag");
 		Shader shadowShader = Shader("shadowShader.vert", "shadowShader.frag");
 		Shader objectShader = Shader("texture.vert", "texture.frag");
 		//Textures
@@ -226,8 +227,8 @@ int main(int argc, char** argv)
 		std::shared_ptr<Material> brickMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.2f, 0.8f, 0.5f), 5.0f, brickTexture);
 		std::shared_ptr<Material> infiniGreenMat = std::make_shared<Material>(infiniGreen, glm::vec3(0.5f, 0.5f, 0.5f), 3.0f);
 		std::shared_ptr<Material> translucentRed = std::make_shared<Material>(translucent, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f);
-		std::shared_ptr<Material> mapMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.1f, 0.9f, 0.0f), 50.0f, mapTexture);
-		
+		//std::shared_ptr<Material> mapMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.1f, 0.9f, 0.0f), 50.0f, mapTexture);
+		std::shared_ptr<Material> mapMaterial = std::make_shared<Material>(proceduralGrass, glm::vec3(0.1f, 0.9f, 0.0f), 1.0f);
 		//Geometries
 		//Create World
 		DrunkCity world = DrunkCity(300.0f, 9000.0f, 300.0f);
@@ -348,6 +349,7 @@ int main(int argc, char** argv)
 			}
 			// Set per-frame uniforms
 			setPerFrameUniforms(textureShader.get(), camera, dirL, pointL, dirLProjView);
+			setPerFrameUniforms(proceduralGrass.get(), camera, dirL, pointL, dirLProjView);
 			setPerFrameUniforms(infiniGreen.get(), camera, dirL, pointL, dirLProjView);
 			setPerFrameUniforms(translucent.get(), camera, dirL, pointL, dirLProjView);
 			setPerFrameUniformsSkybox(skyboxShader.get(), camera);
@@ -417,7 +419,7 @@ int main(int argc, char** argv)
 				postprocessing.bindForWriting();
 			}
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			ground.draw(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.1f, 0.0f)));
+			//ground.draw(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.1f, 0.0f)));
 			world.zeichne(textureShader.get(), dt); //needs shadow
 
 			map.draw();
