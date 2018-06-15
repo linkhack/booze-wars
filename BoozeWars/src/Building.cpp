@@ -1,25 +1,22 @@
 #include "Building.h"
 
-int width = 20;
-int length = 20;
-int range = 70;
-
 Building::Building()
 {
 }
 
-Building::Building(float x, float z)
+Building::Building(float x, float z, int streetDirection)
 {
 	this->damage = 45;
 	glm::mat4 position = glm::translate(glm::mat4(1.0f), glm::vec3(x, 0.0f, z));
-	glm::mat4 randomRotation = glm::rotate(glm::mat4(1.0f), (rand() % 4)*glm::pi<float>() / 2, glm::vec3(0, 1, 0));
+	glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), streetDirection*glm::pi<float>() / 2, glm::vec3(0, 1, 0));
 	glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.2f, 0.2f, 0.2f));
-	modelMatrix = position * randomRotation*scale;
+	modelMatrix = position * rotation*scale;
 	this->x = position[3][0];
 	this->z = position[3][2];
+	this->direction = streetDirection;
 	ModelFactory* factory = ModelFactory::Instance();
 	model = factory->getModel(ModelFactory::DEFAULT_BUILDING);
-	this->shootIntervall = 3000.0;
+	this->shootIntervall = 2.0;
 	this->time = 0.0;
 }
 
@@ -68,26 +65,38 @@ void Building::drawShadows(Shader & shader)
 void Building::draw(Shader* shader, float time)
 {	
 	model->draw(shader, modelMatrix);
-	for (std::list<Weapon*>::iterator it = activeWeapons.begin(); it != activeWeapons.end(); ++it)
+	std::list<Weapon*>::iterator it = activeWeapons.begin();
+	while (it != activeWeapons.end())
 	{
 		Weapon* weapon = *it;
-		if (weapon->draw(shader, time)) {
-			weapon->implode();
-			it = activeWeapons.erase(it);
-			delete weapon;
-			weapon = NULL;
+		if (weapon->draw(shader, time) || weapon->isHitted()) {
+			if (weapon->implode(time)) {
+				it = activeWeapons.erase(it);
+				delete weapon;
+				weapon = NULL;
+			}
+			else {
+				it++;
+			}
+		}
+		else {
+			it++;
 		}
 	}
 }
 
 void Building::shoot(float time) {
-	if (this->time == 0.0) {
-		Weapon* weapon1 = new Weapon(modelMatrix, 0);
+	if (this->time <= 0.02) {
+		Weapon* weapon1 = new Weapon(this->x, this->z, this->direction, Weapon::DELAY_FIRST);
 		activeWeapons.push_back(weapon1);
-		Weapon* weapon2 = new Weapon(modelMatrix, 100);
+		Weapon* weapon2 = new Weapon(this->x, this->z, this->direction, Weapon::DELAY_SECOND);
 		activeWeapons.push_back(weapon2);
-		Weapon* weapon3 = new Weapon(modelMatrix, 200);
+		Weapon* weapon3 = new Weapon(this->x, this->z, this->direction, Weapon::DELAY_THIRD);
 		activeWeapons.push_back(weapon3);
+		Weapon* weapon4 = new Weapon(this->x, this->z, this->direction, Weapon::DELAY_FOURTH);
+		activeWeapons.push_back(weapon4);
+		Weapon* weapon5 = new Weapon(this->x, this->z, this->direction, Weapon::DELAY_FIFTH);
+		activeWeapons.push_back(weapon5);
 		this->time = time;
 	}
 	else {
@@ -97,3 +106,10 @@ void Building::shoot(float time) {
 		}
 	}
 }
+
+
+std::list<Weapon*> Building::getWeapons() 
+{
+	return this->activeWeapons;
+}
+

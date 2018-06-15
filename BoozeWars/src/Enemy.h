@@ -16,6 +16,8 @@ protected:
 	float hp;
 	float movementspeed; //max speed in meter/second
 	float damageTeens; //Amount of drunken teens per bottle
+	float width;
+	float length;
 
 	int streetPart;
 	std::shared_ptr<Street> street;
@@ -54,5 +56,6 @@ public:
 	void applyForce(PxVec3 force);
 	void applyDrivingForce();
 	void updatePosition();
+	glm::mat2x2 getModel();
 };
 

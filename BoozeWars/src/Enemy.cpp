@@ -20,6 +20,8 @@ Enemy::Enemy(std::shared_ptr<Street> street, const int modelNr)
 	damageTeens = 5;
 	streetPart = 0;
 	modelMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(8, 8, 8));
+	this->width = 1.0f;
+	this->width = 1.0f;
 }
 
 
@@ -163,4 +165,10 @@ void Enemy::updatePosition()
 		x += movementspeed * dT;
 	}
 	*/
+}
+
+
+glm::mat2x2 Enemy::getModel() 
+{
+	return glm::mat2x2(x, y, x+width, y+length);
 }
