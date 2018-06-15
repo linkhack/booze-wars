@@ -13,7 +13,7 @@ PostprocessBuffer::PostprocessBuffer(int width, int height,float nearZ, float fa
 	postprocessShader->setUniform("farZ", (float)farZ);
 	postprocessShader->setUniform("width", (float)width);
 	postprocessShader->setUniform("height", (float)height);
-	postprocessShader->setUniform("treshold", 0.3f);
+	postprocessShader->setUniform("treshold", 0.35f);
 	//full screen quad
 	float vertices[] =
 		{

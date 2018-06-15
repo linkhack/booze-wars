@@ -4,7 +4,7 @@
 * Institute of Computer Graphics and Algorithms.
 * This file is part of the ECG Lab Framework and must not be redistributed.
 */
-
+#define PI 3.1415926535897932384626433832795
 uniform sampler2D diffuseTexture;
 uniform sampler2DShadow shadowMap;
 //uniform sampler2D specularTexture;
@@ -23,7 +23,7 @@ uniform vec3 camera_world;
 
 uniform vec3 materialCoefficients; // x = ambient, y = diffuse, z = specular 
 uniform float specularAlpha;
-
+uniform int width;
 
 uniform struct DirectionalLight {
 	vec3 color;
@@ -55,48 +55,28 @@ vec3 poissonDisk[16] = vec3[](
    vec3( 0.14383161, -0.14100790 , 0 ) 
 );
 
-float random(vec3 seed, int i){
-	vec4 seed4 = vec4(seed,i);
-	float dot_product = dot(seed4, vec4(12.9898,78.233,45.164,94.673));
-	return fract(sin(dot_product) * 43758.5453);
+// Permutation polynomial: (34x^2 + x) mod 289
+vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
+
+vec2 random2(vec2 st){
+    st = vec2( dot(st,vec2(127.1,311.7)),
+              dot(st,vec2(269.5,183.3)) );
+    return -1.0 + 2.0*fract(sin(st)*43758.5453123);
 }
 
-float random2d(vec2 x){
-	return random(vec3(sin(x.x),cos(x.y),0),0);
+// Value Noise by Inigo Quilez - iq/2013
+// https://www.shadertoy.com/view/lsf3WH
+float noise(vec2 st) {
+    vec2 i = floor(st);
+    vec2 f = fract(st);
+
+    vec2 u = f*f*(3.0-2.0*f);
+
+    return mix( mix( dot( random2(i + vec2(0.0,0.0) ), f - vec2(0.0,0.0) ),
+                     dot( random2(i + vec2(1.0,0.0) ), f - vec2(1.0,0.0) ), u.x),
+                mix( dot( random2(i + vec2(0.0,1.0) ), f - vec2(0.0,1.0) ),
+                     dot( random2(i + vec2(1.0,1.0) ), f - vec2(1.0,1.0) ), u.x), u.y);
 }
-
-//based on https://thebookofshaders.com/13/
-float noise(vec2 coord){
-	vec2 integer = floor(coord);
-	vec2 fractional = fract(coord);
-	//four corners
-	float a = random2d(integer);
-	float b = random2d(integer+vec2(0.6,0.0));
-	float c = random2d(integer+vec2(0.0,0.6));
-	float d = random2d(integer+vec2(1.0,1.0));
-	
-	//mixing factor:
-	vec2 u = fractional*fractional*(3.0-2.0*fractional);
-	return mix(a,b,u.x)+(c-a)*u.y*(1.0-u.x)+(d-b)*u.x*u.y;
-}
-
-float fbm (vec2 coords) {
-    // Initial values
-    float value = 0.0;
-    float amplitude = 2;
-    float frequency = 0.0;
-    //
-    // Loop of octaves
-    for (int i = 0; i < 3; i++) {
-		float n = noise(coords);
-        value += amplitude *n*n;
-        coords *= 5;
-        amplitude *= .3;
-    }
-    return value;
-}
-
-
 float fogFunction(float distance, float start, float end)
 {
 	return clamp((distance-start)/(end-start),0,1);
@@ -114,15 +94,17 @@ vec3 phong(vec3 n, vec3 l, vec3 v, vec3 diffuseC, float diffuseF, vec3 specularC
 void main() {	
 	vec3 n = normalize(vert.normal_world);
 	vec3 v = normalize(camera_world - vert.position_world);
-	float factor = fbm(vert.uv);
-	float xFactor = fbm(vert.position_world.xz);
-	float yFactor = fbm(vert.position_world.zy);
+	float factor = 0.5-noise(vert.position_world.xz*0.05);
+	float factor2 = 0.5-noise(vert.position_world.xz*0.5);
+	factor = min(floor(5*factor)/5,1);
+
 	
-	factor = min(floor(3*factor)/2,1);
+	//factor = min(floor(5*factor)/5,1);
 
 	vec3 dirtColor = 0.8*vec3(0.1098,0.30196,0.028431);
 	vec3 grassColor = 0.8*vec3(0.34313,0.429411,0.109803);
-	vec3 texColor = mix(grassColor,dirtColor,factor*xFactor*yFactor);
+	vec3 grassColor2 = 0.8*vec3(0.34313,0.129411,0.0509803);
+	vec3 texColor = mix(dirtColor,grassColor,factor);
 		
 
 	//color = vec4(texColor * materialCoefficients.x,1); // ambient
@@ -132,7 +114,7 @@ void main() {
 
 	float shadowDir = 0.0f;
 	vec3 shadowUv = 0.5*(vert.shadowCoords.xyz)/vert.shadowCoords.w + 0.5;	
-	for(int i=0;i<16;i++)
+	for(int i=0;i<4;i++)
 	{
 		//int index = int(16.0*random(floor(vert.position_world*1000.0), i))%16;
 		shadowDir += texture(shadowMap,shadowUv+poissonDisk[i]/800.0f)/16; //non random no noise but jaggies
@@ -152,7 +134,7 @@ void main() {
 	//color = mix(color, fogColor,fogAmount);
 	normal =  0.5*vec4(n,1)+0.5;
 	color = vec4(texColor,1);
-	//color = vec4(vec3(xFactor*yFactor),1);
+	//color = vec4(vec3(0.5-abs(noise(vert.position_world.xz*0.005))),1);
 	//color=vec4(n,1);
 	//color = vec4(vec3(0.5*floor(2*pow(max(0, dot(r, v)), alpha))),1);
 	//color = vec4(0,0,0,1);

@@ -45,7 +45,7 @@ Weapon::Weapon(float x, float z, int direction, int delay)
 		break;
 	}
 	this->y = 2.0f;
-	this->modelMatrix = glm::mat4(1.0f);
+	this->modelMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(5.0f));
 	time = 0.0;
 	ttl = 3.0;
 	this->delay = (float) delay/10;

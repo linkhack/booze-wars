@@ -207,6 +207,8 @@ int main(int argc, char** argv)
 		std::shared_ptr<Shader> proceduralGrass = std::make_shared<Shader>("texture.vert", "procedural.frag");
 		Shader shadowShader = Shader("shadowShader.vert", "shadowShader.frag");
 		Shader objectShader = Shader("texture.vert", "texture.frag");
+		proceduralGrass->use();
+		proceduralGrass->setUniform("width", window_width);
 		//Textures
 		std::shared_ptr<Texture> sunTexture = std::make_shared<Texture>("sun.dds");
 		std::shared_ptr<Texture> moonTexture = std::make_shared<Texture>("moon.dds");
@@ -227,8 +229,8 @@ int main(int argc, char** argv)
 		std::shared_ptr<Material> brickMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.2f, 0.8f, 0.5f), 5.0f, brickTexture);
 		std::shared_ptr<Material> infiniGreenMat = std::make_shared<Material>(infiniGreen, glm::vec3(0.5f, 0.5f, 0.5f), 3.0f);
 		std::shared_ptr<Material> translucentRed = std::make_shared<Material>(translucent, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f);
-		std::shared_ptr<Material> mapMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.1f, 0.9f, 0.0f), 50.0f, mapTexture);
-		//std::shared_ptr<Material> mapMaterial = std::make_shared<Material>(proceduralGrass, glm::vec3(0.1f, 0.9f, 0.0f), 1.0f);
+		//std::shared_ptr<Material> mapMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.1f, 0.9f, 0.0f), 50.0f, mapTexture);
+		std::shared_ptr<Material> mapMaterial = std::make_shared<Material>(proceduralGrass, glm::vec3(0.1f, 0.9f, 0.0f), 1.0f);
 		//Geometries
 		//Create World
 		DrunkCity world = DrunkCity(300.0f, 9000.0f, 300.0f);

@@ -166,6 +166,7 @@ GLint Model::loadTexture(const char* filename)
 
 	if (!dib)
 		return false;
+	
 
 	bits = FreeImage_GetBits(dib);
 	width = FreeImage_GetWidth(dib);
@@ -176,7 +177,8 @@ GLint Model::loadTexture(const char* filename)
 
 	if (fif == FIF_JPEG)
 	{
-		image_format=internal_format = GL_RGB;
+		image_format = GL_BGR_EXT;
+		internal_format = GL_RGB;
 	}
 	if (fif == FIF_PNG)
 	{
