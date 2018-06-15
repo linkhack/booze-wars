@@ -17,6 +17,7 @@ private:
 	std::list<Weapon*> activeWeapons;
 	float shootIntervall;
 	float time;
+	bool letItRoll = true;
 public:
 	int static const Building::width = 20;
 	int static const Building::length = 28;

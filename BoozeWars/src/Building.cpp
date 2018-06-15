@@ -86,7 +86,7 @@ void Building::draw(Shader* shader, float time)
 }
 
 void Building::shoot(float time) {
-	if (this->time <= 0.02) {
+	if (this->letItRoll) {
 		Weapon* weapon1 = new Weapon(this->x, this->z, this->direction, Weapon::DELAY_FIRST);
 		activeWeapons.push_back(weapon1);
 		Weapon* weapon2 = new Weapon(this->x, this->z, this->direction, Weapon::DELAY_SECOND);
@@ -98,11 +98,13 @@ void Building::shoot(float time) {
 		Weapon* weapon5 = new Weapon(this->x, this->z, this->direction, Weapon::DELAY_FIFTH);
 		activeWeapons.push_back(weapon5);
 		this->time = time;
+		this->letItRoll = false;
 	}
 	else {
 		this->time += time;
 		if (this->time > this->shootIntervall) {
 			this->time = 0.0;
+			this->letItRoll = true;
 		}
 	}
 }
