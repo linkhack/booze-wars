@@ -26,17 +26,15 @@ private:
 	int hp;
 	PxPhysics* gPhysicsSDK;
 	PxScene* gScene;
+	Wave wave;
 
 	Enemy* getNearestEnemy(Building* building);
 	void addBuilding(Building* building);
 	bool isColliding(glm::mat2x2 placed, glm::mat2x2 toPlace);
-	int DrunkCity::getStreetDirection(float x, float z, int width, int length);
 	int DrunkCity::getDirection(float mx, float mz, float mxb, float mzb);
 	void DrunkCity::detectCollision();
 	bool DrunkCity::enemyCollision(Weapon* weapon, Enemy* enemy);	
-	
-	Wave wave;
-	
+		
 public:
 
 	DrunkCity();
@@ -58,6 +56,6 @@ public:
 	void addEnemy(float dT);
 	PxScene* initPhysics(PxPhysics* gPhysicsSDK);
 	bool waveIsFinished();
-
+	int getStreetDirection(float x, float z, int width, int length);
 };
 
