@@ -27,8 +27,10 @@ protected:
 	glm::mat4 modelMatrix;
 
 public:
+	static const int Enemy::DEFAULT_ENEMY = 1;
+	static const int Enemy::JUMPING_ENEMY = 2;
 	Enemy();
-	Enemy(std::shared_ptr<Street> Street,const int modelNr);
+	Enemy(std::shared_ptr<Street> Street);
 	~Enemy();
 
 	Enemy(Enemy&&) = default;

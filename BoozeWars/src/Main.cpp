@@ -277,7 +277,7 @@ int main(int argc, char** argv)
 													brickMaterial));
 
 		//create Wave
-		Wave wave = Wave(std::list<wavetuple>({wavetuple(10,2,1),wavetuple(10,0.5,1),wavetuple(5,0.2,1),wavetuple(10,1,0.1),wavetuple(20,0.25,1)}));
+		
 		//Wave wave = Wave(std::list<wavetuple>({ wavetuple(0,2,1)}));
 		//if the left click is still pressed
 		bool pressing = false;
@@ -375,15 +375,12 @@ int main(int argc, char** argv)
 						end = true;
 					}
 				}
-				if (wave.spawnEnemy(dt))
-				{
-					world.addEnemy(ModelFactory::DEFAULT_ENEMY);
-				}
+				world.addEnemy(dt);
 				try {
 					world.fight(dt);
 				}
 				catch (int e) {
-					if (e == ALL_ENEMIES_DESTROYED && wave.waveIsFinished()) {
+					if (e == ALL_ENEMIES_DESTROYED && world.waveIsFinished()) {
 						won = true;
 						end = true;
 
@@ -425,7 +422,9 @@ int main(int argc, char** argv)
 			//ground.draw(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.1f, 0.0f)));
 			world.zeichne(textureShader.get(), dt); //needs shadow
 
-			map.draw(glm::translate(glm::mat4(1.0f),glm::vec3(camera.getPosition().x,0,camera.getPosition().z)));
+			glm::vec3 mapTranslation = camera.getPosition() + 150.0f * camera.getLookDirection();
+			mapTranslation = glm::vec3(mapTranslation.x, 0, mapTranslation.z);
+			map.draw(glm::translate(glm::mat4(1.0f),mapTranslation));
 			lowDetailMap.draw(glm::translate(glm::mat4(1.0f),glm::vec3(camera.getPosition().x,-0.01,camera.getPosition().z)));
 			if (camera.getGroundIntersection() != glm::vec3(0, 1, 0)) {
 				cameraPlacement.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection() + glm::vec3(0.0f, 0.01f, 0.0f)));

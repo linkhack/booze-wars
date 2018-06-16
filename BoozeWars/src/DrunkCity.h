@@ -35,6 +35,7 @@ private:
 	void DrunkCity::detectCollision();
 	bool DrunkCity::enemyCollision(Weapon* weapon, Enemy* enemy);	
 	
+	Wave wave;
 	
 public:
 
@@ -54,8 +55,9 @@ public:
 	void placeBuilding(float x, float z);
 	bool hasMinOneBuildings();
 	int getBuildingsLeft();
-	void addEnemy(const int modelNr=ModelFactory::DEFAULT_ENEMY);
+	void addEnemy(float dT);
 	PxScene* initPhysics(PxPhysics* gPhysicsSDK);
+	bool waveIsFinished();
 
 };
 

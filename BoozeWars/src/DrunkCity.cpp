@@ -14,6 +14,7 @@ DrunkCity::DrunkCity(float x, float y, float z)
 	citySizeZ = z;
 	hp = 100;
 	highway = std::make_shared<Street>(x, z);
+	wave = Wave(std::list<wavetuple>({ wavetuple(Enemy::DEFAULT_ENEMY,10,2,1),wavetuple(Enemy::JUMPING_ENEMY,10,0.5,1),wavetuple(Enemy::DEFAULT_ENEMY,5,0.2,1),wavetuple(Enemy::JUMPING_ENEMY,10,1,0.1),wavetuple(Enemy::DEFAULT_ENEMY,20,0.25,1) }));
 }
 
 DrunkCity::~DrunkCity()
@@ -80,9 +81,22 @@ Enemy* DrunkCity::getNearestEnemy(Building* building)
 	return nearestEnemy;
 }
 
-void DrunkCity::addEnemy(const int modelNr)
+void DrunkCity::addEnemy(float dT)
 {
-	Enemy* enemyToAdd = new JumpingEnemy(highway, modelNr);
+	int type = wave.spawnEnemy(dT);
+	Enemy* enemyToAdd;
+	switch (type)
+	{
+	case Enemy::DEFAULT_ENEMY:
+		enemyToAdd = new Enemy(highway);
+		break;
+	case Enemy::JUMPING_ENEMY:
+		enemyToAdd = new JumpingEnemy(highway);
+		break;
+	default:
+		return;
+		break;
+	}
 	PxRigidDynamic* dyn = enemyToAdd->createPhysics(gPhysicsSDK);
 	enemiesAlive.push_back(enemyToAdd);
 	gScene->addActor(*dyn);
@@ -97,6 +111,11 @@ PxScene* DrunkCity::initPhysics(PxPhysics* gPhysicsSDK)
 	sceneDesc.filterShader = PxDefaultSimulationFilterShader;
 	gScene = gPhysicsSDK->createScene(sceneDesc);
 	return gScene;
+}
+
+bool DrunkCity::waveIsFinished()
+{
+	return wave.waveIsFinished();
 }
 
 

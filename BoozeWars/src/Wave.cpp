@@ -1,6 +1,10 @@
 #include "Wave.h"
 
 
+Wave::Wave()
+{
+
+}
 
 Wave::Wave(std::list<wavetuple> waveList)
 {
@@ -20,26 +24,27 @@ bool Wave::waveIsFinished()
 	return waveParts.empty()&&currentEnemies==0;
 }
 
-bool Wave::spawnEnemy(float dT)
+int Wave::spawnEnemy(float dT)
 {
 	time += dT;
 	if (!waveParts.empty() && currentEnemies == 0) {
 		if(time>= currentGroupDelay){
 			wavetuple currentWave = waveParts.front();
 			waveParts.pop_front();
-			currentEnemies = std::get<0>(currentWave);
-			currentDelay = std::get<1>(currentWave);
-			currentGroupDelay = std::get<2>(currentWave);
+			currentType = currentWave.type;
+			currentEnemies = currentWave.numberOfEnemies;
+			currentDelay = currentWave.timeBetweenEnemies;
+			currentGroupDelay = currentWave.timeToNextWave;
 			time = 0;
 		}
 		return false;
 	}
 	if (time >= currentDelay && currentEnemies>0) {
 		currentEnemies--;
-		time = 0;
-		return true;
+		time = 0; 
+		return currentType;
 	}
 	else {
-		return false;
+		return -1;
 	}
 }

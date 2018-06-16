@@ -6,8 +6,8 @@ JumpingEnemy::JumpingEnemy()
 {
 }
 
-JumpingEnemy::JumpingEnemy(std::shared_ptr<Street> Street, const int modelNr)
-	:Enemy(Street,modelNr)
+JumpingEnemy::JumpingEnemy(std::shared_ptr<Street> Street)
+	:Enemy(Street)
 {
 	movementspeed = 30.0f;
 	hp = 20;

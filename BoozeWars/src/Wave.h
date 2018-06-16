@@ -1,29 +1,41 @@
 #pragma once
-#include <tuple>
 #include <list>
+#include "Enemy.h"
 
 /*
 first: number of enemies
 second: time between enemies
 third: time between group of enemies
 */
-typedef std::tuple<int, float, float> wavetuple; 
+
+struct wavetuple
+{
+	int type;
+	int numberOfEnemies;
+	float timeBetweenEnemies;
+	float timeToNextWave;
+
+	wavetuple(int a, int b, float c, float d) :
+		type(a), numberOfEnemies(b), timeBetweenEnemies(c), timeToNextWave(d) {}
+};
 
 class Wave
 {
 private:
 	std::list<wavetuple> waveParts;
 	int currentEnemies;
+	int currentType;
 	float currentDelay;
 	float currentGroupDelay;
 	float time;
 	bool spawningEnemies;
 	bool isFinished;
 public:
+	Wave();
 	Wave(std::list<wavetuple> waveList);
 	~Wave();
 
 	bool waveIsFinished();
-	bool spawnEnemy(float dT);
+	int spawnEnemy(float dT);
 };
 

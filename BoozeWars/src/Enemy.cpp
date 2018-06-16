@@ -5,7 +5,7 @@ Enemy::Enemy()
 
 }
 
-Enemy::Enemy(std::shared_ptr<Street> street, const int modelNr)
+Enemy::Enemy(std::shared_ptr<Street> street)
 {
 	this->model = model;
 	glm::mat2 part = street->getPart1();
