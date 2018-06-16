@@ -26,8 +26,8 @@ float normalizeZ(float x)
 
 void main()
 {    
-    vec2 dx = vec2(0.51*1/width,0);
-	vec2 dy = vec2(0,0.51*1/height);
+    vec2 dx = vec2(0.5*1/width,0);
+	vec2 dy = vec2(0,0.5*1/height);
 	vec2 p=textureCoords-dy;
 	float x1 = texture(depthInformation,p-dx).x;
 	vec3 y1 = texture(normalInformation,p-dx).xyz;

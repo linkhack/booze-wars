@@ -227,7 +227,7 @@ int main(int argc, char** argv)
 		std::shared_ptr<Material> earthMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.05f, 0.9f, 0.5f), 5.0f, earthTexture);
 		std::shared_ptr<Material> moonMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.1f, 0.9f, 0.0f), 1.0f, woodTexture);
 		std::shared_ptr<Material> brickMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.2f, 0.8f, 0.5f), 5.0f, brickTexture);
-		std::shared_ptr<Material> infiniGreenMat = std::make_shared<Material>(infiniGreen, glm::vec3(0.5f, 0.5f, 0.5f), 3.0f);
+		std::shared_ptr<Material> infiniGreenMat = std::make_shared<Material>(infiniGreen, glm::vec3(0.2f, 0.8f, 0.0f), 1.0f);
 		std::shared_ptr<Material> translucentRed = std::make_shared<Material>(translucent, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f);
 		//std::shared_ptr<Material> mapMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.1f, 0.9f, 0.0f), 50.0f, mapTexture);
 		std::shared_ptr<Material> mapMaterial = std::make_shared<TextureMaterial>(proceduralGrass, glm::vec3(0.2f, 0.8f, 0.0f), 1.0f,mapTexture);
@@ -239,7 +239,8 @@ int main(int argc, char** argv)
 		//Create Ground
 		Geometry ground = Geometry(glm::mat4(1.0f), Geometry::createInfinitePlane(), infiniGreenMat);
 		//Create map
-		Geometry map = Geometry(glm::translate(glm::mat4(1.0f),glm::vec3(150,0,150)), Geometry::createRectangle(300, 300), mapMaterial);
+		Geometry map = Geometry(glm::translate(glm::mat4(1.0f),glm::vec3(0,0,0)), Geometry::createRectangle(300, 300), mapMaterial);
+		Geometry lowDetailMap = Geometry(glm::mat4(1.0f), Geometry::createRectangle(600.0, 600.0), infiniGreenMat);
 		PxTransform groundPos(PxVec3(0.0f, 0.0f, 0.0f), PxQuat(PxHalfPi, PxVec3(0.0f, -1.0f, 0.0f)));
 		PxRigidStatic* groundPhysicsPlane = gPhysicsSDK->createRigidStatic(groundPos);
 		PxMaterial* mMaterial = gPhysicsSDK->createMaterial(0.0f, 0.1f, 0.5f);
@@ -424,7 +425,8 @@ int main(int argc, char** argv)
 			//ground.draw(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.1f, 0.0f)));
 			world.zeichne(textureShader.get(), dt); //needs shadow
 
-			map.draw();
+			map.draw(glm::translate(glm::mat4(1.0f),glm::vec3(camera.getPosition().x,0,camera.getPosition().z)));
+			lowDetailMap.draw(glm::translate(glm::mat4(1.0f),glm::vec3(camera.getPosition().x,-0.01,camera.getPosition().z)));
 			if (camera.getGroundIntersection() != glm::vec3(0, 1, 0)) {
 				cameraPlacement.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection() + glm::vec3(0.0f, 0.01f, 0.0f)));
 				cameraCircle.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection() + glm::vec3(0.0f, 0.01f, 0.0f)));

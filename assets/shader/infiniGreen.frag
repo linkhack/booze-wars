@@ -12,7 +12,8 @@ in VertexData {
 	vec4 shadowCoords;
 } vert;
 
-out vec4 color;
+layout(location = 0) out vec4 color;
+layout(location = 1) out vec4 normal;
 
 uniform vec3 camera_world;
 
@@ -30,7 +31,10 @@ uniform struct PointLight {
 	vec3 position;
 	vec3 attenuation;
 } pointL;
-
+float fogFunction(float distance, float start, float end)
+{
+	return clamp((distance-start)/(end-start),0,1);
+}
 
 vec3 phong(vec3 n, vec3 l, vec3 v, vec3 diffuseC, float diffuseF, vec3 specularC, float specularF, float alpha, bool attenuate, vec3 attenuation) {
 	float d = length(l);
@@ -44,8 +48,8 @@ vec3 phong(vec3 n, vec3 l, vec3 v, vec3 diffuseC, float diffuseF, vec3 specularC
 void main() {	
 	vec3 n = normalize(vert.normal_world);
 	vec3 v = normalize(camera_world - vert.position_world);
-	
-	vec3 texColor = vec3(0.2,0.6,0.2);
+	vec4 fogColor = vec4(0.45,0.45,0.6,1);
+	vec3 texColor = 0.35*vec3(0.34313,0.429411,0.109803)+0.25*vec3(0.58823529411,0.42745098039,0.1333333);;
 	color = vec4(texColor * materialCoefficients.x, 1); // ambient
 	
 	// add directional light contribution
@@ -54,5 +58,11 @@ void main() {
 	// add point light contribution
 	color.rgb += phong(n, pointL.position - vert.position_world, v, pointL.color * texColor, materialCoefficients.y, pointL.color, materialCoefficients.z, specularAlpha, true, pointL.attenuation);
 	
+	float fogDistance = gl_FragCoord.z/gl_FragCoord.w;
+	float fogAmount = fogFunction(fogDistance,100,450);
+	
+
+	color = mix(color, fogColor,fogAmount);
+	normal =  0.5*vec4(n,1)+0.5;
 }
 
