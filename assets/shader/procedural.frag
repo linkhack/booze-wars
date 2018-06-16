@@ -96,18 +96,21 @@ void main() {
 	vec3 v = normalize(camera_world - vert.position_world);
 	float factor = 0.5-noise(vert.position_world.xz*0.05);
 	float factor2 = 0.5-noise(vert.position_world.xz*0.5);
-	factor = min(floor(5*factor)/5,1);
-
-	
+	factor = 1-factor*factor;
 	//factor = min(floor(5*factor)/5,1);
+	
+	float isStreet = texture(diffuseTexture,vert.position_world.zx/300).r;
+	
+	factor = min(floor(5*factor)/4,1);
+	factor = min(floor(5*(factor+0.1*factor2))/4,1);
 
-	vec3 dirtColor = 0.8*vec3(0.1098,0.30196,0.028431);
-	vec3 grassColor = 0.8*vec3(0.34313,0.429411,0.109803);
-	vec3 grassColor2 = 0.8*vec3(0.34313,0.129411,0.0509803);
-	vec3 texColor = mix(dirtColor,grassColor,factor);
+	vec3 dirtColor = vec3(0.58823529411,0.42745098039,0.1333333);
+	vec3 grassColor = vec3(0.34313,0.429411,0.109803);
+	vec3 grassColor2 = 0.8*vec3(0.3433,0.129411,0.0509803);
+	vec3 texColor = mix(dirtColor,grassColor,(1-isStreet)*factor-isStreet*factor);
 		
 
-	//color = vec4(texColor * materialCoefficients.x,1); // ambient
+	color = vec4(texColor * materialCoefficients.x,1); // ambient
 	vec4 fogColor = vec4(0.45,0.45,0.6,1);
 	
 	//Shadow Calculations
@@ -131,9 +134,9 @@ void main() {
 	float fogAmount = fogFunction(fogDistance,100,450);
 	
 
-	//color = mix(color, fogColor,fogAmount);
+	color = mix(color, fogColor,fogAmount);
 	normal =  0.5*vec4(n,1)+0.5;
-	color = vec4(texColor,1);
+	//color = vec4(texColor,1);
 	//color = vec4(vec3(0.5-abs(noise(vert.position_world.xz*0.005))),1);
 	//color=vec4(n,1);
 	//color = vec4(vec3(0.5*floor(2*pow(max(0, dot(r, v)), alpha))),1);

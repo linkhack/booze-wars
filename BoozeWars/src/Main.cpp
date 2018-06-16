@@ -217,7 +217,7 @@ int main(int argc, char** argv)
 		std::shared_ptr<Texture> brickTexture = std::make_shared<Texture>("bricks_diffuse.dds");
 		std::shared_ptr<Texture> woodTexture = std::make_shared<Texture>("wood_texture.dds");
 		std::shared_ptr<Texture> mapTexture = std::make_shared<Texture>();
-		mapTexture->loadImage("map.png");
+		mapTexture->loadImage("map_procedural.png");
 
 		// instancing ModelFactory and loading Models
 		ModelFactory::Instance();
@@ -230,7 +230,7 @@ int main(int argc, char** argv)
 		std::shared_ptr<Material> infiniGreenMat = std::make_shared<Material>(infiniGreen, glm::vec3(0.5f, 0.5f, 0.5f), 3.0f);
 		std::shared_ptr<Material> translucentRed = std::make_shared<Material>(translucent, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f);
 		//std::shared_ptr<Material> mapMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.1f, 0.9f, 0.0f), 50.0f, mapTexture);
-		std::shared_ptr<Material> mapMaterial = std::make_shared<Material>(proceduralGrass, glm::vec3(0.1f, 0.9f, 0.0f), 1.0f);
+		std::shared_ptr<Material> mapMaterial = std::make_shared<TextureMaterial>(proceduralGrass, glm::vec3(0.2f, 0.8f, 0.0f), 1.0f,mapTexture);
 		//Geometries
 		//Create World
 		DrunkCity world = DrunkCity(300.0f, 9000.0f, 300.0f);
