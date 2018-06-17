@@ -103,3 +103,57 @@ void Character::setFontSize(int fontSize)
 {
 	FT_Set_Pixel_Sizes(face, 0, fontSize);
 }
+
+void Character::renderBox(glm::vec2 triangle, float x, float y, GLfloat scale, glm::vec3 color)
+{
+	shader->use();
+	glUniform3f(glGetUniformLocation(shader->getID(), "textColor"), color.x, color.y, color.z);
+	glActiveTexture(GL_TEXTURE0);
+	glBindVertexArray(_vao);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+	GLuint textureID;
+	glGenTextures(1, &textureID);
+	glBindTexture(GL_TEXTURE_2D, textureID);
+
+	glTexImage2D(
+		GL_TEXTURE_2D,
+		0,
+		GL_RED,
+		triangle[0] * scale,
+		triangle[1] * scale,
+		0,
+		GL_RED,
+		GL_UNSIGNED_BYTE,
+		face->glyph->bitmap.buffer
+	);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glUniform1i(glGetUniformLocation(shader->getID(), "tex"), 0);
+
+	glm::mat4 projection = glm::ortho(0.0f, (float)windowWidth, 0.0f, (float)windowHeight);
+	glUniformMatrix4fv(glGetUniformLocation(shader->getID(), "projection"), 1, false, glm::value_ptr(projection));
+
+	float xpos = x;
+	float ypos = y;
+	float w = triangle[0] * scale;
+	float h = triangle[1] * scale;
+
+	GLfloat vertices[6][4] = {
+		{ xpos,     ypos + h,   0.0, 0.0 },
+	{ xpos,     ypos,       0.0, 1.0 },
+	{ xpos + w, ypos,       1.0, 1.0 },
+	{ xpos,     ypos + h,   0.0, 0.0 },
+	{ xpos + w, ypos,       1.0, 1.0 },
+	{ xpos + w, ypos + h,   1.0, 0.0 }
+	};
+	glBindBuffer(GL_ARRAY_BUFFER, _vboPositions);
+	glBufferData(GL_ARRAY_BUFFER, sizeof vertices, vertices, GL_DYNAMIC_DRAW);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glBindTexture(GL_TEXTURE_2D, 0);
+}

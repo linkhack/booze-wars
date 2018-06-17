@@ -71,6 +71,7 @@ static int height = 800;
 static bool _starting = false;
 static int buildingChosen=1;
 static int direction = 0;
+static bool placementBox = true;
 
 /* --------------------------------------------- */
 // Main
@@ -442,7 +443,7 @@ int main(int argc, char** argv)
 			mapTranslation = glm::vec3(mapTranslation.x, 0, mapTranslation.z);
 			map.draw(glm::translate(glm::mat4(1.0f),mapTranslation));
 			lowDetailMap.draw(glm::translate(glm::mat4(1.0f),glm::vec3(camera.getPosition().x,-0.01,camera.getPosition().z)));
-			if (buildingChosen == 1) {
+			if (buildingChosen == 1 && placementBox) {
 				glm::vec3 position = camera.getGroundIntersection();
 				glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), direction*glm::pi<float>() / 2, glm::vec3(0, 1, 0));
 				buildingPlacement.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection() + glm::vec3(0.0f, 0.01f, 0.0f))*rotation);
@@ -463,7 +464,7 @@ int main(int argc, char** argv)
 				}
 				buildingRange.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection() + translate)*rotation);
 			}
-			else if (buildingChosen == 2) {
+			else if (buildingChosen == 2 && placementBox) {
 				glm::vec3 position = camera.getGroundIntersection();
 				int streetPart = Wall::getModelMatrix(camera.getGroundIntersection()[0], camera.getGroundIntersection()[2], world.highway.get());
 				wallPlacement.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection())*glm::rotate(glm::mat4(1.0f), streetPart*glm::pi<float>() / 2, glm::vec3(0, 1, 0)));
@@ -523,7 +524,12 @@ int main(int argc, char** argv)
 			}
 
 			if (streetColCounter > 0) {
-				charactorService->renderText("COLLIDING WITH STREET!", 20, window_height - 200, 0.8f, glm::vec3(1.0, 0.0, 0.0));
+				if (buildingChosen == 1) {
+					charactorService->renderText("COLLIDING WITH STREET!", 20, window_height - 200, 0.8f, glm::vec3(1.0, 0.0, 0.0));
+				}
+				else {
+					charactorService->renderText("WALL CAN ONLY BE PLACED ON STREET!", 20, window_height - 200, 0.8f, glm::vec3(1.0, 0.0, 0.0));
+				}
 				streetColCounter--;
 			}
 
@@ -577,9 +583,10 @@ int main(int argc, char** argv)
 			charactorService->renderText(buildings.c_str(), 450, 100, 0.8f, color);
 
 			if (!start && firstWave && world.hasMinOneBuildings()) {
-				charactorService->renderText("PRESS ENTER TO START WAVE", 20, window_height-50, 0.5f, glm::vec3(0.0,0.5,0.5));
+				charactorService->renderBox(glm::vec2(2,10), 20, window_height-55, 0.5f, glm::vec3(0.502f, 0.502f, 0.50f));
+				charactorService->renderText("PRESS ENTER TO START WAVE", 20, window_height-50, 0.5f, glm::vec3(1.0f));
 			} else if (!start && !firstWave && world.hasMinOneBuildings()) {
-				charactorService->renderText("PRESS ENTER TO START NEXT WAVE", 20, window_height - 50, 0.5f, glm::vec3(0.0, 0.5, 0.5));
+				charactorService->renderText("PRESS ENTER TO START NEXT WAVE", 20, window_height - 50, 0.5f, glm::vec3(1.0f));
 			}
 
 			// Compute frame time
@@ -740,6 +747,15 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			default:
 				direction = 0;
 			}
+			break;
+		case GLFW_KEY_Q:
+			if (placementBox) {
+				placementBox = false;
+			}
+			else {
+				placementBox = true;
+			}
+			break;
 	}
 }
 

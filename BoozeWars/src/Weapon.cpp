@@ -121,7 +121,7 @@ bool Weapon::implode(float time)
 	glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(implodeScale, implodeScale, implodeScale));
 	this->modelMatrix = this->modelMatrix * scale;
 	this->particleGenerator->update(time, this->x, this->z);
-	if (implodeTime >= 2.0) {
+	if (implodeTime >= 2.5) {
 		return true;
 	}
 	return false;

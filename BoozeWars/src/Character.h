@@ -27,5 +27,6 @@ public:
 	~Character();
 	void setFontSize(int fontSize);
 	void renderText(const char *text, float x, float y, GLfloat scale, glm::vec3 color);
+	void renderBox(glm::vec2 triangle, float x, float y, GLfloat scale, glm::vec3 color);
 };
 
