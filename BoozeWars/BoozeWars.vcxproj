@@ -20,6 +20,7 @@
     <ClCompile Include="src\Exceptions.h" />
     <ClCompile Include="src\Street.cpp" />
     <ClCompile Include="src\Texture.cpp" />
+    <ClCompile Include="src\Wall.cpp" />
     <ClCompile Include="src\Wave.cpp" />
     <ClCompile Include="src\Weapon.cpp" />
     <ClInclude Include="src\Particle.h" />
@@ -53,6 +54,7 @@
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\Utils.h" />
     <ClInclude Include="src\Street.h" />
+    <ClInclude Include="src\Wall.h" />
     <ClInclude Include="src\Wave.h" />
     <ClInclude Include="src\Weapon.h" />
   </ItemGroup>
