@@ -80,7 +80,7 @@ void Building::draw(Shader* shader, float time)
 	{
 		Weapon* weapon = *it;
 		if (weapon->draw(shader, time) || weapon->isHitted()) {
-			if (weapon->implode(time)) {
+			if (weapon->implode(time) ) {
 				it = activeWeapons.erase(it);
 				delete weapon;
 				weapon = NULL;

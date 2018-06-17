@@ -311,7 +311,7 @@ void DrunkCity::detectCollision() {
 			for (std::list<Enemy*>::iterator it = enemiesAlive.begin(); it != enemiesAlive.end();)
 			{
 				Enemy* enemy = *it;
-				if (enemyCollision(weapon, enemy)) {
+				if (!weapon->isHitted() && enemyCollision(weapon, enemy)) {
 					enemy->hit(building->getDamage());
 					if (enemy->getHP() <= 0) {
 						limitBuildings += 0.1;

@@ -43,10 +43,10 @@ void ParticleGenerator::init()
 
 void ParticleGenerator::draw(Shader* shader)
 {
+	shader->use();
 	for (Particle particle : this->particles)
 	{
-		shader->use();
-		if (particle.Life > 0.0f)
+		if (particle.Life > 0.0f&& particle.Color.a>0.0f)
 		{
 			glm::vec3 position = particle.Position + particle.Modifier;
 			shader->setUniform("position", position);
@@ -75,19 +75,17 @@ void ParticleGenerator::update(GLfloat dt, float x, float z)
 		if (p.Life > 0.0f && p.Color.a > 0)
 		{
 			if (p.Direction == glm::vec3(0.0f)) {
-				p.Direction = glm::vec3(rand() % 2, rand() % 2, rand() % 2);
+				float phi = rand()%360 * glm::pi<float>()/180.0f;
+				float theta = rand()%180 * glm::pi<float>() / 180.0f;
+				p.Direction = glm::vec3(glm::sin(theta)*glm::cos(phi), glm::cos(theta),glm::sin(theta)*glm::sin(phi));
 			}
 
 			for (int i = 0; i < 3; i++) {
-				float diff = 0.5 - 0.0;
+				float diff = 0.3 - 0.0;
 				float random = (((float)rand() / RAND_MAX) * diff) + 0.0;
+				p.Modifier[i] += random * (rand() % 2)*p.Direction[i];
 				//float random = (float)(rand() % 411)/1000;
-				if (p.Direction[i] == 0) {
-					p.Modifier[i] += random * (rand() % 2);
-				}
-				else {
-					p.Modifier[i] -= random * (rand() % 2);
-				}
+				
 			}
 			p.Position = glm::vec3(x, 2.0f, z);
 			p.Color.a -= dt * 1.0f;
