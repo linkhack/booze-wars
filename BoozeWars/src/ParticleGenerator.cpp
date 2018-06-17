@@ -75,15 +75,14 @@ void ParticleGenerator::update(GLfloat dt, float x, float z)
 		if (p.Life > 0.0f && p.Color.a > 0)
 		{
 			if (p.Direction == glm::vec3(0.0f)) {
-				p.Direction = glm::vec3(rand() % 3, rand() % 3, rand() % 2);
+				p.Direction = glm::vec3(rand() % 2, rand() % 2, rand() % 2);
 			}
 
 			for (int i = 0; i < 3; i++) {
-				float random = (float)(rand() % 70)/100;
+				float diff = 0.5 - 0.0;
+				float random = (((float)rand() / RAND_MAX) * diff) + 0.0;
+				//float random = (float)(rand() % 411)/1000;
 				if (p.Direction[i] == 0) {
-					p.Modifier[i] = 0.0f;
-				}
-				else if (p.Direction[i] == 1) {
 					p.Modifier[i] += random * (rand() % 2);
 				}
 				else {
@@ -91,7 +90,7 @@ void ParticleGenerator::update(GLfloat dt, float x, float z)
 				}
 			}
 			p.Position = glm::vec3(x, 2.0f, z);
-			p.Color.a -= dt * 1.5;
+			p.Color.a -= dt * 1.0f;
 		}
 	}
 }
