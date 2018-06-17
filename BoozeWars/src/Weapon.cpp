@@ -59,7 +59,7 @@ Weapon::~Weapon()
 {
 }
 
-bool Weapon::draw(Shader* shader, Shader* particleShader, float time)
+bool Weapon::draw(Shader* shader, float time)
 {
 	this->time += time;
 	if (this->time >= this->delay) {
@@ -76,12 +76,7 @@ bool Weapon::draw(Shader* shader, Shader* particleShader, float time)
 			glm::mat4 roll = glm::rotate(glm::mat4(1.0f), rollRotate * time * glm::pi<float>() / 2, glm::vec3(0, 1, 0));
 			modelMatrix = modelMatrix * roll;
 		}
-		if (!hitted) {
-			model->draw(shader, modelMatrix);
-		}
-		if (hitted) {
-			this->particleGenerator->draw(particleShader);
-		}
+		model->draw(shader, modelMatrix);
 		if (!hitted) {
 			glm::mat4 translate;
 
@@ -105,14 +100,18 @@ bool Weapon::draw(Shader* shader, Shader* particleShader, float time)
 	return false;
 }
 
+void Weapon::drawParticle(Shader* particleShader) {
+	if (hitted) {
+		this->particleGenerator->draw(particleShader);
+	}
+}
+
 bool Weapon::implode(float time)
 {
 	if (!hitted) {
 		hitted = true;
 	}
 	implodeTime += time;
-
-	//TODO: implode particel system
 	float implodeScale = 15.0f*time;
 	if (implodeScale >=1) {
 		implodeScale = 0.2f;

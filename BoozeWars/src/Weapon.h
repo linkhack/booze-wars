@@ -33,7 +33,8 @@ public:
 
 	Weapon(float x, float z, int direction, int delay);
 	~Weapon();
-	bool draw(Shader* shader, Shader* particleShader, float time);
+	bool draw(Shader* shader, float time);
+	void Weapon::drawParticle(Shader* particleShader);
 	bool implode(float time);
 	glm::mat4 Weapon::getModelMatrix();
 	glm::mat2x2 getModel();

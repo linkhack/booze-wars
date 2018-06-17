@@ -9,7 +9,7 @@ uniform vec4 color;
 
 void main()
 {
-    float scale = 10.0f;
+    float scale = 0.2f;
     ParticleColor = color;
 	vec3 particelPos = vec3(vertex.x,vertex.y,0)*scale + position;
     gl_Position = viewProjMatrix * vec4(particelPos, 1.0);

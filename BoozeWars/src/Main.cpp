@@ -401,7 +401,7 @@ int main(int argc, char** argv)
 				shadowShader.use();
 				shadowShader.setUniform("viewProjMatrix", dirLProjView);
 				glCullFace(GL_FRONT);
-				world.zeichne(&shadowShader, particleShader.get(), dt);
+				world.zeichne(&shadowShader, dt);
 				school.drawShadow(shadowShader);
 
 				glCullFace(GL_BACK);
@@ -423,7 +423,7 @@ int main(int argc, char** argv)
 			}
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			//ground.draw(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.1f, 0.0f)));
-			world.zeichne(textureShader.get(), particleShader.get(), dt); //needs shadow
+			world.zeichne(textureShader.get(), dt); //needs shadow
 
 			glm::vec3 mapTranslation = camera.getPosition() + 150.0f * camera.getLookDirection();
 			mapTranslation = glm::vec3(mapTranslation.x, 0, mapTranslation.z);
@@ -438,6 +438,7 @@ int main(int argc, char** argv)
 			}
 			school.draw();
 			worldModel.draw();
+			world.drawParticles(particleShader.get());
 			
 			if (_postprocessing)
 			{

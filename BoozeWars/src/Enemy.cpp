@@ -20,8 +20,8 @@ Enemy::Enemy(std::shared_ptr<Street> street)
 	damageTeens = 5;
 	streetPart = 0;
 	modelMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(8, 8, 8));
-	this->width = 1.0f;
-	this->width = 1.0f;
+	this->width = 3.0f;
+	this->width = 3.0f;
 }
 
 

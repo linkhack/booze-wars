@@ -50,7 +50,8 @@ public:
 
 	int getHP();
 	void drawShadows(Shader & shader);
-	void zeichne(Shader* shader, Shader* particleShader, float time);
+	void zeichne(Shader* shader, float time);
+	void DrunkCity::drawParticles(Shader* particleShader);
 	void fight(float dT);
 	void walk();
 	void calculateForces();

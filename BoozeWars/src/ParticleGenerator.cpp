@@ -45,12 +45,12 @@ void ParticleGenerator::draw(Shader* shader)
 {
 	for (Particle particle : this->particles)
 	{
+		shader->use();
 		if (particle.Life > 0.0f)
 		{
-			shader->use();
 			glm::vec3 position = particle.Position + particle.Modifier;
 			shader->setUniform("position", position);
-			shader->setUniform("color", /*particle.Color*/ glm::vec4(1.0, 0.0, 0.0, 0.0));
+			shader->setUniform("color", particle.Color);
 			/*
 			this->texture->bind(texture->id);
 			
@@ -66,37 +66,32 @@ void ParticleGenerator::draw(Shader* shader)
 	}
 }
 
-void ParticleGenerator::update(GLfloat dt, float x, float y)
+void ParticleGenerator::update(GLfloat dt, float x, float z)
 {
 	for (GLuint i = 0; i < this->nr_particles; ++i)
 	{
 		Particle &p = this->particles[i];
 		p.Life -= dt; // reduce life
-		if (p.Life > 0.0f)
+		if (p.Life > 0.0f && p.Color.a > 0)
 		{
 			if (p.Direction == glm::vec3(0.0f)) {
-				p.Direction = glm::vec3(rand() % 2, rand() % 2, rand() % 2);
+				p.Direction = glm::vec3(rand() % 3, rand() % 3, rand() % 2);
 			}
 
 			for (int i = 0; i < 3; i++) {
-				float random = (float)((rand() % 4)+1)/10;
+				float random = (float)(rand() % 70)/100;
 				if (p.Direction[i] == 0) {
-					p.Modifier[i] += random;
-					//TODO: remove true
-					if (true || p.Modifier[i] > 2.0f) {
-						p.Modifier[i] = 2.0f;
-					}
+					p.Modifier[i] = 0.0f;
+				}
+				else if (p.Direction[i] == 1) {
+					p.Modifier[i] += random * (rand() % 2);
 				}
 				else {
-					p.Modifier[i] -= random;
-					//TODO: remove true
-					if (true || p.Modifier[i] < -2.0f) {
-						p.Modifier[i] = -2.0f;
-					}
+					p.Modifier[i] -= random * (rand() % 2);
 				}
 			}
-			p.Position = glm::vec3(x, 1.0f, y);
-			p.Color.a -= dt * 2.5;
+			p.Position = glm::vec3(x, 2.0f, z);
+			p.Color.a -= dt * 1.5;
 		}
 	}
 }
