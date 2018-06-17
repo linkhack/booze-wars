@@ -10,8 +10,6 @@ ParticleGenerator::ParticleGenerator()
 
 ParticleGenerator::~ParticleGenerator()
 {
-	GLuint buffers[4] = { positionBuffer,colorBuffer,VAO,VBO };
-	glDeleteBuffers(4, buffers);
 	//delete particles;
 }
 
