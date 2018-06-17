@@ -30,12 +30,14 @@ private:
 	float time;
 	bool spawningEnemies;
 	bool isFinished;
+	Wave* nextWave;
 public:
 	Wave();
-	Wave(std::list<wavetuple> waveList);
+	Wave(std::list<wavetuple> waveList, Wave* wave);
 	~Wave();
 
 	bool waveIsFinished();
 	int spawnEnemy(float dT);
+	Wave* getNextWave();
 };
 

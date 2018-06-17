@@ -12,7 +12,6 @@ private:
 	int streetPart = 0;
 	glm::mat4 modelMatrix;
 
-
 public:
 	static const float width;
 	static const float height;

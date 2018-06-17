@@ -19,5 +19,8 @@ public:
 	glm::mat2x2 getPart3();
 	float getStreetWidth();
 
+	float getStreetLightPosX();
+	float getStreetLightPosZ();
+
 };
 

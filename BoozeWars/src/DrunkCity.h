@@ -29,9 +29,8 @@ private:
 	int hp;
 	PxPhysics* gPhysicsSDK;
 	PxScene* gScene;
-	Wave wave;
+	Wave* wave;
 
-	Enemy* getNearestEnemy(Building* building);
 	void addBuilding(Building* building);
 	void addWall(Wall* wall);
 	bool isColliding(glm::mat2x2 placed, glm::mat2x2 toPlace);
@@ -63,5 +62,7 @@ public:
 	PxScene* initPhysics(PxPhysics* gPhysicsSDK);
 	bool waveIsFinished();
 	int getStreetDirection(float x, float z, int width, int length);
+	bool hasNextWave();
+	glm::vec3 getStreetLightPos();
 };
 

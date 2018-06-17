@@ -15,8 +15,23 @@ DrunkCity::DrunkCity(float x, float y, float z)
 	citySizeZ = z;
 	hp = 100;
 	highway = std::make_shared<Street>(x, z);
-	//wave = Wave(std::list<wavetuple>({ wavetuple(Enemy::DEFAULT_ENEMY,10,2,1),wavetuple(Enemy::JUMPING_ENEMY,10,0.5,1),wavetuple(Enemy::DEFAULT_ENEMY,5,0.2,1),wavetuple(Enemy::JUMPING_ENEMY,10,1,0.1),wavetuple(Enemy::DEFAULT_ENEMY,20,0.25,1) }));
-	wave = Wave(std::list<wavetuple>());
+	Wave* secondWave = new Wave(
+		std::list<wavetuple>({
+			wavetuple(Enemy::DEFAULT_ENEMY,10,2,1),
+			wavetuple(Enemy::JUMPING_ENEMY,10,0.5,1),
+			wavetuple(Enemy::DEFAULT_ENEMY,5,0.2,1),
+			wavetuple(Enemy::JUMPING_ENEMY,10,1,0.1),
+			wavetuple(Enemy::DEFAULT_ENEMY,20,0.25,1) }),
+			NULL
+			);
+	wave = new Wave(
+		std::list<wavetuple>({ 
+			wavetuple(Enemy::DEFAULT_ENEMY,10,2,1),
+			wavetuple(Enemy::JUMPING_ENEMY,10,0.5,1),
+			wavetuple(Enemy::DEFAULT_ENEMY,5,0.2,1),
+			wavetuple(Enemy::JUMPING_ENEMY,10,1,0.1),
+			wavetuple(Enemy::DEFAULT_ENEMY,20,0.25,1) }),
+			secondWave);
 }
 
 DrunkCity::~DrunkCity()
@@ -66,38 +81,9 @@ void DrunkCity::drawParticles(Shader* particleShader) {
 	}
 }
 
-Enemy* DrunkCity::getNearestEnemy(Building* building)
-{
-	Enemy* nearestEnemy = NULL;
-	if (enemiesAlive.size() == 0) {
-		throw ALL_ENEMIES_DESTROYED;
-	}
-	for (std::list<Enemy*>::iterator it = enemiesAlive.begin(); it != enemiesAlive.end(); ++it)
-	{
-		Enemy* iteratingEnemy = *it;
-		glm::vec2 buildingCoords = glm::vec2(building->getX(), building->getZ());
-		glm::vec2 enemyCoords = glm::vec2(iteratingEnemy->getX(), iteratingEnemy->getZ());
-		float iterEnemylength = glm::abs(glm::distance(buildingCoords, enemyCoords));
-		if (iterEnemylength >= building->getRange()) //if out of range don't need to check
-			continue;
-		if (!nearestEnemy) {
-			nearestEnemy = iteratingEnemy;
-		}
-		else {
-			glm::vec2 lastEnemyCoords = glm::vec2(nearestEnemy->getX(), nearestEnemy->getZ());
-			float lastEnemyLength = glm::abs(glm::distance(buildingCoords, lastEnemyCoords));
-			if (lastEnemyLength > iterEnemylength) {
-				nearestEnemy = iteratingEnemy;
-			}
-		}
-	}
-
-	return nearestEnemy;
-}
-
 void DrunkCity::addEnemy(float dT)
 {
-	int type = wave.spawnEnemy(dT);
+	int type = wave->spawnEnemy(dT);
 	Enemy* enemyToAdd;
 	switch (type)
 	{
@@ -129,7 +115,7 @@ PxScene* DrunkCity::initPhysics(PxPhysics* gPhysicsSDK)
 
 bool DrunkCity::waveIsFinished()
 {
-	return wave.waveIsFinished();
+	return wave->waveIsFinished();
 }
 
 
@@ -301,6 +287,9 @@ int DrunkCity::getStreetDirection(float x, float z, int width, int length)
 }
 
 void DrunkCity::detectCollision() {
+	if (enemiesAlive.size() == 0) {
+		throw ALL_ENEMIES_DESTROYED;
+	}
 	for (std::list<Building*>::iterator it = buildings.begin(); it != buildings.end(); ++it)
 	{
 		Building* building = *it;
@@ -380,4 +369,18 @@ bool DrunkCity::hasMinOneBuildings()
 int DrunkCity::getBuildingsLeft()
 {
 	return limitBuildings - buildings.size();
+}
+
+bool DrunkCity::hasNextWave()
+{
+	wave = wave->getNextWave();
+	if (wave != nullptr) {
+		return true;
+	}
+	return false;
+}
+
+glm::vec3 DrunkCity::getStreetLightPos()
+{
+	return glm::vec3(highway->getStreetLightPosX(), 0.0f, highway->getStreetLightPosZ());
 }

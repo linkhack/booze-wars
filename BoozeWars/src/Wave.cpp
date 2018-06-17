@@ -6,9 +6,10 @@ Wave::Wave()
 
 }
 
-Wave::Wave(std::list<wavetuple> waveList)
+Wave::Wave(std::list<wavetuple> waveList, Wave* wave)
 {
 	waveParts = waveList;
+	nextWave = wave;
 	currentEnemies = 0;
 	currentDelay = 0;
 	time = 0;
@@ -47,4 +48,9 @@ int Wave::spawnEnemy(float dT)
 	else {
 		return -1;
 	}
+}
+
+Wave* Wave::getNextWave() 
+{
+	return nextWave;
 }

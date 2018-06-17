@@ -23,6 +23,7 @@
 
 #include "Character.h"
 #include "DrunkCity.h"
+#include "StreetLight.h"
 
 #include "Exceptions.h"
 
@@ -48,7 +49,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
-void setPerFrameUniforms(Shader* shader, myCamera& camera, DirectionalLight& dirL, PointLight& pointL, glm::mat4& lightMatrix);
+void setPerFrameUniforms(Shader* shader, myCamera& camera, DirectionalLight& dirL, PointLight& pointL, glm::mat4& lightMatrix, StreetLight& streetLight);
 void setPerFrameUniformsParticle(Shader* shader, myCamera& camera);
 void setPerFrameUniformsSkybox(Shader* shader, myCamera& camera);
 
@@ -227,7 +228,7 @@ int main(int argc, char** argv)
 		// Create materials
 		std::shared_ptr<Material> sunMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.1f, 0.9f, 0.4f), 8.0f, sunTexture);
 		std::shared_ptr<Material> earthMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.05f, 0.9f, 0.5f), 5.0f, earthTexture);
-		std::shared_ptr<Material> moonMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.1f, 0.9f, 0.0f), 1.0f, woodTexture);
+		std::shared_ptr<Material> woodMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.1f, 0.9f, 0.0f), 1.0f, woodTexture);
 		std::shared_ptr<Material> brickMaterial = std::make_shared<TextureMaterial>(textureShader, glm::vec3(0.2f, 0.8f, 0.5f), 5.0f, brickTexture);
 		std::shared_ptr<Material> infiniGreenMat = std::make_shared<Material>(infiniGreen, glm::vec3(0.2f, 0.8f, 0.0f), 1.0f);
 		std::shared_ptr<Material> translucentRed = std::make_shared<Material>(translucent, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f);
@@ -265,7 +266,7 @@ int main(int argc, char** argv)
 			"assets/textures/cubemap/posz.png"
 		};
 		Skybox worldModel = Skybox(skyboxShader, skymapTextureLoc);
-
+		
 		//ShadowMap
 		ShadowMapSimple directionalLightShadow = ShadowMapSimple();
 		directionalLightShadow.init(1024, 1024);
@@ -277,6 +278,8 @@ int main(int argc, char** argv)
 		school.addChild(std::make_unique<Geometry>(glm::translate(glm::mat4(1.0f), glm::vec3(-5, 5, 40)), 
 													Geometry::createCylinderGeometry(14, 45, 10),
 													brickMaterial));
+
+		StreetLight streetLight = StreetLight(world.getStreetLightPos());
 
 		//create Wave
 		
@@ -314,6 +317,7 @@ int main(int argc, char** argv)
 		int buildingColCounter = 0;
 		int streetColCounter = 0;
 		bool start = false;
+		bool firstWave = true;
 		bool end = false;
 		bool won = false;
 		int buildingLimit = 0;
@@ -353,10 +357,10 @@ int main(int argc, char** argv)
 				camera.updateDirection(int(mouse_x), int(mouse_y));
 			}
 			// Set per-frame uniforms
-			setPerFrameUniforms(textureShader.get(), camera, dirL, pointL, dirLProjView);
-			setPerFrameUniforms(proceduralGrass.get(), camera, dirL, pointL, dirLProjView);
-			setPerFrameUniforms(infiniGreen.get(), camera, dirL, pointL, dirLProjView);
-			setPerFrameUniforms(translucent.get(), camera, dirL, pointL, dirLProjView);
+			setPerFrameUniforms(textureShader.get(), camera, dirL, pointL, dirLProjView, streetLight);
+			setPerFrameUniforms(proceduralGrass.get(), camera, dirL, pointL, dirLProjView, streetLight);
+			setPerFrameUniforms(infiniGreen.get(), camera, dirL, pointL, dirLProjView, streetLight);
+			setPerFrameUniforms(translucent.get(), camera, dirL, pointL, dirLProjView, streetLight);
 			setPerFrameUniformsParticle(particleShader.get(), camera);
 			setPerFrameUniformsSkybox(skyboxShader.get(), camera);
 
@@ -384,8 +388,15 @@ int main(int argc, char** argv)
 				}
 				catch (int e) {
 					if (e == ALL_ENEMIES_DESTROYED && world.waveIsFinished()) {
-						won = true;
-						end = true;
+						if (world.hasNextWave()) {
+							start = false;
+							firstWave = false;
+							_starting = false;
+						}
+						else {
+							won = true;
+							end = true;
+						}
 
 					}
 				}
@@ -429,7 +440,7 @@ int main(int argc, char** argv)
 			mapTranslation = glm::vec3(mapTranslation.x, 0, mapTranslation.z);
 			map.draw(glm::translate(glm::mat4(1.0f),mapTranslation));
 			lowDetailMap.draw(glm::translate(glm::mat4(1.0f),glm::vec3(camera.getPosition().x,-0.01,camera.getPosition().z)));
-			if (camera.getGroundIntersection() != glm::vec3(0, 1, 0)) {
+			if (buildingChosen == 1) {
 				glm::vec3 position = camera.getGroundIntersection();
 				int streetDirection = world.getStreetDirection(position.x, position.z, Building::width, Building::length);
 				glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), streetDirection*glm::pi<float>() / 2, glm::vec3(0, 1, 0));
@@ -437,6 +448,7 @@ int main(int argc, char** argv)
 				cameraCircle.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection() + glm::vec3(0.0f, 0.01f, 0.0f)));
 			}
 			school.draw();
+			streetLight.draw(textureShader.get());
 			worldModel.draw();
 			world.drawParticles(particleShader.get());
 			
@@ -453,7 +465,7 @@ int main(int argc, char** argv)
 						world.placeBuilding(camera.getGroundIntersection()[0], camera.getGroundIntersection()[2]);
 					}else{
 						std::cout << "trying to place building" << std::endl;
-						world.placeWall(camera.getGroundIntersection()[0], camera.getGroundIntersection()[2], brickMaterial);
+						world.placeWall(camera.getGroundIntersection()[0], camera.getGroundIntersection()[2], woodMaterial);
 					}
 				}
 				catch (int e) {
@@ -543,8 +555,10 @@ int main(int argc, char** argv)
 			}
 			charactorService->renderText(buildings.c_str(), 450, 100, 0.8f, color);
 
-			if (!start && world.hasMinOneBuildings()) {
+			if (!start && firstWave && world.hasMinOneBuildings()) {
 				charactorService->renderText("PRESS ENTER TO START WAVE", 20, window_height-50, 0.5f, glm::vec3(0.0,0.5,0.5));
+			} else if (!start && !firstWave && world.hasMinOneBuildings()) {
+				charactorService->renderText("PRESS ENTER TO START NEXT WAVE", 20, window_height - 50, 0.5f, glm::vec3(0.0, 0.5, 0.5));
 			}
 
 			// Compute frame time
@@ -602,7 +616,7 @@ int main(int argc, char** argv)
 }
 
 
-void setPerFrameUniforms(Shader* shader, myCamera& camera, DirectionalLight& dirL, PointLight& pointL,glm::mat4& lightMatrix)
+void setPerFrameUniforms(Shader* shader, myCamera& camera, DirectionalLight& dirL, PointLight& pointL,glm::mat4& lightMatrix, StreetLight& streetLight)
 {
 	shader->use();
 	shader->setUniform("viewProjMatrix", camera.getViewProjectionMatrix());
@@ -611,11 +625,15 @@ void setPerFrameUniforms(Shader* shader, myCamera& camera, DirectionalLight& dir
 
 	shader->setUniform("dirL.color", dirL.color);
 	shader->setUniform("dirL.direction", dirL.direction);
+	/*
 	shader->setUniform("pointL.color", pointL.color);
 	shader->setUniform("pointL.position", pointL.position);
 	shader->setUniform("pointL.attenuation", pointL.attenuation);
-
-
+	*/
+	PointLight light = streetLight.getPointLight();
+	shader->setUniform("pointL.color", light.color);
+	shader->setUniform("pointL.position", light.position);
+	shader->setUniform("pointL.attenuation", light.attenuation);
 }
 
 void setPerFrameUniformsParticle(Shader* shader, myCamera& camera)

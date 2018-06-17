@@ -37,3 +37,13 @@ float Street::getStreetWidth()
 {
 	return streetWidth;
 }
+
+float Street::getStreetLightPosX()
+{
+	return part2[0][0];
+}
+
+float Street::getStreetLightPosZ()
+{
+	return part1[1][1];
+}
