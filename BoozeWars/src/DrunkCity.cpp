@@ -196,8 +196,7 @@ void DrunkCity::walk()
 					throw GAME_END;
 				}
 				
-			}else			
-			{
+			}else{
 				++it;
 			}
 		}

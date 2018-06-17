@@ -1,6 +1,6 @@
 #include "Wall.h"
 
-const float Wall::width = 5.0f;
+const float Wall::width = 10.0f;
 const float Wall::height = 0.25f;
 
 
@@ -8,7 +8,7 @@ Wall::Wall(float x, float z, std::shared_ptr<Material> material,Street* street)
 {
 	this->x = x;
 	this->z = z;
-	model = new Geometry(glm::mat2(1.0f), Geometry::createCubeGeometry(Wall::width, 3.0f, 0.25f), material);
+	model = new Geometry(glm::mat2(1.0f), Geometry::createCubeGeometry(Wall::width, 8.0f, 0.4f), material);
 	if (x < street->getPart1()[1][0] && streetPart == 0) 
 	{
 		streetPart = 1;
@@ -31,7 +31,7 @@ PxRigidStatic* Wall::initPhysics(PxPhysics * physicsSDK)
 	PxMaterial* wallMat;
 	wallMat = physicsSDK->createMaterial(0.5f, 0.5f, 1.0f);
 	PxTransform position = PxTransform(PxVec3(x, z, 0),PxQuat(streetPart*glm::pi<float>() / 2,PxVec3(0,0,1)));
-	physxActor = PxCreateStatic(*physicsSDK, position, PxBoxGeometry(Wall::width*0.5,1.5f,1.5f), *wallMat);
+	physxActor = PxCreateStatic(*physicsSDK, position, PxBoxGeometry(Wall::width*0.5,0.2f,4.0f), *wallMat);
 	return physxActor;
 }
 

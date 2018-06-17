@@ -63,8 +63,8 @@ Weapon::Weapon(float x, float z, int direction, int delay)
 
 Weapon::~Weapon()
 {
-	delete model;
-
+	//delete model;
+	delete particleGenerator;
 }
 
 bool Weapon::draw(Shader* shader, float time)
