@@ -170,5 +170,5 @@ void Enemy::updatePosition()
 
 glm::mat2x2 Enemy::getModel() 
 {
-	return glm::mat2x2(x, y, x+width, y+length);
+	return glm::mat2x2(x - width / 2.0, y - length / 2.0, x + width / 2.0, y + length / 2.0);
 }

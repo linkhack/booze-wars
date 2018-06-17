@@ -132,7 +132,7 @@ glm::mat4 Weapon::getModelMatrix()
 
 glm::mat2x2 Weapon::getModel()
 {
-	return glm::mat2x2(x, z, x + width, z + length);
+	return glm::mat2x2(x-width/2.0, z-length/2.0, x + width/2.0, z + length/2.0);
 }
 
 void Weapon::hit()
