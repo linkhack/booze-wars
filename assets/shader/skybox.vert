@@ -8,7 +8,7 @@ uniform mat4 rotation;
 
 void main()
 {
-    TexCoords = position;
+    TexCoords = vec3(position.x,-position.y,position.z);
     vec4 pos = projection * rotation * vec4(position, 1.0);
     gl_Position = pos.xyww;
 }  
