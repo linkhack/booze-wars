@@ -62,14 +62,14 @@ void Building::drawShadows(Shader & shader)
 	//model->drawShadow(shader);
 }
 
-void Building::draw(Shader* shader, float time)
+void Building::draw(Shader* shader, Shader* particleShader, float time)
 {	
 	model->draw(shader, modelMatrix);
 	std::list<Weapon*>::iterator it = activeWeapons.begin();
 	while (it != activeWeapons.end())
 	{
 		Weapon* weapon = *it;
-		if (weapon->draw(shader, time) || weapon->isHitted()) {
+		if (weapon->draw(shader, particleShader, time) || weapon->isHitted()) {
 			if (weapon->implode(time)) {
 				it = activeWeapons.erase(it);
 				delete weapon;

@@ -50,15 +50,16 @@ Weapon::Weapon(float x, float z, int direction, int delay)
 	ttl = 3.0;
 	this->delay = (float) delay/10;
 	this->implodeTime = 0.0;
-	this->width = 1.0f;
+	this->width = 4.0f;
 	this->length = 2.0f;
+	this->particleGenerator = new ParticleGenerator();
 }
 
 Weapon::~Weapon()
 {
 }
 
-bool Weapon::draw(Shader* shader, float time)
+bool Weapon::draw(Shader* shader, Shader* particleShader, float time)
 {
 	this->time += time;
 	if (this->time >= this->delay) {
@@ -70,9 +71,17 @@ bool Weapon::draw(Shader* shader, float time)
 			rotation = glm::rotate(glm::mat4(1.0f), 1 * glm::pi<float>() / 2, glm::vec3(0, 0, 1));
 		}
 		rollRotate += 10.0;
-		glm::mat4 roll = glm::rotate(glm::mat4(1.0f), rollRotate * time * glm::pi<float>() / 2, glm::vec3(0, 1, 0));
-		model->draw(shader, getModelMatrix() * rotation * roll);
-
+		glm::mat4 modelMatrix = getModelMatrix() * rotation;
+		if (!hitted) {
+			glm::mat4 roll = glm::rotate(glm::mat4(1.0f), rollRotate * time * glm::pi<float>() / 2, glm::vec3(0, 1, 0));
+			modelMatrix = modelMatrix * roll;
+		}
+		if (!hitted) {
+			model->draw(shader, modelMatrix);
+		}
+		if (hitted) {
+			this->particleGenerator->draw(particleShader);
+		}
 		if (!hitted) {
 			glm::mat4 translate;
 
@@ -96,17 +105,11 @@ bool Weapon::draw(Shader* shader, float time)
 	return false;
 }
 
-struct Particle {
-	glm::vec2 Position, Velocity;
-	glm::vec4 Color;
-	GLfloat Life;
-
-	Particle()
-		: Position(0.0f), Velocity(0.0f), Color(1.0f), Life(0.0f) { }
-};
-
 bool Weapon::implode(float time)
 {
+	if (!hitted) {
+		hitted = true;
+	}
 	implodeTime += time;
 
 	//TODO: implode particel system
@@ -116,7 +119,8 @@ bool Weapon::implode(float time)
 	}
 	glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(implodeScale, implodeScale, implodeScale));
 	this->modelMatrix = this->modelMatrix * scale;
-	if (implodeTime >= 3.0) {
+	this->particleGenerator->update(time, this->x, this->y);
+	if (implodeTime >= 1000.0) {
 		return true;
 	}
 	return false;

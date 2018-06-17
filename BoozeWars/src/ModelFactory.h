@@ -12,6 +12,8 @@ private:
 	Model* defaultWeapon;
 	Model* jumpingEnemy;
 
+	Texture* weaponTexture;
+
 	ModelFactory();
 	~ModelFactory();
 	ModelFactory(ModelFactory const&) {};

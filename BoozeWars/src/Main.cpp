@@ -49,6 +49,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
 void setPerFrameUniforms(Shader* shader, myCamera& camera, DirectionalLight& dirL, PointLight& pointL, glm::mat4& lightMatrix);
+void setPerFrameUniformsParticle(Shader* shader, myCamera& camera);
 void setPerFrameUniformsSkybox(Shader* shader, myCamera& camera);
 
 
@@ -205,6 +206,7 @@ int main(int argc, char** argv)
 		std::shared_ptr<Shader> infiniGreen = std::make_shared<Shader>("texture.vert", "infiniGreen.frag");
 		std::shared_ptr<Shader> translucent = std::make_shared<Shader>("texture.vert", "translucentRed.frag");
 		std::shared_ptr<Shader> proceduralGrass = std::make_shared<Shader>("texture.vert", "procedural.frag");
+		std::shared_ptr<Shader> particleShader = std::make_shared<Shader>("particle.vert", "particle.frag");
 		Shader shadowShader = Shader("shadowShader.vert", "shadowShader.frag");
 		Shader objectShader = Shader("texture.vert", "texture.frag");
 		proceduralGrass->use();
@@ -355,6 +357,7 @@ int main(int argc, char** argv)
 			setPerFrameUniforms(proceduralGrass.get(), camera, dirL, pointL, dirLProjView);
 			setPerFrameUniforms(infiniGreen.get(), camera, dirL, pointL, dirLProjView);
 			setPerFrameUniforms(translucent.get(), camera, dirL, pointL, dirLProjView);
+			setPerFrameUniformsParticle(particleShader.get(), camera);
 			setPerFrameUniformsSkybox(skyboxShader.get(), camera);
 
 			//GameLogic
@@ -398,7 +401,7 @@ int main(int argc, char** argv)
 				shadowShader.use();
 				shadowShader.setUniform("viewProjMatrix", dirLProjView);
 				glCullFace(GL_FRONT);
-				world.zeichne(&shadowShader, dt);
+				world.zeichne(&shadowShader, particleShader.get(), dt);
 				school.drawShadow(shadowShader);
 
 				glCullFace(GL_BACK);
@@ -420,7 +423,7 @@ int main(int argc, char** argv)
 			}
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			//ground.draw(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.1f, 0.0f)));
-			world.zeichne(textureShader.get(), dt); //needs shadow
+			world.zeichne(textureShader.get(), particleShader.get(), dt); //needs shadow
 
 			glm::vec3 mapTranslation = camera.getPosition() + 150.0f * camera.getLookDirection();
 			mapTranslation = glm::vec3(mapTranslation.x, 0, mapTranslation.z);
@@ -607,6 +610,13 @@ void setPerFrameUniforms(Shader* shader, myCamera& camera, DirectionalLight& dir
 	shader->setUniform("pointL.attenuation", pointL.attenuation);
 
 
+}
+
+void setPerFrameUniformsParticle(Shader* shader, myCamera& camera)
+{
+	shader->use();
+	shader->setUniform("viewProjMatrix", camera.getViewProjectionMatrix());
+	shader->setUniform("camera_world", camera.getPosition());
 }
 
 void setPerFrameUniformsSkybox(Shader* shader, myCamera& camera)

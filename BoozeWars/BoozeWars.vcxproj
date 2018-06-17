@@ -1,12 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="src\PostprocessBuffer.cpp" />
+    <ClCompile Include="src\Particle.cpp" />
+    <ClCompile Include="src\ParticleGenerator.cpp" />
     <ClCompile Include="src\JumpingEnemy.cpp" />
     <ClCompile Include="src\ModelFactory.cpp" />
     <ClCompile Include="src\Model.cpp" />
     <ClCompile Include="src\Mesh.cpp" />
     <ClCompile Include="src\EnemyPhysxCallback.cpp" />
+    <ClCompile Include="src\PostprocessBuffer.cpp" />
     <ClCompile Include="src\ShadowMapSimple.cpp" />
     <ClCompile Include="src\LineGeometry.cpp" />
     <ClCompile Include="src\Character.cpp" />
@@ -20,12 +22,14 @@
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\Wave.cpp" />
     <ClCompile Include="src\Weapon.cpp" />
-    <ClInclude Include="src\PostprocessBuffer.h" />
+    <ClInclude Include="src\Particle.h" />
+    <ClInclude Include="src\ParticleGenerator.h" />
     <ClInclude Include="src\JumpingEnemy.h" />
     <ClInclude Include="src\ModelFactory.h" />
     <ClInclude Include="src\Model.h" />
     <ClInclude Include="src\Mesh.h" />
     <ClInclude Include="src\EnemyPhysxCallback.h" />
+    <ClInclude Include="src\PostprocessBuffer.h" />
     <ClInclude Include="src\ShadowMapSimple.h" />
     <ClInclude Include="src\LineGeometry.h" />
     <ClInclude Include="src\Character.h" />

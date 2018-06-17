@@ -2,6 +2,7 @@
 #include "Model.h"
 #include "ModelFactory.h"
 #include "Shader.h"
+#include "ParticleGenerator.h"
 
 class Weapon
 {
@@ -21,6 +22,7 @@ protected:
 	float z;
 	float y;
 	float rollRotate = 0.0f;
+	ParticleGenerator* particleGenerator;
 
 public:
 	int static const Weapon::DELAY_FIRST = 0;
@@ -31,7 +33,7 @@ public:
 
 	Weapon(float x, float z, int direction, int delay);
 	~Weapon();
-	bool draw(Shader* shader, float time);
+	bool draw(Shader* shader, Shader* particleShader, float time);
 	bool implode(float time);
 	glm::mat4 Weapon::getModelMatrix();
 	glm::mat2x2 getModel();

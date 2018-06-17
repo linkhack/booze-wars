@@ -38,7 +38,7 @@ public:
 	float getDamage();
 
 	void drawShadows(Shader& shader);
-	void draw(Shader* shader, float time);
+	void draw(Shader* shader, Shader* particleShader, float time);
 	void shoot(float time);
 	std::list<Weapon*> getWeapons();
 };

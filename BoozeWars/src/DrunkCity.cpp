@@ -36,7 +36,7 @@ void DrunkCity::drawShadows(Shader& shader) {
 		(*it)->drawShadows(shader);
 	}
 }
-void DrunkCity::zeichne(Shader* shader, float time)
+void DrunkCity::zeichne(Shader* shader, Shader* particleShader, float time)
 {
 
 	for (std::list<Enemy*>::iterator it = enemiesAlive.begin(); it != enemiesAlive.end(); ++it)
@@ -48,7 +48,7 @@ void DrunkCity::zeichne(Shader* shader, float time)
 	for (std::list<Building*>::iterator it = buildings.begin(); it != buildings.end(); ++it)
 	{
 		Building* iteratingBuilding = *it;
-		iteratingBuilding->draw(shader, time);
+		iteratingBuilding->draw(shader, particleShader, time);
 	}
 }
 
