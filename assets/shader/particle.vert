@@ -11,5 +11,6 @@ void main()
 {
     float scale = 10.0f;
     ParticleColor = color;
-    gl_Position = viewProjMatrix * vec4((vertex.xyz * scale) + position, 1.0);
+	vec3 particelPos = vec3(vertex.x,vertex.y,0)*scale + position;
+    gl_Position = viewProjMatrix * vec4(particelPos, 1.0);
 }

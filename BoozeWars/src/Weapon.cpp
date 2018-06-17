@@ -119,7 +119,7 @@ bool Weapon::implode(float time)
 	}
 	glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(implodeScale, implodeScale, implodeScale));
 	this->modelMatrix = this->modelMatrix * scale;
-	this->particleGenerator->update(time, this->x, this->y);
+	this->particleGenerator->update(time, this->x, this->z);
 	if (implodeTime >= 1000.0) {
 		return true;
 	}

@@ -95,7 +95,7 @@ void ParticleGenerator::update(GLfloat dt, float x, float y)
 					}
 				}
 			}
-			p.Position = glm::vec3(x, y, 2.0f);
+			p.Position = glm::vec3(x, 1.0f, y);
 			p.Color.a -= dt * 2.5;
 		}
 	}

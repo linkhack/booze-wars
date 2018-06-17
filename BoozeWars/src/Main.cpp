@@ -68,7 +68,7 @@ unsigned char **tex;
 static int width = 800;
 static int height = 800;
 static bool _starting = false;
-static int buildingChosen;
+static int buildingChosen=1;
 
 /* --------------------------------------------- */
 // Main
