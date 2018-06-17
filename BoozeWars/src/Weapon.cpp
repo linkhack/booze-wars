@@ -64,7 +64,6 @@ Weapon::Weapon(float x, float z, int direction, int delay)
 Weapon::~Weapon()
 {
 	delete model;
-	delete particleGenerator;
 
 }
 
@@ -122,7 +121,7 @@ bool Weapon::implode(float time)
 	glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(implodeScale, implodeScale, implodeScale));
 	this->modelMatrix = this->modelMatrix * scale;
 	this->particleGenerator->update(time, this->x, this->z);
-	if (implodeTime >= 1000.0) {
+	if (implodeTime >= 2.0) {
 		return true;
 	}
 	return false;

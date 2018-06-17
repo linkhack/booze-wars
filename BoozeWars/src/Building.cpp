@@ -75,8 +75,7 @@ void Building::drawParticle(Shader* particleShader) {
 void Building::draw(Shader* shader, float time)
 {	
 	model->draw(shader, modelMatrix);
-	std::list<Weapon*>::iterator it = activeWeapons.begin();
-	while (it != activeWeapons.end())
+	for (std::list<Weapon*>::iterator it = activeWeapons.begin(); it != activeWeapons.end();)
 	{
 		Weapon* weapon = *it;
 		if (weapon->draw(shader, time) || weapon->isHitted()) {
