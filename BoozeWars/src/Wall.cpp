@@ -1,21 +1,61 @@
 #include "Wall.h"
 
 const float Wall::width = 5.0f;
+const float Wall::height = 0.25f;
 
 
-Wall::Wall(float x, float z, std::shared_ptr<Material> material)
+Wall::Wall(float x, float z, std::shared_ptr<Material> material,Street* street)
 {
 	this->x = x;
 	this->z = z;
-	model = new Geometry(glm::mat2(1.0f), Geometry::createCubeGeometry(Wall::width, 3.0f, 0.5f), material);
-
+	model = new Geometry(glm::mat2(1.0f), Geometry::createCubeGeometry(Wall::width, 3.0f, 0.25f), material);
+	if (x < street->getPart1()[1][0] && streetPart == 0) 
+	{
+		streetPart = 1;
+	}
+	else if (z < street->getPart2()[1][1] - street->getStreetWidth() && (streetPart == 0 || streetPart == 1)) {
+		streetPart = 2;
+	}
+	else {
+		streetPart = 1;
+	}
+	modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(x, 0, z))*glm::rotate(glm::mat4(1.0f), streetPart*glm::pi<float>() / 2,glm::vec3(0,1,0));
 }
 
 Wall::~Wall()
 {
 }
 
-PxRigidStatic Wall::initPhysics(PxPhysics * physicsSDK)
+PxRigidStatic* Wall::initPhysics(PxPhysics * physicsSDK)
 {
-	return PxRigidStatic();
+	PxMaterial* wallMat;
+	wallMat = physicsSDK->createMaterial(0.5f, 0.5f, 1.0f);
+	PxTransform position = PxTransform(PxVec3(x, z, 0),PxQuat(streetPart*glm::pi<float>() / 2,PxVec3(0,0,1)));
+	physxActor = PxCreateStatic(*physicsSDK, position, PxBoxGeometry(Wall::width*0.5,1.5f,1.5f), *wallMat);
+	return physxActor;
+}
+
+void Wall::draw(glm::mat4 modelMatrix)
+{
+	model->draw(modelMatrix * this->modelMatrix);
+}
+
+float Wall::getWidth()
+{
+	if (streetPart == 1) {
+		return Wall::width;
+	}
+	else {
+		return Wall::height;
+	}
+}
+
+float Wall::getHeight()
+{
+	if (streetPart == 1) {
+		return Wall::height;
+	}
+	else {
+		return Wall::width;
+	}
 }
