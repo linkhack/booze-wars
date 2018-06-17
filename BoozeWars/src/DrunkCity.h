@@ -16,7 +16,6 @@ class DrunkCity
 {
 private:
 	
-	std::shared_ptr<Street> highway;
 	//std::vector<Enemy> enemiesAlive;
 	int alive;
 	std::list<Enemy*> enemiesAlive;
@@ -39,6 +38,7 @@ private:
 	bool DrunkCity::enemyCollision(Weapon* weapon, Enemy* enemy);	
 		
 public:
+	std::shared_ptr<Street> highway;
 
 	DrunkCity();
 	~DrunkCity();
@@ -54,7 +54,7 @@ public:
 	void fight(float dT);
 	void walk();
 	void calculateForces();
-	void placeBuilding(float x, float z);
+	void placeBuilding(float x, float z, int direction);
 	void placeWall(float x, float z,std::shared_ptr<Material> material);
 	bool hasMinOneBuildings();
 	int getBuildingsLeft();
@@ -65,4 +65,3 @@ public:
 	bool hasNextWave();
 	glm::vec3 getStreetLightPos();
 };
-

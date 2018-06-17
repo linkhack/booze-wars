@@ -21,5 +21,6 @@ public:
 	void draw(glm::mat4 modelMatrix=glm::mat4(1.0f));
 	float getWidth();
 	float getHeight();
+	static int getModelMatrix(float x, float z, Street* street);
 };
 

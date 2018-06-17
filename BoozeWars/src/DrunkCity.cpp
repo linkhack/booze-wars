@@ -210,7 +210,7 @@ void DrunkCity::calculateForces()
 	}
 }
 
-void DrunkCity::placeBuilding(float x, float z) {
+void DrunkCity::placeBuilding(float x, float z, int direction) {
 	glm::mat2x2 toPlace = glm::mat2x2(x - Building::getWidth() / 2, z - Building::getLength() / 2, x + Building::getWidth()/2, z + Building::getLength()/2);
 	std::list<Building*>::iterator it = buildings.begin();
 	if (isColliding(highway->getPart1(), toPlace) || 
@@ -231,7 +231,7 @@ void DrunkCity::placeBuilding(float x, float z) {
 		++it;
 	}
 
-	addBuilding(new Building(x, z, getStreetDirection(x,z, Building::width, Building::length)));
+	addBuilding(new Building(x, z, direction));
 }
 
 void DrunkCity::placeWall(float x, float z, std::shared_ptr<Material> material) {

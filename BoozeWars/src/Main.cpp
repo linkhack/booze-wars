@@ -70,6 +70,7 @@ static int width = 800;
 static int height = 800;
 static bool _starting = false;
 static int buildingChosen=1;
+static int direction = 0;
 
 /* --------------------------------------------- */
 // Main
@@ -250,8 +251,9 @@ int main(int argc, char** argv)
 		groundPhysicsPlane->createShape(PxPlaneGeometry(), *mMaterial);
 		gScene->addActor(*groundPhysicsPlane);
 		//Helper Rectangle for building placment
-		Geometry cameraPlacement = Geometry(glm::mat4(1.0f),Geometry::createCubeGeometry(Building::length,10.0f,Building::width),translucentRed);
-		LineGeometry cameraCircle = LineGeometry(glm::mat4(1.0f), LineGeometry::createCircle(30,Building::getRange()), translucentRed);
+		Geometry buildingPlacement = Geometry(glm::mat4(1.0f),Geometry::createCubeGeometry(Building::length,10.0f,Building::width),translucentRed);
+		Geometry buildingRange = Geometry(glm::mat4(1.0f), Geometry::createCubeGeometry(Building::length, 0.0f, Building::getRange()), translucentRed);
+		Geometry wallPlacement = Geometry(glm::mat2(1.0f), Geometry::createCubeGeometry(Wall::width, 8.0f, 0.4f), translucentRed);
 		//Enemy
 		//std::shared_ptr<Geometry> enemyModel = std::make_shared<Geometry>(glm::mat4(1.0f), Geometry::createCubeGeometry(4, 6, 4), sunMaterial);
 		std::shared_ptr<Geometry> enemyModel = std::make_shared<Geometry>(glm::scale(glm::mat4(1.0f),glm::vec3(2.0f,3.0f,2.0f)), Geometry::createSphereGeometry(20,20,1), sunMaterial);
@@ -442,10 +444,29 @@ int main(int argc, char** argv)
 			lowDetailMap.draw(glm::translate(glm::mat4(1.0f),glm::vec3(camera.getPosition().x,-0.01,camera.getPosition().z)));
 			if (buildingChosen == 1) {
 				glm::vec3 position = camera.getGroundIntersection();
-				int streetDirection = world.getStreetDirection(position.x, position.z, Building::width, Building::length);
-				glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), streetDirection*glm::pi<float>() / 2, glm::vec3(0, 1, 0));
-				cameraPlacement.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection() + glm::vec3(0.0f, 0.01f, 0.0f))*rotation);
-				cameraCircle.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection() + glm::vec3(0.0f, 0.01f, 0.0f)));
+				glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), direction*glm::pi<float>() / 2, glm::vec3(0, 1, 0));
+				buildingPlacement.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection() + glm::vec3(0.0f, 0.01f, 0.0f))*rotation);
+				glm::vec3 translate;
+				switch(direction){
+				case 0:
+					translate = glm::vec3(0.0, 0.01, Building::length);
+					break;
+				case 1:
+					translate = glm::vec3(Building::length, 0.01, 0.0);
+					break;
+				case 2:
+					translate = glm::vec3(0.0, 0.01, -Building::length);
+					break;
+				default:
+					translate = glm::vec3(-Building::length, 0.01, 0.0);
+					break;
+				}
+				buildingRange.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection() + translate)*rotation);
+			}
+			else if (buildingChosen == 2) {
+				glm::vec3 position = camera.getGroundIntersection();
+				int streetPart = Wall::getModelMatrix(camera.getGroundIntersection()[0], camera.getGroundIntersection()[2], world.highway.get());
+				wallPlacement.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection())*glm::rotate(glm::mat4(1.0f), streetPart*glm::pi<float>() / 2, glm::vec3(0, 1, 0)));
 			}
 			school.draw();
 			streetLight.draw(textureShader.get());
@@ -462,7 +483,7 @@ int main(int argc, char** argv)
 				try {
 					// trying to place building
 					if (buildingChosen == 1) {
-						world.placeBuilding(camera.getGroundIntersection()[0], camera.getGroundIntersection()[2]);
+						world.placeBuilding(camera.getGroundIntersection()[0], camera.getGroundIntersection()[2], direction);
 					}else{
 						std::cout << "trying to place building" << std::endl;
 						world.placeWall(camera.getGroundIntersection()[0], camera.getGroundIntersection()[2], woodMaterial);
@@ -705,6 +726,20 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		case GLFW_KEY_2:
 			buildingChosen = 2;
 			break;
+		case GLFW_KEY_E:
+			switch (direction) {
+			case 0:
+				direction = 1;
+				break;
+			case 1:
+				direction = 2;
+				break;
+			case 2:
+				direction = 3;
+				break;
+			default:
+				direction = 0;
+			}
 	}
 }
 
