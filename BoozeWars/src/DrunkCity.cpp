@@ -10,6 +10,7 @@ DrunkCity::DrunkCity()
 DrunkCity::DrunkCity(float x, float y, float z)
 {
 	limitBuildings = 3;
+	limitWalls = 3;
 	citySizeX = x;
 	citySizeZ = z;
 	hp = 100;
@@ -49,6 +50,10 @@ void DrunkCity::zeichne(Shader* shader, Shader* particleShader, float time)
 	{
 		Building* iteratingBuilding = *it;
 		iteratingBuilding->draw(shader, particleShader, time);
+	}
+	for (Wall* wall : wallList)
+	{
+		wall->draw();
 	}
 }
 
@@ -125,6 +130,16 @@ void DrunkCity::addBuilding(Building* building)
 		throw BUILDINGS_LIMIT_REACHED;
 	}
 	buildings.push_back(building);
+}
+
+void DrunkCity::addWall(Wall* wall)
+{
+	if (wallList.size() >= limitWalls) {
+		throw BUILDINGS_LIMIT_REACHED;
+	}
+	PxRigidStatic* dyn = wall->initPhysics(gPhysicsSDK);
+	wallList.push_back(wall);
+	gScene->addActor(*dyn);
 }
 
 void DrunkCity::fight(float dT)
@@ -223,6 +238,16 @@ void DrunkCity::placeBuilding(float x, float z) {
 	}
 
 	addBuilding(new Building(x, z, getStreetDirection(x,z, Building::width, Building::length)));
+}
+
+void DrunkCity::placeWall(float x, float z, std::shared_ptr<Material> material) {
+	glm::mat2x2 toPlace = glm::mat2x2(x - Wall::width / 2, z - Wall::width / 2, x + Wall::width / 2, z + Wall::width / 2);
+	if (!(isColliding(highway->getPart1(), toPlace) ||
+		isColliding(highway->getPart2(), toPlace) ||
+		isColliding(highway->getPart3(), toPlace))) {
+		throw STREET_COLLISION;
+	}
+	addWall(new Wall(x, z, material, highway.get()));
 }
 
 int DrunkCity::getStreetDirection(float x, float z, int width, int length)

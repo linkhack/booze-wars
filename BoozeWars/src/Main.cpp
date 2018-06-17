@@ -68,7 +68,7 @@ unsigned char **tex;
 static int width = 800;
 static int height = 800;
 static bool _starting = false;
-
+static int buildingChosen;
 
 /* --------------------------------------------- */
 // Main
@@ -448,7 +448,12 @@ int main(int argc, char** argv)
 				pressing = true;
 				try {
 					// trying to place building
-					world.placeBuilding(camera.getGroundIntersection()[0], camera.getGroundIntersection()[2]);
+					if (buildingChosen == 1) {
+						world.placeBuilding(camera.getGroundIntersection()[0], camera.getGroundIntersection()[2]);
+					}else{
+						std::cout << "trying to place building" << std::endl;
+						world.placeWall(camera.getGroundIntersection()[0], camera.getGroundIntersection()[2], brickMaterial);
+					}
 				}
 				catch (int e) {
 					if (e == BUILDING_COLLISION) {
@@ -674,6 +679,12 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			break;
 		case GLFW_KEY_ENTER:
 			_starting = true;
+			break;
+		case GLFW_KEY_1:
+			buildingChosen = 1;
+			break;
+		case GLFW_KEY_2:
+			buildingChosen = 2;
 			break;
 	}
 }

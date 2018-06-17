@@ -8,6 +8,7 @@
 #include "Material.h"
 #include "Skybox.h"
 #include "Wave.h"
+#include "Wall.h"
 #include <PhysX/PxPhysicsAPI.h>
 using namespace physx;
 
@@ -20,7 +21,9 @@ private:
 	int alive;
 	std::list<Enemy*> enemiesAlive;
 	std::list<Building*> buildings;
+	std::list<Wall*> wallList;
 	float limitBuildings;
+	int limitWalls;
 	int citySizeX;
 	int citySizeZ;
 	int hp;
@@ -30,6 +33,7 @@ private:
 
 	Enemy* getNearestEnemy(Building* building);
 	void addBuilding(Building* building);
+	void addWall(Wall* wall);
 	bool isColliding(glm::mat2x2 placed, glm::mat2x2 toPlace);
 	int DrunkCity::getDirection(float mx, float mz, float mxb, float mzb);
 	void DrunkCity::detectCollision();
@@ -51,6 +55,7 @@ public:
 	void walk();
 	void calculateForces();
 	void placeBuilding(float x, float z);
+	void placeWall(float x, float z,std::shared_ptr<Material> material);
 	bool hasMinOneBuildings();
 	int getBuildingsLeft();
 	void addEnemy(float dT);
