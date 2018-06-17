@@ -15,7 +15,8 @@ DrunkCity::DrunkCity(float x, float y, float z)
 	citySizeZ = z;
 	hp = 100;
 	highway = std::make_shared<Street>(x, z);
-	wave = Wave(std::list<wavetuple>({ wavetuple(Enemy::DEFAULT_ENEMY,10,2,1),wavetuple(Enemy::JUMPING_ENEMY,10,0.5,1),wavetuple(Enemy::DEFAULT_ENEMY,5,0.2,1),wavetuple(Enemy::JUMPING_ENEMY,10,1,0.1),wavetuple(Enemy::DEFAULT_ENEMY,20,0.25,1) }));
+	//wave = Wave(std::list<wavetuple>({ wavetuple(Enemy::DEFAULT_ENEMY,10,2,1),wavetuple(Enemy::JUMPING_ENEMY,10,0.5,1),wavetuple(Enemy::DEFAULT_ENEMY,5,0.2,1),wavetuple(Enemy::JUMPING_ENEMY,10,1,0.1),wavetuple(Enemy::DEFAULT_ENEMY,20,0.25,1) }));
+	wave = Wave(std::list<wavetuple>());
 }
 
 DrunkCity::~DrunkCity()

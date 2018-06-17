@@ -10,12 +10,14 @@ ParticleGenerator::ParticleGenerator()
 
 ParticleGenerator::~ParticleGenerator()
 {
+	GLuint buffers[4] = { positionBuffer,colorBuffer,VAO,VBO };
+	glDeleteBuffers(4, buffers);
+	delete particles;
 }
 
 void ParticleGenerator::init()
 {
 	// Set up mesh and attribute properties
-	GLuint VBO;
 	GLfloat particle_quad[] = {
 		0.0f, 1.0f, 0.0f, 1.0f,
 		1.0f, 0.0f, 1.0f, 0.0f,
@@ -31,6 +33,16 @@ void ParticleGenerator::init()
 	// Fill mesh buffer
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(particle_quad), particle_quad, GL_STATIC_DRAW);
+
+	//position buffer
+	glGenBuffers(1, &positionBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, positionBuffer);
+	glBufferData(GL_ARRAY_BUFFER, this->nr_particles * 4 * sizeof(float), NULL, GL_STREAM_DRAW);
+	//color buffer
+	glGenBuffers(1, &colorBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, colorBuffer);
+	glBufferData(GL_ARRAY_BUFFER, this->nr_particles * 4 * sizeof(float), NULL, GL_STREAM_DRAW);
+
 	// Set mesh attributes
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (GLvoid*)0);
@@ -38,19 +50,24 @@ void ParticleGenerator::init()
 
 	// Create this->amount default particle instances
 	for (GLuint i = 0; i < this->nr_particles; ++i)
-		this->particles.push_back(Particle());
+		particles[i] = Particle();
+
 }
 
 void ParticleGenerator::draw(Shader* shader)
 {
 	shader->use();
+	glm::vec3 particlePosition[nr_particles];
+	glm::vec4 particleColor[nr_particles];
+	int i = 0;
 	for (Particle particle : this->particles)
 	{
+		
 		if (particle.Life > 0.0f&& particle.Color.a>0.0f)
 		{
 			glm::vec3 position = particle.Position + particle.Modifier;
-			shader->setUniform("position", position);
-			shader->setUniform("color", particle.Color);
+			particlePosition[i] = position;
+			particleColor[i] = particle.Color;
 			/*
 			this->texture->bind(texture->id);
 			
@@ -58,12 +75,58 @@ void ParticleGenerator::draw(Shader* shader)
 			glBindTexture(GL_TEXTURE_2D, texture->id);
 			shader->setUniform("texture", texture->id);
 			*/
-			
-			glBindVertexArray(this->VAO);
-			glDrawArrays(GL_TRIANGLES, 0, 6);
-			glBindVertexArray(0);
 		}
+		++i;
 	}
+	glBindVertexArray(VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, positionBuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(particlePosition), NULL, GL_STREAM_DRAW); 
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(particlePosition), particlePosition);
+
+	glBindBuffer(GL_ARRAY_BUFFER, colorBuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(particleColor), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details.
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(particleColor), particleColor);
+
+	glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glVertexAttribPointer(
+		0, // attribute. No particular reason for 0, but must match the layout in the shader.
+		4, // size
+		GL_FLOAT, // type
+		GL_FALSE, // normalized?
+		0, // stride
+		(void*)0 // array buffer offset
+	);
+
+	// 2nd attribute buffer : positions of particles' centers
+	glEnableVertexAttribArray(1);
+	glBindBuffer(GL_ARRAY_BUFFER, positionBuffer);
+	glVertexAttribPointer(
+		1, // attribute. No particular reason for 1, but must match the layout in the shader.
+		3, // size : x + y + z + size => 4
+		GL_FLOAT, // type
+		GL_FALSE, // normalized?
+		0, // stride
+		(void*)0 // array buffer offset
+	);
+
+	// 3rd attribute buffer : particles' colors
+	glEnableVertexAttribArray(2);
+	glBindBuffer(GL_ARRAY_BUFFER, colorBuffer);
+	glVertexAttribPointer(
+		2, // attribute. No particular reason for 1, but must match the layout in the shader.
+		4, // size : r + g + b + a => 4
+		GL_UNSIGNED_BYTE, // type
+		GL_TRUE, // normalized? *** YES, this means that the unsigned char[4] will be accessible with a vec4 (floats) in the shader ***
+		0, // stride
+		(void*)0 // array buffer offset
+	);
+
+	glVertexAttribDivisor(0, 0);
+	glVertexAttribDivisor(1, 1);
+	glVertexAttribDivisor(2, 1);
+
+	glDrawArraysInstanced(GL_TRIANGLES, 0, 6, this->nr_particles);
 }
 
 void ParticleGenerator::update(GLfloat dt, float x, float z)

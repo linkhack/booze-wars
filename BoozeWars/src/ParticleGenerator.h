@@ -8,9 +8,12 @@ class ParticleGenerator
 {
 private:
 	Texture* texture;
-	GLuint nr_particles = 500;
-	std::vector<Particle> particles;
+	static const GLuint nr_particles = 500;
+	Particle particles[nr_particles];
+	GLuint VBO;
 	GLuint VAO;
+	GLuint positionBuffer;
+	GLuint colorBuffer;
 
 public:
 	ParticleGenerator();

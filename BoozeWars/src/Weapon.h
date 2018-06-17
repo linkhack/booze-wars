@@ -23,6 +23,7 @@ protected:
 	float y;
 	float rollRotate = 0.0f;
 	ParticleGenerator* particleGenerator;
+	glm::mat4 rotation;
 
 public:
 	int static const Weapon::DELAY_FIRST = 0;

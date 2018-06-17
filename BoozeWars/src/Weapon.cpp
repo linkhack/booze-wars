@@ -53,23 +53,26 @@ Weapon::Weapon(float x, float z, int direction, int delay)
 	this->width = 4.0f;
 	this->length = 2.0f;
 	this->particleGenerator = new ParticleGenerator();
+	if (direction == 1 || direction == 3) {
+		rotation = glm::rotate(glm::mat4(1.0f), 1 * glm::pi<float>() / 2, glm::vec3(1, 0, 0));
+	}
+	else {
+		rotation = glm::rotate(glm::mat4(1.0f), 1 * glm::pi<float>() / 2, glm::vec3(0, 0, 1));
+	}
 }
 
 Weapon::~Weapon()
 {
+	delete model;
+	delete particleGenerator;
+
 }
 
 bool Weapon::draw(Shader* shader, float time)
 {
 	this->time += time;
 	if (this->time >= this->delay) {
-		glm::mat4 rotation;
-		if (direction == 1 || direction == 3) {
-			rotation = glm::rotate(glm::mat4(1.0f), 1 * glm::pi<float>() / 2, glm::vec3(1, 0, 0));
-		}
-		else {
-			rotation = glm::rotate(glm::mat4(1.0f), 1 * glm::pi<float>() / 2, glm::vec3(0, 0, 1));
-		}
+
 		rollRotate += 10.0;
 		glm::mat4 modelMatrix = getModelMatrix() * rotation;
 		if (!hitted) {
