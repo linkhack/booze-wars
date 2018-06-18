@@ -598,11 +598,11 @@ int main(int argc, char** argv)
 
 			//INFO
 			if (help) {
-				charactorService->renderText("EXIT [ESC]", window_width - 150, window_height - 50, 0.5f, glm::vec3(1.0f));
-				charactorService->renderText("MOVE [W,A,S,D]", window_width - 150, window_height - 50, 0.5f, glm::vec3(1.0f));
-				charactorService->renderText("UP/DOWN [R,F]", window_width - 150, window_height - 50, 0.5f, glm::vec3(1.0f));
-				charactorService->renderText("ON/OF PLACEMENT HELP [ESC]", window_width - 150, window_height - 50, 0.5f, glm::vec3(1.0f));
-				charactorService->renderText("BUILDING/WALL [1,2]", window_width - 150, window_height - 50, 0.5f, glm::vec3(1.0f));
+				charactorService->renderText("EXIT [ESC]", window_width - 170, 300, 0.5f, glm::vec3(1.0f));
+				charactorService->renderText("MOVE [W,A,S,D]", window_width - 221, 250, 0.5f, glm::vec3(1.0f));
+				charactorService->renderText("UP/DOWN [R,F]", window_width - 220, 200, 0.5f, glm::vec3(1.0f));
+				charactorService->renderText("ON/OFF Placement [ESC]", window_width - 400, 150, 0.5f, glm::vec3(1.0f));
+				charactorService->renderText("BUILDING/WALL [1,2]", window_width - 300, 100, 0.5f, glm::vec3(1.0f));
 			}
 			
 
