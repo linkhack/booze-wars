@@ -278,17 +278,16 @@ int main(int argc, char** argv)
 		directionalLightShadow.init(1024, 1024);
 
 		//Create School building
-		Geometry school = Geometry(glm::translate(glm::mat4(1.0f), glm::vec3(340, 15, 240)),
-									Geometry::createCubeGeometry(45, 30, 70),
-									brickMaterial);
-		school.addChild(std::make_unique<Geometry>(glm::translate(glm::mat4(1.0f), glm::vec3(-5, 5, 40)), 
-													Geometry::createCylinderGeometry(14, 45, 10),
-													brickMaterial));
+		Model* school = ModelFactory::Instance()->getModel(ModelFactory::SCHOOL);
+		glm::mat4 schoolTrannsform;
+		schoolTrannsform = glm::scale(glm::mat4(1.0f), glm::vec3(0.3, 0.3, 0.3));
+		schoolTrannsform = glm::rotate(glm::mat4(1.0f), -glm::pi<float>() / 2.0f, glm::vec3(0, 1, 0))*schoolTrannsform;
+		schoolTrannsform = glm::translate(glm::mat4(1.0f), glm::vec3(350, 0, 280))*schoolTrannsform;
 
 		StreetLight streetLight = StreetLight(world.getStreetLightPos());
 
 		//create Wave
-		
+	
 		//Wave wave = Wave(std::list<wavetuple>({ wavetuple(0,2,1)}));
 		//if the left click is still pressed
 		bool pressing = false;
@@ -420,7 +419,7 @@ int main(int argc, char** argv)
 				shadowShader.setUniform("viewProjMatrix", dirLProjView);
 				glCullFace(GL_FRONT);
 				world.zeichne(&shadowShader, dt);
-				school.drawShadow(shadowShader);
+				school->draw(&shadowShader, schoolTrannsform);
 
 				glCullFace(GL_BACK);
 			}
@@ -474,7 +473,7 @@ int main(int argc, char** argv)
 				wallPlacement.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection())*glm::rotate(glm::mat4(1.0f), streetPart*glm::pi<float>() / 2, glm::vec3(0, 1, 0)));
 			}
 			//ModelFactory::Instance()->getModel(ModelFactory::CITY)->draw(infiniGreen.get(),glm::rotate(glm::mat4(1.0f),glm::pi<float>()/2.0f,glm::vec3(0,1,0)));
-			school.draw();
+			school->draw(textureShader.get(), schoolTrannsform);
 			streetLight.draw(textureShader.get());
 			worldModel.draw();
 			world.drawParticles(particleShader.get());
