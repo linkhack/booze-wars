@@ -62,21 +62,27 @@ void Building::drawShadows(Shader & shader)
 	//model->drawShadow(shader);
 }
 
-void Building::drawParticle(Shader* particleShader) {
+void Building::drawParticle(Shader* particleShader, Frustum& frustum) {
 	std::list<Weapon*>::iterator it = activeWeapons.begin();
 	while (it != activeWeapons.end())
 	{
 		Weapon* weapon = *it;
-		weapon->drawParticle(particleShader);
+		if (frustum.sphereInFrustum(weapon->boundingSphere())) {
+			weapon->drawParticle(particleShader);
+		}
 		it++;
 	}
 }
 
-void Building::draw(Shader* shader, float time)
+void Building::draw(Shader* shader, float time, Frustum& frustum)
 {	
-	model->draw(shader, modelMatrix);
+	if (frustum.sphereInFrustum(boundingSphere())) {
+		model->draw(shader, modelMatrix);
+	}
+
 	for (std::list<Weapon*>::iterator it = activeWeapons.begin(); it != activeWeapons.end();)
 	{
+
 		Weapon* weapon = *it;
 		if (weapon->draw(shader, time) || weapon->isHitted()) {
 			if (weapon->implode(time) ) {
@@ -122,5 +128,10 @@ void Building::shoot(float time) {
 std::list<Weapon*> Building::getWeapons() 
 {
 	return this->activeWeapons;
+}
+
+glm::vec4 Building::boundingSphere()
+{
+	return glm::vec4(x, 4, z, glm::sqrt(0.25*width * width + 0.25*length * length + 16));;
 }
 

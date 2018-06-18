@@ -41,5 +41,6 @@ public:
 	glm::mat2x2 getModel();
 	void hit();
 	bool isHitted();
+	glm::vec4 boundingSphere();
 };
 

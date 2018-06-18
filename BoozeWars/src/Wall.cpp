@@ -1,14 +1,14 @@
 #include "Wall.h"
 
 const float Wall::width = 10.0f;
-const float Wall::height = 0.25f;
+const float Wall::height = 0.4f;
 
 
 Wall::Wall(float x, float z, std::shared_ptr<Material> material,Street* street)
 {
 	this->x = x;
 	this->z = z;
-	model = new Geometry(glm::mat2(1.0f), Geometry::createCubeGeometry(Wall::width, 8.0f, 0.4f), material);
+	model = new Geometry(glm::mat2(1.0f), Geometry::createCubeGeometry(Wall::width, 8.0f, height), material);
 	streetPart = getModelMatrix(x, z, street);
 	modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(x, 0, z))*glm::rotate(glm::mat4(1.0f), streetPart*glm::pi<float>() / 2, glm::vec3(0, 1, 0));
 }
@@ -65,4 +65,9 @@ int Wall::getModelMatrix(float x, float z, Street* street)
 		streetPart = 1;
 	}
 	return streetPart;
+}
+
+glm::vec4 Wall::boundingSphere()
+{
+	return glm::vec4(x, 2, z, glm::sqrt(0.25*width * width + 0.25*height * height + 4));;
 }

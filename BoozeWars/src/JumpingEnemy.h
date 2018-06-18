@@ -5,7 +5,7 @@ class JumpingEnemy :
 {
 public:
 	JumpingEnemy();
-	JumpingEnemy(std::shared_ptr<Street> Street);
+	JumpingEnemy(Street* Street);
 	~JumpingEnemy();
 
 	virtual void applyDrivingForce(PxScene * physxScene);

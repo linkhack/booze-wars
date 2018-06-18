@@ -84,10 +84,10 @@ void main() {
 
 	float shadowDir = 0.0f;
 	vec3 shadowUv = 0.5*(vert.shadowCoords.xyz)/vert.shadowCoords.w + 0.5;	
-	for(int i=0;i<16;i++)
+	for(int i=0;i<4;i++)
 	{
 		//int index = int(16.0*random(floor(vert.position_world*1000.0), i))%16;
-		shadowDir += texture(shadowMap,shadowUv+poissonDisk[i]/800.0f)/16; //non random no noise but jaggies
+		shadowDir += texture(shadowMap,shadowUv+poissonDisk[i]/800.0f)/4; //non random no noise but jaggies
 		//shadowDir += texture(shadowMap,shadowUv+poissonDisk[index]/1000.0f)/6; //random sampling noise but smoother
 	}
 

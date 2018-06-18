@@ -6,7 +6,7 @@ JumpingEnemy::JumpingEnemy()
 {
 }
 
-JumpingEnemy::JumpingEnemy(std::shared_ptr<Street> Street)
+JumpingEnemy::JumpingEnemy(Street* Street)
 	:Enemy(Street)
 {
 	movementspeed = 30.0f;
@@ -22,6 +22,7 @@ JumpingEnemy::JumpingEnemy(std::shared_ptr<Street> Street)
 
 JumpingEnemy::~JumpingEnemy()
 {
+	physxActor->release();
 }
 
 void JumpingEnemy::applyDrivingForce(PxScene* physxScene) {
@@ -30,7 +31,8 @@ void JumpingEnemy::applyDrivingForce(PxScene* physxScene) {
 	PxTransform position = physxActor->getGlobalPose();
 	PxQueryFilterData filterData(PxQueryFlag::eSTATIC);
 	PxSweepBuffer hit1;
-	if (physxActor->getLinearVelocity().z<=0.4*movementspeed 
+	if (physxActor->getLinearVelocity().z<=0.4
+		*movementspeed 
 		&& physxScene->sweep(PxBoxGeometry(1,1,1),position, desiredDirection, 15, hit1, PxHitFlag::eDEFAULT, filterData))
 	{
 		physxActor->addForce(PxVec3(0, 0,  movementspeed), PxForceMode::eIMPULSE);

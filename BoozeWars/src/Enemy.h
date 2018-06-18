@@ -20,7 +20,7 @@ protected:
 	float length;
 
 	int streetPart;
-	std::shared_ptr<Street> street;
+	Street* street;
 	
 	PxRigidDynamic* physxActor;
 
@@ -30,7 +30,7 @@ public:
 	static const int Enemy::DEFAULT_ENEMY = 1;
 	static const int Enemy::JUMPING_ENEMY = 2;
 	Enemy();
-	Enemy(std::shared_ptr<Street> Street);
+	Enemy(Street* Street);
 	~Enemy();
 
 	Enemy(Enemy&&) = default;
@@ -59,5 +59,6 @@ public:
 	virtual void applyDrivingForce(PxScene * physxScene);
 	void updatePosition();
 	glm::mat2x2 getModel();
+	virtual glm::vec4 boundingSphere();
 };
 

@@ -9,6 +9,7 @@
 #include "Skybox.h"
 #include "Wave.h"
 #include "Wall.h"
+#include "Frustum.h"
 #include <PhysX/PxPhysicsAPI.h>
 using namespace physx;
 
@@ -29,6 +30,7 @@ private:
 	PxPhysics* gPhysicsSDK;
 	PxScene* gScene;
 	Wave* wave;
+	Frustum* frustum;
 
 	void addBuilding(Building* building);
 	void addWall(Wall* wall);
@@ -38,7 +40,7 @@ private:
 	bool DrunkCity::enemyCollision(Weapon* weapon, Enemy* enemy);	
 		
 public:
-	std::shared_ptr<Street> highway;
+	Street* highway;
 
 	DrunkCity();
 	~DrunkCity();
@@ -64,4 +66,5 @@ public:
 	int getStreetDirection(float x, float z, int width, int length);
 	bool hasNextWave();
 	glm::vec3 getStreetLightPos();
+	void updateFrustum(myCamera& camera);
 };

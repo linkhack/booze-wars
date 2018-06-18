@@ -29,7 +29,6 @@ void Model::loadModel(std::string path) {
 
 void Model::processNode(aiNode* node, const aiScene* scene)
 {
-
 	for (GLuint i = 0; i < node->mNumMeshes; i++)
 	{
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];

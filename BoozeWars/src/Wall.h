@@ -22,5 +22,6 @@ public:
 	float getWidth();
 	float getHeight();
 	static int getModelMatrix(float x, float z, Street* street);
+	glm::vec4 boundingSphere();
 };
 

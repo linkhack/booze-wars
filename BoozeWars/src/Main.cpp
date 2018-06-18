@@ -250,6 +250,7 @@ int main(int argc, char** argv)
 		PxRigidStatic* groundPhysicsPlane = gPhysicsSDK->createRigidStatic(groundPos);
 		PxMaterial* mMaterial = gPhysicsSDK->createMaterial(0.0f, 0.1f, 0.5f);
 		groundPhysicsPlane->createShape(PxPlaneGeometry(), *mMaterial);
+		mMaterial->release();
 		gScene->addActor(*groundPhysicsPlane);
 		//Helper Rectangle for building placment
 		Geometry buildingPlacement = Geometry(glm::mat4(1.0f),Geometry::createCubeGeometry(Building::length,10.0f,Building::width),translucentRed);
@@ -293,6 +294,7 @@ int main(int argc, char** argv)
 		//Geometry worldModel = Geometry(glm::mat4(1.0f), Geometry::createCubeGeometry(x, y, z), material);
 		// Initialize camera
 		myCamera camera(fov, float(window_width) / float(window_height), nearZ, farZ);
+		world.updateFrustum(camera);
 		PointLight pointL(glm::vec3(0, 0, 0), glm::vec3(0), glm::vec3(100, 100, 100));
 		DirectionalLight dirL(glm::vec3(1.0f,1.0f,1.0f), -glm::vec3(4.0f,4.0f,4.0f));
 		
@@ -307,7 +309,7 @@ int main(int argc, char** argv)
 
 		//Test or indicator for start position
 		//world.addEnemy(ModelFactory::DEFAULT_BUILDING);
-		PostprocessBuffer postprocessing = PostprocessBuffer(window_width, window_height,nearZ,farZ);
+		PostprocessBuffer* postprocessing = new PostprocessBuffer(window_width, window_height,nearZ,farZ);
 		
 		// Render loop
 		double mouse_x, mouse_y;
@@ -405,7 +407,7 @@ int main(int argc, char** argv)
 				}
 				physxTime += dt;
 			}
-
+			world.updateFrustum(camera);
 			// Render
 			//Shadowmap pass
 			if (_shadows) {
@@ -433,7 +435,7 @@ int main(int argc, char** argv)
 			glViewport(0, 0, window_width, window_height);
 			if (_postprocessing)
 			{
-				postprocessing.bindForWriting();
+				postprocessing->bindForWriting();
 			}
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			//ground.draw(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.1f, 0.0f)));
@@ -466,7 +468,7 @@ int main(int argc, char** argv)
 			}
 			else if (buildingChosen == 2 && placementBox) {
 				glm::vec3 position = camera.getGroundIntersection();
-				int streetPart = Wall::getModelMatrix(camera.getGroundIntersection()[0], camera.getGroundIntersection()[2], world.highway.get());
+				int streetPart = Wall::getModelMatrix(camera.getGroundIntersection()[0], camera.getGroundIntersection()[2], world.highway);
 				wallPlacement.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection())*glm::rotate(glm::mat4(1.0f), streetPart*glm::pi<float>() / 2, glm::vec3(0, 1, 0)));
 			}
 			school.draw();
@@ -476,7 +478,7 @@ int main(int argc, char** argv)
 			
 			if (_postprocessing)
 			{
-				postprocessing.renderToScreen();
+				postprocessing->renderToScreen();
 			}
 			// Placement logic
 			if (_dragging && !pressing && !end) {
@@ -616,22 +618,19 @@ int main(int argc, char** argv)
 
 			}
 		}
+
 	}
 
-	/* --------------------------------------------- */
-	// Destroy PhysX
-	/* --------------------------------------------- */
+
+
 	
-	gPhysicsSDK->release();
-	if (gFoundation != nullptr) {
-		gFoundation->release();
-	}
+	
 	
 	/* --------------------------------------------- */
 	// Destroy framework
 	/* --------------------------------------------- */
 
-	destroyFramework();
+	//destroyFramework();
 
 
 	/* --------------------------------------------- */

@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClCompile Include="src\Frustum.cpp" />
     <ClCompile Include="src\Particle.cpp" />
     <ClCompile Include="src\ParticleGenerator.cpp" />
     <ClCompile Include="src\JumpingEnemy.cpp" />
@@ -24,6 +25,7 @@
     <ClCompile Include="src\Wave.cpp" />
     <ClCompile Include="src\Weapon.cpp" />
     <ClCompile Include="src\StreetLight.cpp" />
+    <ClInclude Include="src\Frustum.h" />
     <ClInclude Include="src\Particle.h" />
     <ClInclude Include="src\ParticleGenerator.h" />
     <ClInclude Include="src\JumpingEnemy.h" />

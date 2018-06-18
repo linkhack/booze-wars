@@ -78,6 +78,8 @@ PostprocessBuffer::PostprocessBuffer(int width, int height,float nearZ, float fa
 
 PostprocessBuffer::~PostprocessBuffer()
 {
+	if (postprocessShader != nullptr) postprocessShader->unuse();
+	postprocessShader = nullptr;
 }
 
 void PostprocessBuffer::setupTexture(GLuint* handle, int attachment, GLenum format)

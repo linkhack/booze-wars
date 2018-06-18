@@ -4,6 +4,7 @@
 #include "Weapon.h"
 #include "Model.h"
 #include "ModelFactory.h"
+#include "Frustum.h"
 #include <cstdlib>
 class Building
 {
@@ -38,9 +39,10 @@ public:
 	float getDamage();
 
 	void drawShadows(Shader& shader);
-	void draw(Shader* shader, float time);
-	void drawParticle(Shader* particleShader);
+	void draw(Shader* shader, float time, Frustum& frustum);
+	void drawParticle(Shader* particleShader, Frustum& frustum);
 	void shoot(float time);
 	std::list<Weapon*> getWeapons();
+	glm::vec4 boundingSphere();
 };
 

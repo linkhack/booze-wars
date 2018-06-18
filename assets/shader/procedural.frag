@@ -95,14 +95,14 @@ void main() {
 	vec3 n = normalize(vert.normal_world);
 	vec3 v = normalize(camera_world - vert.position_world);
 	float factor = 0.5-noise(vert.position_world.xz*0.05);
-	float factor2 = 0.5-noise(vert.position_world.xz*0.5);
+	//float factor2 = 0.5-noise(vert.position_world.xz*0.5);
 	factor = 1-factor*factor;
 	//factor = min(floor(5*factor)/5,1);
 	
 	float isStreet = texture(diffuseTexture,vert.position_world.zx/300).r;
 	
 	factor = min(floor(5*factor)/4,1);
-	factor = min(floor(5*(factor+0.1*factor2))/4,1);
+	//factor = min(floor(5*(factor+0.1*factor2))/4,1);
 
 	vec3 dirtColor = vec3(0.58823529411,0.42745098039,0.1333333);
 	vec3 grassColor = vec3(0.34313,0.429411,0.109803);

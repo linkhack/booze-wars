@@ -2,10 +2,10 @@
 
 Enemy::Enemy() 
 {
-
+	
 }
 
-Enemy::Enemy(std::shared_ptr<Street> street)
+Enemy::Enemy(Street* street)
 {
 	this->model = model;
 	glm::mat2 part = street->getPart1();
@@ -28,6 +28,7 @@ Enemy::Enemy(std::shared_ptr<Street> street)
 
 Enemy::~Enemy()
 {
+	
 }
 
 glm::mat4 Enemy::getModelMatrix()
@@ -203,4 +204,9 @@ void Enemy::updatePosition()
 glm::mat2x2 Enemy::getModel() 
 {
 	return glm::mat2x2(x - width / 2.0, y - length / 2.0, x + width / 2.0, y + length / 2.0);
+}
+
+glm::vec4 Enemy::boundingSphere()
+{
+	return glm::vec4(x, 3, y, glm::sqrt(0.25*width * width + 0.25*length *length + 9));;
 }

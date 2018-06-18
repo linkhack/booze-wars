@@ -14,7 +14,7 @@ DrunkCity::DrunkCity(float x, float y, float z)
 	citySizeX = x;
 	citySizeZ = z;
 	hp = 100;
-	highway = std::make_shared<Street>(x, z);
+	highway = new Street(x, z);
 	Wave* secondWave = new Wave(
 		std::list<wavetuple>({
 			wavetuple(Enemy::DEFAULT_ENEMY,10,2,1),
@@ -32,11 +32,22 @@ DrunkCity::DrunkCity(float x, float y, float z)
 			wavetuple(Enemy::JUMPING_ENEMY,10,1,0.1),
 			wavetuple(Enemy::DEFAULT_ENEMY,20,0.25,1) }),
 			secondWave);
+	frustum = new Frustum();
 }
 
 DrunkCity::~DrunkCity()
 {
-	gScene->release();
+	if(gScene !=nullptr )gScene->release();
+	gScene = nullptr;
+	if (gPhysicsSDK != nullptr)gPhysicsSDK->release();
+	gPhysicsSDK = nullptr;
+	if (wave != nullptr) delete wave;
+	wave = nullptr;
+	if (frustum != nullptr) delete frustum;
+	frustum = nullptr;
+	enemiesAlive.clear();
+	buildings.clear();
+	wallList.clear();
 }
 
 int DrunkCity::getHP() {
@@ -59,17 +70,22 @@ void DrunkCity::zeichne(Shader* shader, float time)
 	for (std::list<Enemy*>::iterator it = enemiesAlive.begin(); it != enemiesAlive.end(); ++it)
 	{
 		Enemy* iteratingEnemy = *it;
-		iteratingEnemy->draw(shader);
+		if (frustum->sphereInFrustum(iteratingEnemy->boundingSphere())) {
+			iteratingEnemy->draw(shader);
+		}
+
 	}
 
 	for (std::list<Building*>::iterator it = buildings.begin(); it != buildings.end(); ++it)
 	{
 		Building* iteratingBuilding = *it;
-		iteratingBuilding->draw(shader, time);
+		iteratingBuilding->draw(shader, time, *frustum);
 	}
 	for (Wall* wall : wallList)
 	{
-		wall->draw();
+		if (frustum->sphereInFrustum(wall->boundingSphere())) {
+			wall->draw();
+		}
 	}
 }
 
@@ -77,7 +93,9 @@ void DrunkCity::drawParticles(Shader* particleShader) {
 	for (std::list<Building*>::iterator it = buildings.begin(); it != buildings.end(); ++it)
 	{
 		Building* iteratingBuilding = *it;
-		iteratingBuilding->drawParticle(particleShader);
+		if (frustum->sphereInFrustum(iteratingBuilding->boundingSphere())) {
+			iteratingBuilding->drawParticle(particleShader, *frustum);
+		}
 	}
 }
 
@@ -241,7 +259,7 @@ void DrunkCity::placeWall(float x, float z, std::shared_ptr<Material> material) 
 		isColliding(highway->getPart3(), toPlace))) {
 		throw STREET_COLLISION;
 	}
-	addWall(new Wall(x, z, material, highway.get()));
+	addWall(new Wall(x, z, material, highway));
 }
 
 int DrunkCity::getStreetDirection(float x, float z, int width, int length)
@@ -383,4 +401,9 @@ bool DrunkCity::hasNextWave()
 glm::vec3 DrunkCity::getStreetLightPos()
 {
 	return glm::vec3(highway->getStreetLightPosX(), 0.0f, highway->getStreetLightPosZ());
+}
+
+void DrunkCity::updateFrustum(myCamera & camera)
+{
+	frustum->updatePlanes(camera);
 }
