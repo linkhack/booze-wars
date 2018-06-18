@@ -280,10 +280,10 @@ int main(int argc, char** argv)
 
 		//Create School building
 		Model* school = ModelFactory::Instance()->getModel(ModelFactory::SCHOOL);
-		glm::mat4 schoolTrannsform;
-		schoolTrannsform = glm::scale(glm::mat4(1.0f), glm::vec3(0.3, 0.3, 0.3));
-		schoolTrannsform = glm::rotate(glm::mat4(1.0f), -glm::pi<float>() / 2.0f, glm::vec3(0, 1, 0))*schoolTrannsform;
-		schoolTrannsform = glm::translate(glm::mat4(1.0f), glm::vec3(350, 0, 280))*schoolTrannsform;
+		glm::mat4 schoolTransform;
+		schoolTransform = glm::scale(glm::mat4(1.0f), glm::vec3(0.3, 0.3, 0.3));
+		schoolTransform = glm::rotate(glm::mat4(1.0f), -glm::pi<float>() / 2.0f, glm::vec3(0, 1, 0))*schoolTransform;
+		schoolTransform = glm::translate(glm::mat4(1.0f), glm::vec3(350, 0, 280))*schoolTransform;
 
 		StreetLight streetLight = StreetLight(world.getStreetLightPos());
 
@@ -421,7 +421,7 @@ int main(int argc, char** argv)
 				shadowShader.setUniform("viewProjMatrix", dirLProjView);
 				glCullFace(GL_FRONT);
 				world.zeichne(&shadowShader, dt);
-				school->draw(&shadowShader, schoolTrannsform);
+				//school->draw(&shadowShader, schoolTransform);
 
 				glCullFace(GL_BACK);
 			}
@@ -475,7 +475,7 @@ int main(int argc, char** argv)
 				wallPlacement.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection())*glm::rotate(glm::mat4(1.0f), streetPart*glm::pi<float>() / 2, glm::vec3(0, 1, 0)));
 			}
 			//ModelFactory::Instance()->getModel(ModelFactory::CITY)->draw(infiniGreen.get(),glm::rotate(glm::mat4(1.0f),glm::pi<float>()/2.0f,glm::vec3(0,1,0)));
-			school->draw(schoolShader.get(), schoolTrannsform);
+			school->draw(schoolShader.get(), schoolTransform);
 			streetLight.draw(textureShader.get());
 			worldModel.draw();
 			world.drawParticles(particleShader.get());

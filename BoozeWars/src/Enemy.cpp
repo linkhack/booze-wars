@@ -21,7 +21,7 @@ Enemy::Enemy(Street* street)
 	streetPart = 0;
 	modelMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(8, 8, 8));
 	this->width = 3.0f;
-	this->width = 3.0f;
+	this->length = 3.0f;
 }
 
 
@@ -33,7 +33,7 @@ Enemy::~Enemy()
 
 glm::mat4 Enemy::getModelMatrix()
 {
-	return glm::translate(glm::mat4(1.0f), glm::vec3(x, z-1, y))*modelMatrix;
+	return glm::translate(glm::mat4(1.0f), glm::vec3(x, z-2, y))*modelMatrix;
 }
 void Enemy::drawShadows(Shader& shader)
 {
@@ -128,7 +128,7 @@ PxRigidDynamic* Enemy::createPhysics(PxPhysics* physicsSDK)
 {
 	PxMaterial* enemyMaterial;
 	enemyMaterial = physicsSDK->createMaterial(0.0f, 0.0f, 0.0f);
-	physxActor = PxCreateDynamic(*physicsSDK, PxTransform(PxVec3(x, y, 3.0f+0.001f)), PxBoxGeometry(2, 2, 3), *enemyMaterial,0.1f);
+	physxActor = PxCreateDynamic(*physicsSDK, PxTransform(PxVec3(x, y, 3.0f+0.001f)), PxBoxGeometry(3, 3, 3), *enemyMaterial,0.1f);
 	//physxActor->setLinearVelocity(PxVec3(20.0f, 0.0f, 0.0f));
 	physxActor->setMaxAngularVelocity(0.0f);
 	

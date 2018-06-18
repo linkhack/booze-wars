@@ -75,9 +75,9 @@ void Mesh::draw(Shader* shader)
 		}
 		else if (name == "texture_specular")
 		{
-			glActiveTexture(GL_TEXTURE0 + specularNr);
+			glActiveTexture(GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_2D, textid);
-			shader->setUniform("specularTexture", specularNr);
+			shader->setUniform("specularTexture", 1);
 			//textureUnit = specularNr;
 		}
 
@@ -86,6 +86,6 @@ void Mesh::draw(Shader* shader)
 
 	glBindVertexArray(this->VAO);
 	glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	//glBindTexture(GL_TEXTURE_2D, 0);
 	glBindVertexArray(0);
 }
