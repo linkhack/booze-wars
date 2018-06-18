@@ -72,7 +72,8 @@ static bool _starting = false;
 static int buildingChosen=1;
 static int direction = 0;
 static bool placementBox = true;
-static bool help = true;
+static bool help = false;
+static bool _frametime = false;
 
 /* --------------------------------------------- */
 // Main
@@ -330,6 +331,9 @@ int main(int argc, char** argv)
 		int buildingLimit = 0;
 		int placeMinCounter = 0;
 		int frameCounter = 0;
+		char const *pchar;
+		std::string s = std::to_string(frameCounter);
+		pchar = s.c_str();
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		while (!glfwWindowShouldClose(window))
 		{
@@ -598,10 +602,11 @@ int main(int argc, char** argv)
 
 			//INFO
 			if (help) {
-				charactorService->renderText("EXIT [ESC]", window_width - 170, 300, 0.5f, glm::vec3(1.0f));
-				charactorService->renderText("MOVE [W,A,S,D]", window_width - 221, 250, 0.5f, glm::vec3(1.0f));
-				charactorService->renderText("UP/DOWN [R,F]", window_width - 220, 200, 0.5f, glm::vec3(1.0f));
-				charactorService->renderText("ON/OFF Placement [ESC]", window_width - 400, 150, 0.5f, glm::vec3(1.0f));
+				charactorService->renderText("EXIT [ESC]", window_width - 170, 350, 0.5f, glm::vec3(1.0f));
+				charactorService->renderText("MOVE [W,A,S,D]", window_width - 230, 300, 0.5f, glm::vec3(1.0f));
+				charactorService->renderText("UP/DOWN [R,F]", window_width - 220, 250, 0.5f, glm::vec3(1.0f));
+				charactorService->renderText("ON/OFF Placement Grid [Q]", window_width - 370, 200, 0.5f, glm::vec3(1.0f));
+				charactorService->renderText("TURN BUILDING [E]", window_width - 280, 150, 0.5f, glm::vec3(1.0f));
 				charactorService->renderText("BUILDING/WALL [1,2]", window_width - 300, 100, 0.5f, glm::vec3(1.0f));
 			}
 			
@@ -617,11 +622,17 @@ int main(int argc, char** argv)
 
 			 
 			//FPS (0.5sec avarage)
-			if (t_framecounter > 1.0f) 
+			if (t_framecounter > 1.0f)
 			{
-				std::cout << frameCounter / t_framecounter << std::endl;
+				s = std::to_string(frameCounter / t_framecounter);
+				pchar = s.c_str();
+				//std::cout << frameCounter / t_framecounter << std::endl
 				frameCounter = 0;
 				t_framecounter -= 1.0f;
+			}
+
+			if (_frametime) {
+				charactorService->renderText(pchar, 50, window_height / 2, 0.5f, glm::vec3(1.0f));
 			}
 			
 			// Poll events and swap buffers
@@ -721,19 +732,35 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			glfwSetWindowShouldClose(window, true);
 			break;
 		case GLFW_KEY_F1:
+			if (help) {
+				help = false;
+			}
+			else {
+				help = true;
+			}
+			break;
+		case GLFW_KEY_F2:
+			if (_frametime) {
+				_frametime = false;
+			}
+			else {
+				_frametime = true;
+			}
+			break;
+		case GLFW_KEY_F4:
+			_shadows = !_shadows;
+			break;
+		case GLFW_KEY_F5:
+			_postprocessing = !_postprocessing;
+			break;
+		case GLFW_KEY_F3:
 			_wireframe = !_wireframe;
 			glPolygonMode(GL_FRONT_AND_BACK, _wireframe ? GL_LINE : GL_FILL);
 			break;
-		case GLFW_KEY_F2:
+		case GLFW_KEY_F8:
 			_culling = !_culling;
 			if (_culling) glEnable(GL_CULL_FACE);
 			else glDisable(GL_CULL_FACE);
-			break;
-		case GLFW_KEY_F3:
-			_shadows = !_shadows;
-			break;
-		case GLFW_KEY_F4:
-			_postprocessing = !_postprocessing;
 			break;
 		case GLFW_KEY_ENTER:
 			_starting = true;
