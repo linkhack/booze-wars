@@ -425,7 +425,7 @@ int main(int argc, char** argv)
 				shadowShader.setUniform("viewProjMatrix", dirLProjView);
 				glCullFace(GL_FRONT);
 				world.zeichne(&shadowShader, dt);
-				//school->draw(&shadowShader, schoolTransform);
+				school->draw(&shadowShader, schoolTransform);
 
 				glCullFace(GL_BACK);
 			}
