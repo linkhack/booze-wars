@@ -1,12 +1,6 @@
 #include "Frustum.h"
 
 
-
-float Frustum::distanceToPoint(glm::vec4 plane, glm::vec3 point)
-{
-	return glm::dot(plane,glm::vec4(point,1.0f));
-}
-
 Frustum::Frustum()
 {
 }
@@ -58,4 +52,9 @@ bool Frustum::sphereInFrustum(glm::vec4 centerRadius)
 		}
 	}
 	return true;
+}
+
+float Frustum::distanceToPoint(glm::vec4 plane, glm::vec3 point)
+{
+	return glm::dot(plane, glm::vec4(point, 1.0f));
 }

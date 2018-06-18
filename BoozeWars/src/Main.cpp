@@ -586,7 +586,6 @@ int main(int argc, char** argv)
 			charactorService->renderText(buildings.c_str(), 450, 100, 0.8f, color);
 
 			if (!start && firstWave && world.hasMinOneBuildings()) {
-				charactorService->renderBox(glm::vec2(2,10), 20, window_height-55, 0.5f, glm::vec3(0.502f, 0.502f, 0.50f));
 				charactorService->renderText("PRESS ENTER TO START WAVE", 20, window_height-50, 0.5f, glm::vec3(1.0f));
 			} else if (!start && !firstWave && world.hasMinOneBuildings()) {
 				charactorService->renderText("PRESS ENTER TO START NEXT WAVE", 20, window_height - 50, 0.5f, glm::vec3(1.0f));
