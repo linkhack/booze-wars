@@ -195,6 +195,7 @@ GLint Model::loadTexture(const char* filename)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 	FreeImage_Unload(dib);
+	glBindTexture(GL_TEXTURE_2D, 0);
 	return gl_texID;
 }
 

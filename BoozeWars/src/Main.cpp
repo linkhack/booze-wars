@@ -260,6 +260,7 @@ int main(int argc, char** argv)
 		Geometry buildingPlacement = Geometry(glm::mat4(1.0f),Geometry::createCubeGeometry(Building::length,10.0f,Building::width),translucentRed);
 		Geometry buildingRange = Geometry(glm::mat4(1.0f), Geometry::createCubeGeometry(Building::length, 0.0f, Building::getRange()), translucentRed);
 		Geometry wallPlacement = Geometry(glm::mat2(1.0f), Geometry::createCubeGeometry(Wall::width, 8.0f, 0.4f), translucentRed);
+		Geometry helper = Geometry(glm::translate(glm::mat4(1.0f), glm::vec3(0, -5, 0)), Geometry::createCubeGeometry(1, 1, 1), brickMaterial);
 		//Enemy
 		//std::shared_ptr<Geometry> enemyModel = std::make_shared<Geometry>(glm::mat4(1.0f), Geometry::createCubeGeometry(4, 6, 4), sunMaterial);
 		std::shared_ptr<Geometry> enemyModel = std::make_shared<Geometry>(glm::scale(glm::mat4(1.0f),glm::vec3(2.0f,3.0f,2.0f)), Geometry::createSphereGeometry(20,20,1), sunMaterial);
@@ -447,7 +448,7 @@ int main(int argc, char** argv)
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			//ground.draw(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.1f, 0.0f)));
 			world.zeichne(textureShader.get(), dt); //needs shadow
-
+			helper.draw();
 			glm::vec3 mapTranslation = camera.getPosition() + 150.0f * camera.getLookDirection();
 			mapTranslation = glm::vec3(mapTranslation.x, 0, mapTranslation.z);
 			map.draw(glm::translate(glm::mat4(1.0f),mapTranslation));
@@ -479,6 +480,7 @@ int main(int argc, char** argv)
 				wallPlacement.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection())*glm::rotate(glm::mat4(1.0f), streetPart*glm::pi<float>() / 2, glm::vec3(0, 1, 0)));
 			}
 			//ModelFactory::Instance()->getModel(ModelFactory::CITY)->draw(infiniGreen.get(),glm::rotate(glm::mat4(1.0f),glm::pi<float>()/2.0f,glm::vec3(0,1,0)));
+			
 			school->draw(schoolShader.get(), schoolTransform);
 			streetLight.draw(textureShader.get());
 			worldModel.draw();
