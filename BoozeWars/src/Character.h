@@ -22,6 +22,7 @@ private:
 	int windowWidth;
 	int windowHeight;
 	GLFWwindow *window;
+	GLuint allWhite;
 public:
 	Character(GLFWwindow *window);
 	~Character();

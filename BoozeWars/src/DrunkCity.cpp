@@ -106,7 +106,7 @@ PxScene* DrunkCity::initPhysics(PxPhysics* gPhysicsSDK)
 {
 	this->gPhysicsSDK = gPhysicsSDK;
 	PxSceneDesc sceneDesc(gPhysicsSDK->getTolerancesScale());
-	sceneDesc.gravity = PxVec3(0.0f, 0.0f, -9.81f);
+	sceneDesc.gravity = 2*PxVec3(0.0f, 0.0f, -9.81f);
 	sceneDesc.cpuDispatcher = PxDefaultCpuDispatcherCreate(1);
 	sceneDesc.filterShader = PxDefaultSimulationFilterShader;
 	gScene = gPhysicsSDK->createScene(sceneDesc);
@@ -196,7 +196,7 @@ void DrunkCity::calculateForces()
 	{
 		Enemy* iterEnemy = *it;
 		//iterEnemy->applyForce(iterEnemy->getDesiredDirection());
-		iterEnemy->applyDrivingForce();
+		iterEnemy->applyDrivingForce(gScene);
 		std::list<Enemy*>::iterator otherEnemyIt = enemiesAlive.begin();
 		while (otherEnemyIt != enemiesAlive.end())
 		{

@@ -56,7 +56,7 @@ public:
 
 	virtual PxRigidDynamic* createPhysics(PxPhysics* physicsSDK);
 	void applyForce(PxVec3 force);
-	void applyDrivingForce();
+	virtual void applyDrivingForce(PxScene * physxScene);
 	void updatePosition();
 	glm::mat2x2 getModel();
 };

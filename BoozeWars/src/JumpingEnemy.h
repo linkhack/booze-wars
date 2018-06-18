@@ -8,5 +8,7 @@ public:
 	JumpingEnemy(std::shared_ptr<Street> Street);
 	~JumpingEnemy();
 
+	virtual void applyDrivingForce(PxScene * physxScene);
+
 };
 
