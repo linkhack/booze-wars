@@ -7,6 +7,7 @@ PostprocessBuffer::PostprocessBuffer(int width, int height,float nearZ, float fa
 	//set constants
 	this->width = width;
 	this->height = height;
+	postprocessShader = nullptr;
 	postprocessShader = new Shader("postprocess.vert","postprocess.frag");
 	postprocessShader->use();
 	postprocessShader->setUniform("nearZ", (float)nearZ);

@@ -471,6 +471,7 @@ int main(int argc, char** argv)
 				int streetPart = Wall::getModelMatrix(camera.getGroundIntersection()[0], camera.getGroundIntersection()[2], world.highway);
 				wallPlacement.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection())*glm::rotate(glm::mat4(1.0f), streetPart*glm::pi<float>() / 2, glm::vec3(0, 1, 0)));
 			}
+			//ModelFactory::Instance()->getModel(ModelFactory::CITY)->draw(infiniGreen.get(),glm::rotate(glm::mat4(1.0f),glm::pi<float>()/2.0f,glm::vec3(0,1,0)));
 			school.draw();
 			streetLight.draw(textureShader.get());
 			worldModel.draw();
@@ -621,16 +622,12 @@ int main(int argc, char** argv)
 
 	}
 
-
-
-	
-	
 	
 	/* --------------------------------------------- */
 	// Destroy framework
 	/* --------------------------------------------- */
 
-	//destroyFramework();
+	destroyFramework();
 
 
 	/* --------------------------------------------- */
