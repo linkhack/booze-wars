@@ -214,6 +214,7 @@ int main(int argc, char** argv)
 		std::shared_ptr<Shader> postprocessShader = std::make_shared<Shader>("postprocess.vert", "postprocess.frag");
 		Shader shadowShader = Shader("shadowShader.vert", "shadowShader.frag");
 		Shader objectShader = Shader("texture.vert", "texture.frag");
+		std::shared_ptr<Shader> schoolShader = std::make_shared<Shader>("texture.vert", "school.frag");
 		proceduralGrass->use();
 		proceduralGrass->setUniform("width", window_width);
 		//Textures
@@ -367,6 +368,7 @@ int main(int argc, char** argv)
 			setPerFrameUniforms(proceduralGrass.get(), camera, dirL, pointL, dirLProjView, streetLight);
 			setPerFrameUniforms(infiniGreen.get(), camera, dirL, pointL, dirLProjView, streetLight);
 			setPerFrameUniforms(translucent.get(), camera, dirL, pointL, dirLProjView, streetLight);
+			setPerFrameUniforms(schoolShader.get(), camera, dirL, pointL, dirLProjView, streetLight);
 			setPerFrameUniformsParticle(particleShader.get(), camera);
 			setPerFrameUniformsSkybox(skyboxShader.get(), camera);
 
@@ -473,7 +475,7 @@ int main(int argc, char** argv)
 				wallPlacement.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection())*glm::rotate(glm::mat4(1.0f), streetPart*glm::pi<float>() / 2, glm::vec3(0, 1, 0)));
 			}
 			//ModelFactory::Instance()->getModel(ModelFactory::CITY)->draw(infiniGreen.get(),glm::rotate(glm::mat4(1.0f),glm::pi<float>()/2.0f,glm::vec3(0,1,0)));
-			school->draw(textureShader.get(), schoolTrannsform);
+			school->draw(schoolShader.get(), schoolTrannsform);
 			streetLight.draw(textureShader.get());
 			worldModel.draw();
 			world.drawParticles(particleShader.get());
