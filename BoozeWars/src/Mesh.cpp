@@ -53,7 +53,7 @@ void Mesh::draw(Shader* shader)
 {
 	shader->use();
 	int diffuseNr = 0;
-	GLuint specularNr = 5;
+	int specularNr = 5;
 	shader->setUniform("materialCoefficients", glm::vec3(0.2f, 0.8f, 0.1f));
 	shader->setUniform("specularAlpha", 20.0f);
 	/*
@@ -75,8 +75,9 @@ void Mesh::draw(Shader* shader)
 		}
 		else if (name == "texture_specular")
 		{
-
-			//shader->setUniform("specularTexture", specularNr);
+			glActiveTexture(GL_TEXTURE0 + specularNr);
+			glBindTexture(GL_TEXTURE_2D, textid);
+			shader->setUniform("specularTexture", specularNr);
 			//textureUnit = specularNr;
 		}
 

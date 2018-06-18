@@ -19,6 +19,7 @@ ModelFactory::ModelFactory()
 	this->defaultWeapon = new Model("assets/objects/barrel.obj");
 	this->jumpingEnemy = new Model("assets/objects/bottle.obj");
 	this->streetLight = new Model("assets/objects/streetlamp.obj");
+	this->school = new Model("assets/objects/school.obj");
 }
 
 ModelFactory::~ModelFactory()
@@ -41,6 +42,9 @@ Model* ModelFactory::getModel(const int model) {
 		break;
 	case STREET_LIGHT:
 		return this->streetLight;
+		break;
+	case SCHOOL:
+		return this->school;
 		break;
 	default:
 		std::cout << "Model not founnd" << std::endl;

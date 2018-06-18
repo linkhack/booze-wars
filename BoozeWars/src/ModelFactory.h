@@ -12,6 +12,7 @@ private:
 	Model* defaultWeapon;
 	Model* jumpingEnemy;
 	Model* streetLight;
+	Model* school;
 
 	Texture* weaponTexture;
 
@@ -26,6 +27,7 @@ public:
 	static const int ModelFactory::DEFAULT_WEAPON = 3;
 	static const int ModelFactory::JUMPING_ENEMY = 4;
 	static const int ModelFactory::STREET_LIGHT = 5;
+	static const int ModelFactory::SCHOOL = 6;
 
 	Model* getModel(const int model);
 
