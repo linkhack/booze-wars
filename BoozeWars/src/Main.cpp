@@ -210,6 +210,7 @@ int main(int argc, char** argv)
 		std::shared_ptr<Shader> translucent = std::make_shared<Shader>("texture.vert", "translucentRed.frag");
 		std::shared_ptr<Shader> proceduralGrass = std::make_shared<Shader>("texture.vert", "procedural.frag");
 		std::shared_ptr<Shader> particleShader = std::make_shared<Shader>("particle.vert", "particle.frag");
+		std::shared_ptr<Shader> postprocessShader = std::make_shared<Shader>("postprocess.vert", "postprocess.frag");
 		Shader shadowShader = Shader("shadowShader.vert", "shadowShader.frag");
 		Shader objectShader = Shader("texture.vert", "texture.frag");
 		proceduralGrass->use();
@@ -309,7 +310,7 @@ int main(int argc, char** argv)
 
 		//Test or indicator for start position
 		//world.addEnemy(ModelFactory::DEFAULT_BUILDING);
-		PostprocessBuffer* postprocessing = new PostprocessBuffer(window_width, window_height,nearZ,farZ);
+		PostprocessBuffer* postprocessing = new PostprocessBuffer(window_width, window_height,nearZ,farZ, postprocessShader.get());
 		
 		// Render loop
 		double mouse_x, mouse_y;

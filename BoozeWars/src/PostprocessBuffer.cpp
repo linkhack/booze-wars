@@ -2,13 +2,13 @@
 #include <iostream>
 
 
-PostprocessBuffer::PostprocessBuffer(int width, int height,float nearZ, float farZ)
+PostprocessBuffer::PostprocessBuffer(int width, int height,float nearZ, float farZ, Shader* newShader)
 {
 	//set constants
 	this->width = width;
 	this->height = height;
-	postprocessShader = nullptr;
-	postprocessShader = new Shader("postprocess.vert","postprocess.frag");
+	//postprocessShader = nullptr;
+	postprocessShader = newShader;
 	postprocessShader->use();
 	postprocessShader->setUniform("nearZ", (float)nearZ);
 	postprocessShader->setUniform("farZ", (float)farZ);

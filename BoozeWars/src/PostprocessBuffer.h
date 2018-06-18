@@ -24,7 +24,7 @@ private:
 	GLuint uvVBO;
 	
 public:
-	PostprocessBuffer(int width, int height, float nearz, float farz);
+	PostprocessBuffer(int width, int height, float nearz, float farz, Shader* newShader);
 	~PostprocessBuffer();
 
 	void renderToScreen();
