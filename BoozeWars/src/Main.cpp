@@ -72,6 +72,7 @@ static bool _starting = false;
 static int buildingChosen=1;
 static int direction = 0;
 static bool placementBox = true;
+static bool help = true;
 
 /* --------------------------------------------- */
 // Main
@@ -591,6 +592,19 @@ int main(int argc, char** argv)
 			} else if (!start && !firstWave && world.hasMinOneBuildings()) {
 				charactorService->renderText("PRESS ENTER TO START NEXT WAVE", 20, window_height - 50, 0.5f, glm::vec3(1.0f));
 			}
+
+			charactorService->renderText("HELP [F1]", window_width - 150, window_height - 50, 0.5f, glm::vec3(1.0f));
+
+			//INFO
+			if (help) {
+				charactorService->renderText("EXIT [ESC]", window_width - 150, window_height - 50, 0.5f, glm::vec3(1.0f));
+				charactorService->renderText("MOVE [W,A,S,D]", window_width - 150, window_height - 50, 0.5f, glm::vec3(1.0f));
+				charactorService->renderText("UP/DOWN [R,F]", window_width - 150, window_height - 50, 0.5f, glm::vec3(1.0f));
+				charactorService->renderText("ON/OF PLACEMENT HELP [ESC]", window_width - 150, window_height - 50, 0.5f, glm::vec3(1.0f));
+				charactorService->renderText("BUILDING/WALL [1,2]", window_width - 150, window_height - 50, 0.5f, glm::vec3(1.0f));
+			}
+			
+
 
 			// Compute frame time
 			dt = t;
