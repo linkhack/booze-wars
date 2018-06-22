@@ -18,6 +18,7 @@ Frustum::Frustum(myCamera& camera)
 	planes[4] = row4 - row2;
 	planes[5] = row4 + row3;
 	planes[6] = row4 - row3;
+	cullingActivated = true;
 }
 
 
@@ -48,11 +49,17 @@ bool Frustum::sphereInFrustum(glm::vec4 centerRadius)
 	for (int i = 0; i < 6; i++) {
 		d = distanceToPoint(planes[i], center);
 		if (d <= -radius) {
-			return false;
+			return cullingActivated || false;
 		}
 	}
 	return true;
 }
+
+void Frustum::useCulling(bool activated)
+{
+	cullingActivated = activated;
+}
+
 
 float Frustum::distanceToPoint(glm::vec4 plane, glm::vec3 point)
 {

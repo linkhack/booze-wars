@@ -93,7 +93,7 @@ void DrunkCity::drawParticles(Shader* particleShader) {
 	for (std::list<Building*>::iterator it = buildings.begin(); it != buildings.end(); ++it)
 	{
 		Building* iteratingBuilding = *it;
-		if (frustum->sphereInFrustum(iteratingBuilding->boundingSphere())) {
+		if (true||frustum->sphereInFrustum(iteratingBuilding->boundingSphere())) {
 			iteratingBuilding->drawParticle(particleShader, *frustum);
 		}
 	}
@@ -406,4 +406,9 @@ glm::vec3 DrunkCity::getStreetLightPos()
 void DrunkCity::updateFrustum(myCamera & camera)
 {
 	frustum->updatePlanes(camera);
+}
+
+void DrunkCity::useCulling(bool activated)
+{
+	this->frustum->useCulling(activated);
 }

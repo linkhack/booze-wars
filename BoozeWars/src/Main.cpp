@@ -416,6 +416,7 @@ int main(int argc, char** argv)
 				physxTime += dt;
 			}
 			world.updateFrustum(camera);
+			world.useCulling(_culling);
 			// Render
 			//Shadowmap pass
 			if (_shadows) {
@@ -761,8 +762,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			break;
 		case GLFW_KEY_F8:
 			_culling = !_culling;
-			if (_culling) glEnable(GL_CULL_FACE);
-			else glDisable(GL_CULL_FACE);
 			break;
 		case GLFW_KEY_ENTER:
 			_starting = true;
