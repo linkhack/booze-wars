@@ -387,7 +387,7 @@ int main(int argc, char** argv)
 						world->calculateForces();
 						gScene->simulate(physxTimestep);
 						gScene->fetchResults(true);
-						world->walk();
+						world->walk(dt);
 					}
 				}
 				catch (int e) {

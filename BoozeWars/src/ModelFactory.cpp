@@ -20,6 +20,7 @@ ModelFactory::ModelFactory()
 	this->jumpingEnemy = new Model("assets/objects/bottle.obj");
 	this->streetLight = new Model("assets/objects/streetlamp.obj");
 	this->school = new Model("assets/objects/school.obj");
+	this->hand = new Model("assets/objects/gloveLow_poly.obj");
 }
 
 ModelFactory::~ModelFactory()
@@ -45,6 +46,9 @@ Model* ModelFactory::getModel(const int model) {
 		break;
 	case SCHOOL:
 		return this->school;
+		break;
+	case HAND:
+		return this->hand;
 		break;
 	default:
 		std::cout << "Model not founnd" << std::endl;

@@ -179,7 +179,7 @@ void DrunkCity::fight(float dT)
 	}
 }
 
-void DrunkCity::walk()
+void DrunkCity::walk(float time)
 {
 	std::list<Enemy*>::iterator it = enemiesAlive.begin();
 	while(it != enemiesAlive.end())	
@@ -187,7 +187,7 @@ void DrunkCity::walk()
 		Enemy* iterEnemy = *it;
 		if (iterEnemy != NULL) 
 		{
-			iterEnemy->updatePosition();
+			iterEnemy->updatePosition(time);
 			if (iterEnemy->getX() >= 300 || iterEnemy->getZ()>=300)
 			{
 				hp -= iterEnemy->getDamage();

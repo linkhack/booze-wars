@@ -22,6 +22,7 @@ Enemy::Enemy(Street* street)
 	modelMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(8, 8, 8));
 	this->width = 4.0f;
 	this->length = 4.0f;
+	this->hand = new Hand();
 }
 
 
@@ -42,7 +43,9 @@ void Enemy::drawShadows(Shader& shader)
 
 void Enemy::draw(Shader* shader) 
 {
-	model->draw(shader, getModelMatrix());
+	glm::mat4 modelMatrix = getModelMatrix();
+	model->draw(shader, modelMatrix);
+	hand->draw(shader, modelMatrix);
 }
 
 float Enemy::getX() 
@@ -181,12 +184,13 @@ void Enemy::applyDrivingForce(PxScene* physxScene)
 	physxActor->addForce(acceleration*physxActor->getMass());
 }
 
-void Enemy::updatePosition()
+void Enemy::updatePosition(float time)
 {	
 	PxVec3 transform = physxActor->getGlobalPose().p;
 	x = transform.x;
 	y = transform.y;
 	z = transform.z;
+	hand->rotate(time);
 	/*
 	if (x < street->getPart1()[1][0] + 0.5*street->getStreetWidth()) {
 		x += movementspeed * dT;

@@ -1,6 +1,7 @@
 #pragma once
 #include "Geometry.h"
 #include "Street.h"
+#include "Hand.h"
 #include <PhysX/PxPhysicsAPI.h>
 #include "Model.h"
 #include "ModelFactory.h"
@@ -10,6 +11,7 @@ class Enemy
 {
 protected:
 	Model* model;
+	Hand* hand;
 	float x;
 	float y;
 	float z;
@@ -57,7 +59,7 @@ public:
 	virtual PxRigidDynamic* createPhysics(PxPhysics* physicsSDK);
 	void applyForce(PxVec3 force);
 	virtual void applyDrivingForce(PxScene * physxScene);
-	void updatePosition();
+	void updatePosition(float time);
 	glm::mat2x2 getModel();
 	virtual glm::vec4 boundingSphere();
 };

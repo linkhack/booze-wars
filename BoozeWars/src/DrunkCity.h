@@ -54,7 +54,7 @@ public:
 	void zeichne(Shader* shader, float time);
 	void DrunkCity::drawParticles(Shader* particleShader);
 	void fight(float dT);
-	void walk();
+	void walk(float time);
 	void calculateForces();
 	void placeBuilding(float x, float z, int direction);
 	void placeWall(float x, float z,std::shared_ptr<Material> material);
