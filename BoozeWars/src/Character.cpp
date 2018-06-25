@@ -89,7 +89,7 @@ void Character::renderText(const char *text, float x, float y, GLfloat scale, gl
 			glUniformMatrix4fv(glGetUniformLocation(shader->getID(), "projection"), 1, false, glm::value_ptr(projection));
 
 			float xpos = x + it->second.Bearing.x * scale;	//x + (face->glyph->bitmap_left * scale);
-			float ypos = y - (it->second.Size.y * scale - it->second.Bearing.y);//y - (face->glyph->bitmap.rows * scale - face->glyph->bitmap_top * scale) /*+ (face->glyph->bitmap_left * scale - face->glyph->bitmap_top * scale)*/;
+			float ypos = y - (it->second.Size.y * scale - it->second.Bearing.y * scale);//y - (face->glyph->bitmap.rows * scale - face->glyph->bitmap_top * scale) /*+ (face->glyph->bitmap_left * scale - face->glyph->bitmap_top * scale)*/;
 			float w = it->second.Size.x * scale;
 			float h = it->second.Size.y * scale;
 
