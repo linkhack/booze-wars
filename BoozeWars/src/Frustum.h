@@ -8,6 +8,7 @@ class Frustum
 {
 private:
 	glm::vec4 planes[6];
+	bool cullingActivated;
 
 	float distanceToPoint(glm::vec4 plane, glm::vec3 point);
 public:
@@ -17,6 +18,7 @@ public:
 
 	void updatePlanes(myCamera& camera);
 	bool sphereInFrustum(glm::vec4 centerRadius);
+	void useCulling(bool activated);
 
 };
 

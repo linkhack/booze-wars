@@ -20,8 +20,8 @@ Enemy::Enemy(Street* street)
 	damageTeens = 5;
 	streetPart = 0;
 	modelMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(8, 8, 8));
-	this->width = 3.0f;
-	this->length = 3.0f;
+	this->width = 4.0f;
+	this->length = 4.0f;
 }
 
 

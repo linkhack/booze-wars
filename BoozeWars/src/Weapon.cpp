@@ -149,5 +149,5 @@ bool Weapon::isHitted()
 
 glm::vec4 Weapon::boundingSphere()
 {
-	return glm::vec4(x, 2, z, glm::sqrt(0.25*width * width + 0.25*length * length + 4));;
+	return glm::vec4(x, 2, z, 15);
 }

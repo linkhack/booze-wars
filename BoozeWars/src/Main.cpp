@@ -178,8 +178,8 @@ int main(int argc, char** argv)
 
 	// set up TrueType
 
-	Character* charactorService = new Character(window);
-	charactorService->setFontSize(54);
+	Character* charactorService = new Character(window,54);
+	//charactorService->setFontSize(54);
 
 	// set up Physx
 	//Foundation
@@ -187,18 +187,18 @@ int main(int argc, char** argv)
 	PxDefaultAllocator gDefaultAllocatorCallback;
 	PxFoundation* gFoundation = nullptr;
 	gFoundation = PxCreateFoundation(PX_FOUNDATION_VERSION, gDefaultAllocatorCallback, gDefaultErrorCallback);
-	PxPvdTransport* mTransport = PxDefaultPvdSocketTransportCreate("127.0.0.1", 5425, 10000);
+	//PxPvdTransport* mTransport = PxDefaultPvdSocketTransportCreate("127.0.0.1", 5425, 10000);
 	PxPvdInstrumentationFlags mPvdFlags = PxPvdInstrumentationFlag::eALL;
-	PxPvd* mPvd = PxCreatePvd(*gFoundation);
+	//PxPvd* mPvd = PxCreatePvd(*gFoundation);
 	//SDK
 	PxPhysics* gPhysicsSDK = nullptr;
-	gPhysicsSDK = PxCreatePhysics(PX_PHYSICS_VERSION, *gFoundation, PxTolerancesScale(),false,mPvd);
+	gPhysicsSDK = PxCreatePhysics(PX_PHYSICS_VERSION, *gFoundation, PxTolerancesScale(),false);
 	if (gPhysicsSDK == nullptr) {
 		std::cout << "Failed to create Physx SDK" << std::endl;
 	}
 	
 
-	if (!mPvd->connect(*mTransport, mPvdFlags)) { std::cout << "Error connecting" << std::endl; }
+	//if (!mPvd->connect(*mTransport, mPvdFlags)) { std::cout << "Error connecting" << std::endl; }
 	
 
 	/* --------------------------------------------- */
@@ -213,8 +213,8 @@ int main(int argc, char** argv)
 		std::shared_ptr<Shader> proceduralGrass = std::make_shared<Shader>("texture.vert", "procedural.frag");
 		std::shared_ptr<Shader> particleShader = std::make_shared<Shader>("particle.vert", "particle.frag");
 		std::shared_ptr<Shader> postprocessShader = std::make_shared<Shader>("postprocess.vert", "postprocess.frag");
-		Shader shadowShader = Shader("shadowShader.vert", "shadowShader.frag");
-		Shader objectShader = Shader("texture.vert", "texture.frag");
+		Shader* shadowShader = new Shader("shadowShader.vert", "shadowShader.frag");
+		//Shader* objectShader = new Shader("texture.vert", "texture.frag");
 		std::shared_ptr<Shader> schoolShader = std::make_shared<Shader>("texture.vert", "school.frag");
 		proceduralGrass->use();
 		proceduralGrass->setUniform("width", window_width);
@@ -242,9 +242,9 @@ int main(int argc, char** argv)
 		std::shared_ptr<Material> mapMaterial = std::make_shared<TextureMaterial>(proceduralGrass, glm::vec3(0.2f, 0.8f, 0.0f), 1.0f,mapTexture);
 		//Geometries
 		//Create World
-		DrunkCity world = DrunkCity(300.0f, 9000.0f, 300.0f);
+		DrunkCity* world = new DrunkCity(300.0f, 9000.0f, 300.0f);
 		//Create Physx scene
-		PxScene* gScene = world.initPhysics(gPhysicsSDK);
+		PxScene* gScene = world->initPhysics(gPhysicsSDK);
 		//Create Ground
 		Geometry ground = Geometry(glm::mat4(1.0f), Geometry::createInfinitePlane(), infiniGreenMat);
 		//Create map
@@ -260,6 +260,7 @@ int main(int argc, char** argv)
 		Geometry buildingPlacement = Geometry(glm::mat4(1.0f),Geometry::createCubeGeometry(Building::length,10.0f,Building::width),translucentRed);
 		Geometry buildingRange = Geometry(glm::mat4(1.0f), Geometry::createCubeGeometry(Building::length, 0.0f, Building::getRange()), translucentRed);
 		Geometry wallPlacement = Geometry(glm::mat2(1.0f), Geometry::createCubeGeometry(Wall::width, 8.0f, 0.4f), translucentRed);
+		Geometry helper = Geometry(glm::translate(glm::mat4(1.0f), glm::vec3(0, -5, 0)), Geometry::createCubeGeometry(1, 1, 1), brickMaterial);
 		//Enemy
 		//std::shared_ptr<Geometry> enemyModel = std::make_shared<Geometry>(glm::mat4(1.0f), Geometry::createCubeGeometry(4, 6, 4), sunMaterial);
 		std::shared_ptr<Geometry> enemyModel = std::make_shared<Geometry>(glm::scale(glm::mat4(1.0f),glm::vec3(2.0f,3.0f,2.0f)), Geometry::createSphereGeometry(20,20,1), sunMaterial);
@@ -286,7 +287,7 @@ int main(int argc, char** argv)
 		schoolTransform = glm::rotate(glm::mat4(1.0f), -glm::pi<float>() / 2.0f, glm::vec3(0, 1, 0))*schoolTransform;
 		schoolTransform = glm::translate(glm::mat4(1.0f), glm::vec3(350, 0, 280))*schoolTransform;
 
-		StreetLight streetLight = StreetLight(world.getStreetLightPos());
+		StreetLight streetLight = StreetLight(world->getStreetLightPos());
 
 		//create Wave
 	
@@ -297,7 +298,7 @@ int main(int argc, char** argv)
 		//Geometry worldModel = Geometry(glm::mat4(1.0f), Geometry::createCubeGeometry(x, y, z), material);
 		// Initialize camera
 		myCamera camera(fov, float(window_width) / float(window_height), nearZ, farZ);
-		world.updateFrustum(camera);
+		world->updateFrustum(camera);
 		PointLight pointL(glm::vec3(0, 0, 0), glm::vec3(0), glm::vec3(100, 100, 100));
 		DirectionalLight dirL(glm::vec3(1.0f,1.0f,1.0f), -glm::vec3(4.0f,4.0f,4.0f));
 		
@@ -383,10 +384,10 @@ int main(int argc, char** argv)
 					if (physxTime >= physxTimestep)
 					{
 						physxTime -= physxTimestep;
-						world.calculateForces();
+						world->calculateForces();
 						gScene->simulate(physxTimestep);
 						gScene->fetchResults(true);
-						world.walk();
+						world->walk();
 					}
 				}
 				catch (int e) {
@@ -394,13 +395,13 @@ int main(int argc, char** argv)
 						end = true;
 					}
 				}
-				world.addEnemy(dt);
+				world->addEnemy(dt);
 				try {
-					world.fight(dt);
+					world->fight(dt);
 				}
 				catch (int e) {
-					if (e == ALL_ENEMIES_DESTROYED && world.waveIsFinished()) {
-						if (world.hasNextWave()) {
+					if (e == ALL_ENEMIES_DESTROYED && world->waveIsFinished()) {
+						if (world->hasNextWave()) {
 							start = false;
 							firstWave = false;
 							_starting = false;
@@ -414,18 +415,19 @@ int main(int argc, char** argv)
 				}
 				physxTime += dt;
 			}
-			world.updateFrustum(camera);
+			world->updateFrustum(camera);
+			world->useCulling(_culling);
 			// Render
 			//Shadowmap pass
 			if (_shadows) {
 				glViewport(0, 0, 1024, 1024);
 				directionalLightShadow.bindForWriting();
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-				shadowShader.use();
-				shadowShader.setUniform("viewProjMatrix", dirLProjView);
+				shadowShader->use();
+				shadowShader->setUniform("viewProjMatrix", dirLProjView);
 				glCullFace(GL_FRONT);
-				world.zeichne(&shadowShader, dt);
-				school->draw(&shadowShader, schoolTransform);
+				world->zeichne(shadowShader, dt);
+				school->draw(shadowShader, schoolTransform);
 
 				glCullFace(GL_BACK);
 			}
@@ -446,8 +448,8 @@ int main(int argc, char** argv)
 			}
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			//ground.draw(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.1f, 0.0f)));
-			world.zeichne(textureShader.get(), dt); //needs shadow
-
+			world->zeichne(textureShader.get(), dt); //needs shadow
+			helper.draw();
 			glm::vec3 mapTranslation = camera.getPosition() + 150.0f * camera.getLookDirection();
 			mapTranslation = glm::vec3(mapTranslation.x, 0, mapTranslation.z);
 			map.draw(glm::translate(glm::mat4(1.0f),mapTranslation));
@@ -475,14 +477,15 @@ int main(int argc, char** argv)
 			}
 			else if (buildingChosen == 2 && placementBox) {
 				glm::vec3 position = camera.getGroundIntersection();
-				int streetPart = Wall::getModelMatrix(camera.getGroundIntersection()[0], camera.getGroundIntersection()[2], world.highway);
+				int streetPart = Wall::getModelMatrix(camera.getGroundIntersection()[0], camera.getGroundIntersection()[2], world->highway);
 				wallPlacement.draw(glm::translate(glm::mat4(1.0f), camera.getGroundIntersection())*glm::rotate(glm::mat4(1.0f), streetPart*glm::pi<float>() / 2, glm::vec3(0, 1, 0)));
 			}
 			//ModelFactory::Instance()->getModel(ModelFactory::CITY)->draw(infiniGreen.get(),glm::rotate(glm::mat4(1.0f),glm::pi<float>()/2.0f,glm::vec3(0,1,0)));
+			
 			school->draw(schoolShader.get(), schoolTransform);
 			streetLight.draw(textureShader.get());
 			worldModel.draw();
-			world.drawParticles(particleShader.get());
+			world->drawParticles(particleShader.get());
 			
 			if (_postprocessing)
 			{
@@ -494,10 +497,10 @@ int main(int argc, char** argv)
 				try {
 					// trying to place building
 					if (buildingChosen == 1) {
-						world.placeBuilding(camera.getGroundIntersection()[0], camera.getGroundIntersection()[2], direction);
+						world->placeBuilding(camera.getGroundIntersection()[0], camera.getGroundIntersection()[2], direction);
 					}else{
 						std::cout << "trying to place building" << std::endl;
-						world.placeWall(camera.getGroundIntersection()[0], camera.getGroundIntersection()[2], woodMaterial);
+						world->placeWall(camera.getGroundIntersection()[0], camera.getGroundIntersection()[2], woodMaterial);
 					}
 				}
 				catch (int e) {
@@ -514,7 +517,7 @@ int main(int argc, char** argv)
 			}
 
 			if (_starting) {
-				if (!world.hasMinOneBuildings()) {
+				if (!world->hasMinOneBuildings()) {
 					_starting = false;
 					placeMinCounter = 200;
 				}
@@ -569,10 +572,10 @@ int main(int argc, char** argv)
 			// player informations
 			std::string life = "LIFE: ";
 			std::ostringstream lifeAmout;
-			lifeAmout << world.getHP();
+			lifeAmout << world->getHP();
 			life += lifeAmout.str();
 			glm::vec3 color;
-			if (world.getHP() <= 20) {
+			if (world->getHP() <= 20) {
 				color = glm::vec3(1.0, 0.0, 0.0);
 			}
 			else {
@@ -582,9 +585,9 @@ int main(int argc, char** argv)
 
 			std::string buildings = "BUILDINGS: ";
 			std::ostringstream left;
-			left << world.getBuildingsLeft();
+			left << world->getBuildingsLeft();
 			buildings += left.str();
-			if (world.getBuildingsLeft() <= 0) {
+			if (world->getBuildingsLeft() <= 0) {
 				color = glm::vec3(1.0, 0.0, 0.0);
 			}
 			else {
@@ -592,9 +595,9 @@ int main(int argc, char** argv)
 			}
 			charactorService->renderText(buildings.c_str(), 450, 100, 0.8f, color);
 
-			if (!start && firstWave && world.hasMinOneBuildings()) {
+			if (!start && firstWave && world->hasMinOneBuildings()) {
 				charactorService->renderText("PRESS ENTER TO START WAVE", 20, window_height-50, 0.5f, glm::vec3(1.0f));
-			} else if (!start && !firstWave && world.hasMinOneBuildings()) {
+			} else if (!start && !firstWave && world->hasMinOneBuildings()) {
 				charactorService->renderText("PRESS ENTER TO START NEXT WAVE", 20, window_height - 50, 0.5f, glm::vec3(1.0f));
 			}
 
@@ -643,6 +646,9 @@ int main(int argc, char** argv)
 			{
 				std::cout << "GL Error detected" << std::endl;
 
+			}
+			if (!world) {
+				std::cout << "oops world is not around anymore" << std::endl;
 			}
 		}
 
@@ -759,8 +765,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			break;
 		case GLFW_KEY_F8:
 			_culling = !_culling;
-			if (_culling) glEnable(GL_CULL_FACE);
-			else glDisable(GL_CULL_FACE);
 			break;
 		case GLFW_KEY_ENTER:
 			_starting = true;

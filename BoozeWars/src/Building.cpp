@@ -67,7 +67,7 @@ void Building::drawParticle(Shader* particleShader, Frustum& frustum) {
 	while (it != activeWeapons.end())
 	{
 		Weapon* weapon = *it;
-		if (frustum.sphereInFrustum(weapon->boundingSphere())) {
+		if (true||frustum.sphereInFrustum(weapon->boundingSphere())) {
 			weapon->drawParticle(particleShader);
 		}
 		it++;
