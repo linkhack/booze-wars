@@ -34,9 +34,9 @@ void Hand::rotate(float time)
 		this->up = false;
 	}
 	if (this->up) {
-		this->rotation += 10 * time;
+		this->rotation += 5 * time;
 	}
 	else {
-		this->rotation -= 10 * time;
+		this->rotation -= 5 * time;
 	}
 }
