@@ -178,8 +178,8 @@ int main(int argc, char** argv)
 
 	// set up TrueType
 
-	Character* charactorService = new Character(window);
-	charactorService->setFontSize(54);
+	Character* charactorService = new Character(window,54);
+	//charactorService->setFontSize(54);
 
 	// set up Physx
 	//Foundation
