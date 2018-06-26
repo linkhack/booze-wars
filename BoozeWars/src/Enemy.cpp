@@ -152,31 +152,31 @@ void Enemy::applyDrivingForce(PxScene* physxScene)
 	PxTransform position = physxActor->getGlobalPose();
 	PxQueryFilterData filterData(PxQueryFlag::eSTATIC);
 	PxSweepBuffer hit1;
-	if (physxScene->sweep(PxBoxGeometry(5, 5, 1), position, desiredDirection, 25, hit1, PxHitFlag::eDEFAULT, filterData))
+	if (physxScene->sweep(PxBoxGeometry(3.5, 3.5, 1), position, desiredDirection, 20, hit1, PxHitFlag::eDEFAULT, filterData))
 	{
 		PxRaycastBuffer hit2;
 		PxVec3 evasionDirection1 = PxTransform(PxQuat(PxPi / 16.0, PxVec3(0, 0, 1))).rotate(desiredDirection);
-		if (physxScene->raycast(position.p, evasionDirection1, 20, hit2, PxHitFlag::eDEFAULT, filterData)) {
+		if (physxScene->raycast(position.p, evasionDirection1, 25, hit2, PxHitFlag::eDEFAULT, filterData)) {
 			PxRaycastBuffer hit3;
 			PxVec3 evasionDirection2 = PxTransform(PxQuat(-PxPi / 16.0, PxVec3(0, 0, 1))).rotate(desiredDirection);
-			if (physxScene->raycast(position.p, evasionDirection2, 20, hit3, PxHitFlag::eDEFAULT, filterData)) {
+			if (physxScene->raycast(position.p, evasionDirection2, 25, hit3, PxHitFlag::eDEFAULT, filterData)) {
 				if (hit3.block.distance > hit2.block.distance+0.2|| hit3.block.distance<=0.5)
 				{
-					desiredDirection = PxTransform(PxQuat(-PxPi / 4.0, PxVec3(0, 0, 1))).rotate(desiredDirection);
+					desiredDirection = PxTransform(PxQuat(-PxPi / 3.0, PxVec3(0, 0, 1))).rotate(desiredDirection);
 				}
 				else 
 				{
-					desiredDirection = PxTransform(PxQuat(PxPi / 4.0, PxVec3(0, 0, 1))).rotate(desiredDirection);
+					desiredDirection = PxTransform(PxQuat(PxPi / 3.0, PxVec3(0, 0, 1))).rotate(desiredDirection);
 				}
 			}
 			else 
 			{
-				desiredDirection = PxTransform(PxQuat(-PxPi / 4.0, PxVec3(0, 0, 1))).rotate(desiredDirection);
+				desiredDirection = PxTransform(PxQuat(-PxPi / 3.0, PxVec3(0, 0, 1))).rotate(desiredDirection);
 			}
 		}
 		else
 		{
-			desiredDirection = PxTransform(PxQuat(PxPi / 4.0, PxVec3(0, 0, 1))).rotate(desiredDirection);
+			desiredDirection = PxTransform(PxQuat(PxPi / 3.0, PxVec3(0, 0, 1))).rotate(desiredDirection);
 		}
 	}
 		
