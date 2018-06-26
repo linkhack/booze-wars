@@ -8,7 +8,7 @@ uniform sampler2D normalInformation;
 uniform sampler2D depthInformation;
 
 
-
+uniform	float gamma;
 uniform float nearZ;
 uniform float farZ;
 uniform float width;
@@ -75,4 +75,5 @@ void main()
 	color = result * color;
 	//color = vec4(y6,1);
 	color.w = 1;
+	color = pow(color,vec4(1.0/gamma));
 }

@@ -99,6 +99,7 @@ int main(int argc, char** argv)
 	float farZ = float(reader.GetReal("camera", "far", 1000.0f));
 	bool fullscreen = bool(reader.GetBoolean("window", "fullscreen", false));
 	int refreshRate = reader.GetInteger("window", "refreshRate", 60);
+	float gamma = reader.GetReal("window", "gamma", 1.1f);
 
 	/* --------------------------------------------- */
 	// Create context
@@ -213,11 +214,14 @@ int main(int argc, char** argv)
 		std::shared_ptr<Shader> proceduralGrass = std::make_shared<Shader>("texture.vert", "procedural.frag");
 		std::shared_ptr<Shader> particleShader = std::make_shared<Shader>("particle.vert", "particle.frag");
 		std::shared_ptr<Shader> postprocessShader = std::make_shared<Shader>("postprocess.vert", "postprocess.frag");
+		postprocessShader->use();
+		postprocessShader->setUniform("gamma", gamma);
 		Shader* shadowShader = new Shader("shadowShader.vert", "shadowShader.frag");
 		//Shader* objectShader = new Shader("texture.vert", "texture.frag");
 		std::shared_ptr<Shader> schoolShader = std::make_shared<Shader>("texture.vert", "school.frag");
 		proceduralGrass->use();
 		proceduralGrass->setUniform("width", window_width);
+
 		//Textures
 		std::shared_ptr<Texture> sunTexture = std::make_shared<Texture>("sun.dds");
 		std::shared_ptr<Texture> moonTexture = std::make_shared<Texture>("moon.dds");
