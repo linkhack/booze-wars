@@ -93,9 +93,7 @@ void DrunkCity::drawParticles(Shader* particleShader) {
 	for (std::list<Building*>::iterator it = buildings.begin(); it != buildings.end(); ++it)
 	{
 		Building* iteratingBuilding = *it;
-		if (true||frustum->sphereInFrustum(iteratingBuilding->boundingSphere())) {
-			iteratingBuilding->drawParticle(particleShader, *frustum);
-		}
+		iteratingBuilding->drawParticle(particleShader, *frustum);
 	}
 }
 

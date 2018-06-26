@@ -27,6 +27,7 @@ public:
 	glm::vec3 getOrthodirection();
 	glm::mat4 getRotationMatrix();
 	glm::mat4 getProjectionMatrix();
+	glm::mat4 getTranslationMatrix();
 	
 	glm::mat4 getViewProjectionMatrix();
 	glm::vec3 getGroundIntersection();

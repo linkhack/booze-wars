@@ -46,10 +46,10 @@ bool Frustum::sphereInFrustum(glm::vec4 centerRadius)
 	float d;
 	float radius = centerRadius.w;
 	glm::vec3 center = glm::vec3(centerRadius.x, centerRadius.y, centerRadius.z);
-	for (int i = 0; i < 6; ++i) {
+	for (int i = 0; cullingActivated && i < 6; ++i) {
 		d = distanceToPoint(planes[i], center);
 		if (d <= -radius) {
-			return cullingActivated || false;
+			return false;
 		}
 	}
 	return true;

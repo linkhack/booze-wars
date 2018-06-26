@@ -7,7 +7,7 @@ Hand::Hand()
 	this->rotation = 2.5;
 	this->up = this->rotation < 0;
 	this->model = ModelFactory::Instance()->getModel(ModelFactory::HAND);
-	this->modelMatrix = glm::rotate(glm::mat4(1.0f), -80.0f, glm::vec3(0, 1.0, 0)) * 
+	this->modelMatrix = glm::rotate(glm::mat4(1.0f), glm::pi<float>()-2.0f, glm::vec3(0, 1.0, 0)) * 
 		glm::translate(glm::mat4(1.0f), glm::vec3(0.25f, 0.8f, 0.9f)) * 
 		glm::scale(glm::mat4(1.0f), glm::vec3(0.002, 0.002, 0.002));
 }

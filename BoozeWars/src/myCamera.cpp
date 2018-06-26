@@ -47,6 +47,11 @@ glm::mat4 myCamera::getProjectionMatrix()
 	return projMatrix;
 }
 
+glm::mat4 myCamera::getTranslationMatrix()
+{
+	return glm::translate(glm::mat4(1.0f),-position);
+}
+
 glm::mat4 myCamera::getViewProjectionMatrix() {
 	//Translation
 	glm::mat4 translation = glm::translate(glm::mat4(1.0f), -position);

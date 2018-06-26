@@ -7,7 +7,7 @@ Weapon::Weapon(float x, float z, int direction, int delay)
 	ModelFactory* factory = ModelFactory::Instance();
 	model = factory->getModel(ModelFactory::DEFAULT_WEAPON);
 	glm::mat4 position;
-	float startpoint;
+	float startpoint = 0.0f;
 	switch (delay) {
 	case Weapon::DELAY_FIRST:
 		startpoint = Building::width / 2;

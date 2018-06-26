@@ -19,7 +19,7 @@ Enemy::Enemy(Street* street)
 	hp = 100;
 	damageTeens = 5;
 	streetPart = 0;
-	modelMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(8, 8, 8));
+	modelMatrix = glm::rotate(glm::mat4(1.0f),2.0f,glm::vec3(0,1,0))*glm::scale(glm::mat4(1.0f), glm::vec3(8, 8, 8));
 	this->width = 4.0f;
 	this->length = 4.0f;
 	this->hand = new Hand();
@@ -34,7 +34,9 @@ Enemy::~Enemy()
 
 glm::mat4 Enemy::getModelMatrix()
 {
-	return glm::translate(glm::mat4(1.0f), glm::vec3(x, z-2.5, y))*modelMatrix;
+	PxVec3 direction = physxActor->getLinearVelocity();
+	return glm::translate(glm::mat4(1.0f), glm::vec3(x, z - 2.5, y))*glm::lookAt(glm::vec3(0.0f), -glm::vec3(direction.x, 0, -direction.y), glm::vec3(0, 1, 0))*modelMatrix;
+	//return glm::translate(glm::mat4(1.0f), glm::vec3(x, z-2.5, y))*modelMatrix;
 }
 void Enemy::drawShadows(Shader& shader)
 {
@@ -150,7 +152,7 @@ void Enemy::applyDrivingForce(PxScene* physxScene)
 	PxTransform position = physxActor->getGlobalPose();
 	PxQueryFilterData filterData(PxQueryFlag::eSTATIC);
 	PxSweepBuffer hit1;
-	if (physxScene->sweep(PxBoxGeometry(1, 1, 1), position, desiredDirection, 20, hit1, PxHitFlag::eDEFAULT, filterData))
+	if (physxScene->sweep(PxBoxGeometry(5, 5, 1), position, desiredDirection, 25, hit1, PxHitFlag::eDEFAULT, filterData))
 	{
 		PxRaycastBuffer hit2;
 		PxVec3 evasionDirection1 = PxTransform(PxQuat(PxPi / 16.0, PxVec3(0, 0, 1))).rotate(desiredDirection);

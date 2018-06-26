@@ -64,14 +64,16 @@ void Building::drawShadows(Shader & shader)
 
 void Building::drawParticle(Shader* particleShader, Frustum& frustum) {
 	std::list<Weapon*>::iterator it = activeWeapons.begin();
+	glDisable(GL_CULL_FACE);
 	while (it != activeWeapons.end())
 	{
 		Weapon* weapon = *it;
-		if (true||frustum.sphereInFrustum(weapon->boundingSphere())) {
+		if (frustum.sphereInFrustum(weapon->boundingSphere())) {
 			weapon->drawParticle(particleShader);
 		}
 		it++;
 	}
+	glEnable(GL_CULL_FACE);
 }
 
 void Building::draw(Shader* shader, float time, Frustum& frustum)
